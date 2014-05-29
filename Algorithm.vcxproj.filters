@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{6172779d-a16c-43ed-8d09-ca6bbfab40c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{5fb0270a-2682-4019-a4ef-1b64ff5e9d0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\algorithm">
+      <UniqueIdentifier>{c381d10b-7592-4dbc-b182-858806c009cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\italian">
+      <UniqueIdentifier>{a3de4065-7348-4423-8baf-b9c1cb30e430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\tabu">
+      <UniqueIdentifier>{1bb1af87-fcbc-4334-b405-ae88cd9ad080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\rna">
+      <UniqueIdentifier>{aa1ee406-4665-4bd8-b86f-61f91fc0e75f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\algorithm\ialgorithm.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\isolution.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\isolutionstep.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\itabusearch.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\itabusearchstep.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\fitness.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\events.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\tabu_search_events.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\ifactory.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\base.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\factory.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\tabu_search.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\tabu_search_step.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\tabu_search_swap.hpp">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tabu_list.h">
+      <Filter>src\tabu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tabu_element.h">
+      <Filter>src\tabu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\null_algorithm.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\italian_search.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\rna_search.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\rna_search_events.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\base.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\factory.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rna_search.cpp">
+      <Filter>src\rna</Filter>
+    </ClCompile>
+    <ClCompile Include="src\italian_search.cpp">
+      <Filter>src\italian</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tabu_list.cpp">
+      <Filter>src\tabu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tabu_search.cpp">
+      <Filter>src\tabu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tabu_search_step.cpp">
+      <Filter>src\tabu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tabu_element.cpp">
+      <Filter>src\tabu</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
