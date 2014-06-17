@@ -13,12 +13,21 @@ using namespace std;
 
 namespace Algorithm { namespace ItalianSearch {
 
-namespace {
-	//register with algorithm factory
-	const bool registered = SingleFactory::Instance().Register("italian_search",
+namespace Private {
+
+bool Register()
+{
+	return SingleFactory::Instance().Register("italian_search",
 		[](const ptree &pt) {
 			return make_unique<ItalianSearch>(pt);
 		});
+}
+
+} //ns Private
+
+namespace {
+	//register with algorithm factory at program start-up
+	const bool registered = Private::Register();
 }
 
 ItalianSearch::ItalianSearch(const ptree &configPt)

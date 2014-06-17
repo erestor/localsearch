@@ -27,6 +27,7 @@ Searcher::Searcher(const boost::property_tree::ptree &pt)
 bool Searcher::Run(solution_ptr_type solutionPtr)
 {
 	_currentSolutionPtr = solutionPtr.get();
+	_currentSolutionPtr->GetFitness();
 	_bestSolutionPtr = unique_ptr<ISolution>(_currentSolutionPtr->Clone());
 	Event::Fire(Events::Started { _currentSolutionPtr });
 	bool improved = false;

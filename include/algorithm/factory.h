@@ -19,6 +19,9 @@ namespace Algorithm {
 		//registers algorithm constructor with the factory
 		bool Register(const std::string &name, const maker_type &);
 
+		//registers all directly usable algorithms in this library with the factory
+		static void RegisterNative();
+
 	  private:
 
 		friend struct Loki::CreateUsingNew<Factory>;

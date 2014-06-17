@@ -48,6 +48,7 @@ void AlgorithmBase::Resume()
 
 bool AlgorithmBase::Start(const solution_ptr_type &startingSolutionPtr)
 {
+	_stopRequested = false;
 	_timer.StartClock();
 	Ctoolhu::Event::Fire(Events::Started { startingSolutionPtr.get(), Name() });
 	auto result = Run(startingSolutionPtr);

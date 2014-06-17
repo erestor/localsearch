@@ -3,6 +3,7 @@
 //----------------------------------------------------------------------------
 #include "null_algorithm.hpp"
 #include <algorithm/factory.h>
+#include <algorithm/italian_search.h>
 #include <stdexcept>
 
 using namespace std;
@@ -27,6 +28,12 @@ bool Factory::Register(const string &name, const maker_type &maker)
 		throw runtime_error("failed to register '" + name + "' with algorithm factory");
 
 	return success;
+}
+
+//this needn't even be called, it's here only to reference the registering functions so that they're not dropped by the linker
+void Factory::RegisterNative()
+{
+	ItalianSearch::Private::Register();
 }
 
 } //ns Algorithm

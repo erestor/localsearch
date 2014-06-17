@@ -36,6 +36,12 @@ namespace Algorithm {
 			Config _config;
 		};
 
+		namespace Private {
+		
+			bool Register(); //registers this algorithm with the factory
+
+		} //ns Private
+
 	} //ns ItalianSearch
 
 } //ns Algorithm
