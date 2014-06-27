@@ -27,13 +27,13 @@ bool Factory::Register(const string &name, const maker_type &maker)
 	if (!success)
 		throw runtime_error("failed to register '" + name + "' with algorithm factory");
 
-	return success;
+	return true;
 }
 
-//this needn't even be called, it's here only to reference the registering functions so that they're not dropped by the linker
-void Factory::RegisterNative()
+void Factory::__RegisterNative()
 {
 	ItalianSearch::Private::Register();
+	throw logic_error(__FUNCTION__ " must never be called");
 }
 
 } //ns Algorithm

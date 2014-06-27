@@ -1,6 +1,9 @@
 //----------------------------------------------------------------------------
 // Author:		Martin Klemsa
 //----------------------------------------------------------------------------
+#ifndef _algorithm_factory_included_
+#define _algorithm_factory_included_
+
 #include "ifactory.h"
 #include <loki/singleton.h>
 #include <map>
@@ -16,11 +19,14 @@ namespace Algorithm {
 		//returns new algorithm registered under the name, or NullAlgorithm instance if not found.
 		ialgorithm_ptr_type CreateAlgorithm(const std::string &name, const boost::property_tree::ptree &config) const final;
 
-		//registers algorithm constructor with the factory
+		//registers algorithm constructor with the factory.
+		//throws runtime exception if registration fails.
+		//the return value is always true, used typically to initialize a const bool global variable in a no-name namespace.
 		bool Register(const std::string &name, const maker_type &);
 
 		//registers all directly usable algorithms in this library with the factory
-		static void RegisterNative();
+		//must not be called, it's here only to reference the registering functions so that they're not dropped by the linker
+		static void __RegisterNative();
 
 	  private:
 
@@ -33,3 +39,6 @@ namespace Algorithm {
 	typedef Loki::SingletonHolder<Factory> SingleFactory;
 
 } //ns Algorithm
+
+#endif //file guard
+

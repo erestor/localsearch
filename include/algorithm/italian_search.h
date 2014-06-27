@@ -1,6 +1,9 @@
 //----------------------------------------------------------------------------
 // Author:		Martin Klemsa
 //----------------------------------------------------------------------------
+#ifndef _algorithm_italian_search_included_
+#define _algorithm_italian_search_included_
+
 #include <algorithm/base.h>
 #include <boost/property_tree/ptree.hpp>
 
@@ -45,3 +48,6 @@ namespace Algorithm {
 	} //ns ItalianSearch
 
 } //ns Algorithm
+
+#endif //file guard
+
