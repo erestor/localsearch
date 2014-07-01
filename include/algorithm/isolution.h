@@ -19,6 +19,7 @@ namespace Algorithm {
 		virtual Fitness GetFitness() = 0; //returns the quality ('fitness') of this solution
 		virtual bool IsFeasible() = 0;
 
+		virtual void Load(const boost::property_tree::ptree &) = 0;
 		virtual void Save(boost::property_tree::ptree &) const = 0;
 
 		virtual ~ISolution() {};
