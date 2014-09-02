@@ -6,6 +6,9 @@
 
 #include <algorithm/base.h>
 #include <boost/property_tree/ptree.hpp>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace Algorithm {
 
@@ -23,19 +26,18 @@ namespace Algorithm {
 
 		  private:
 
+			typedef std::pair<std::string, boost::property_tree::ptree> algorithm_def_t;
+
 			struct Config {
 				int cycles;
-				std::string generationName;
-				std::string roomRNAName;
-				std::string roomTabuSearchName;
-				std::string timeRNAName;
-				std::string timeTabuSearchName;
+				algorithm_def_t initial; //name of initial algorithm run once
+				std::vector<algorithm_def_t> algorithms;
+					//chain of algorithms run in cycles until stopping condition is met
 			};
 
 			bool Run(solution_ptr_type) final;
 			void _FireBestSolutionFound();
 
-			boost::property_tree::ptree _configPt; //stored configuration passed in at construction
 			Config _config;
 		};
 
@@ -50,4 +52,3 @@ namespace Algorithm {
 } //ns Algorithm
 
 #endif //file guard
-

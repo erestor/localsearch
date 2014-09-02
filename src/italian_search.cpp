@@ -4,10 +4,8 @@
 #include <algorithm/italian_search.h>
 #include <algorithm/factory.h>
 #include <algorithm/isolution.h>
-#include <ctoolhu/event/firer.hpp>
 #include <boost/property_tree/ptree.hpp>
 
-using namespace Ctoolhu;
 using namespace boost::property_tree;
 using namespace std;
 
@@ -31,15 +29,26 @@ namespace {
 }
 
 ItalianSearch::ItalianSearch(const ptree &configPt)
-:
-	_configPt(configPt)
 {
-	_config.cycles = _configPt.get("italian.cycles", 4);
-	_config.generationName		= _configPt.get("italian.algorithm.generation", "generation");
-	_config.roomRNAName			= _configPt.get("italian.algorithm.alg1", "room_rna");
-	_config.roomTabuSearchName	= _configPt.get("italian.algorithm.alg2", "room_tabu");
-	_config.timeRNAName			= _configPt.get("italian.algorithm.alg3", "time_rna");
-	_config.timeTabuSearchName	= _configPt.get("italian.algorithm.alg4", "time_tabu");
+	_config.cycles = configPt.get("cycles", 4);
+
+	auto const &initNode = configPt.get_child("initial");
+	_config.initial = make_pair(initNode.get("name", "generation"), initNode.get_child("config"));
+
+	vector<string> defaults {
+		"room_rna",
+		"room_tabu",
+		"time_rna",
+		"time_tabu"
+	};
+	unsigned int i = 0;
+	for (auto const &node : configPt.get_child("algorithms")) {
+		_config.algorithms.emplace_back(
+			node.second.get("name", i < defaults.size() ? defaults[i] : ""),
+			node.second.get_child("config")
+		);
+		++i;
+	}
 }
 
 const string &ItalianSearch::Name() const
@@ -53,35 +62,25 @@ bool ItalianSearch::Run(solution_ptr_type solutionPtr)
 	auto initialFitness = solutionPtr->GetFitness();
 	{
 		//prelude is the generation algorithm
-		auto generationSearchPtr = SingleFactory::Instance().CreateAlgorithm(_config.generationName, _configPt.get_child("generation"));
-		generationSearchPtr->SetParent(this);
-		generationSearchPtr->Start(solutionPtr);
+		auto initialAlg = SingleFactory::Instance().CreateAlgorithm(_config.initial.first, _config.initial.second);
+		initialAlg->SetParent(this);
+		initialAlg->Start(solutionPtr);
 	}
 
-	auto roomRNASearchPtr = SingleFactory::Instance().CreateAlgorithm(_config.roomRNAName, _configPt.get_child("room_rna"));
-	auto roomTabuSearchPtr = SingleFactory::Instance().CreateAlgorithm(_config.roomTabuSearchName, _configPt.get_child("room_tabu"));
-	auto timeRNASearchPtr = SingleFactory::Instance().CreateAlgorithm(_config.timeRNAName, _configPt.get_child("time_rna"));
-	auto timeTabuSearchPtr = SingleFactory::Instance().CreateAlgorithm(_config.timeTabuSearchName, _configPt.get_child("time_tabu"));
-	roomRNASearchPtr->SetParent(this);
-	roomTabuSearchPtr->SetParent(this);
-	timeRNASearchPtr->SetParent(this);
-	timeTabuSearchPtr->SetParent(this);
+	vector<unique_ptr<IAlgorithm>> algorithms;
+	for (auto const &algDef : _config.algorithms) {
+		auto alg = SingleFactory::Instance().CreateAlgorithm(algDef.first, algDef.second);
+		alg->SetParent(this);
+		algorithms.push_back(move(alg));
+	}
 
-	int IdleCycles = 0;
-	while (!IsStopRequested() && (int)solutionPtr->GetFitness() > 0 && (_config.cycles < 0 || IdleCycles < _config.cycles)) {
-		IdleCycles++;
-
-		if (roomRNASearchPtr->Start(solutionPtr))
-			IdleCycles = 0;
-
-		if (roomTabuSearchPtr->Start(solutionPtr))
-			IdleCycles = 0;
-
-		if (timeRNASearchPtr->Start(solutionPtr))
-			IdleCycles = 0;
-
-		if (timeTabuSearchPtr->Start(solutionPtr))
-			IdleCycles = 0;
+	int idleCycles = 0;
+	while (!IsStopRequested() && (int)solutionPtr->GetFitness() > 0 && (_config.cycles < 0 || idleCycles < _config.cycles)) {
+		idleCycles++;
+		for (auto const &alg : algorithms) {
+			if (alg->Start(solutionPtr))
+				idleCycles = 0;
+		}
 	}	
 	return solutionPtr->GetFitness() < initialFitness;
 }
