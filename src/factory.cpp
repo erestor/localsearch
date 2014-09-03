@@ -6,17 +6,16 @@
 #include <algorithm/italian_search.h>
 #include <stdexcept>
 
+using namespace boost::property_tree;
 using namespace std;
 
 namespace Algorithm {
 
-IFactory::ialgorithm_ptr_type Factory::CreateAlgorithm(
-	const string &name,
-	const boost::property_tree::ptree &config) const
+IFactory::ialgorithm_ptr_type Factory::CreateAlgorithm(const string &name, const ptree &config) const
 {
 	auto it = _registry.find(name);
 	if (it == _registry.end())
-		return make_unique<NullAlgorithm>();
+		return GetNullAlgorithm();
 
 	return it->second(config);
 }
@@ -34,6 +33,19 @@ void Factory::__RegisterNative()
 {
 	ItalianSearch::Private::Register();
 	throw logic_error(__FUNCTION__ " must never be called");
+}
+
+IFactory::ialgorithm_ptr_type Create(const ptree &definition)
+{
+	return SingleFactory::Instance().CreateAlgorithm(
+		definition.get<string>("name"),
+		definition.get_child("config")
+	);
+}
+
+IFactory::ialgorithm_ptr_type GetNullAlgorithm()
+{
+	return make_unique<NullAlgorithm>();
 }
 
 } //ns Algorithm

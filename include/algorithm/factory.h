@@ -38,6 +38,13 @@ namespace Algorithm {
 
 	typedef Loki::SingletonHolder<Factory> SingleFactory;
 
+	//creates an algorithm using a single tree with "name" and "config" nodes determining an algorithm.
+	//throws if either name or config aren't present in the definition tree.
+	IFactory::ialgorithm_ptr_type Create(const boost::property_tree::ptree &definition);
+
+	//returns the NullAlgorithm
+	IFactory::ialgorithm_ptr_type GetNullAlgorithm();
+
 } //ns Algorithm
 
 #endif //file guard
