@@ -39,12 +39,12 @@ namespace Algorithm {
 
 			ISolution *_currentSolutionPtr;
 
-		  private:
-
-			struct Config {
+			struct Config : AlgorithmBaseConfig {
 				int maxSteps;
 				int dynamicAdaptationThreshold;
-			};
+			} _config;
+
+		  private:
 
 			//execute the algorithm
 			bool Run(solution_ptr_type) final;
@@ -57,7 +57,6 @@ namespace Algorithm {
 
 			std::unique_ptr<ISolution> _bestSolutionPtr; //holds best solution found so far
 			TabuList _tabuList; //list of tabu steps
-			Config _config;
 		};
 
 	} //ns TabuSearch

@@ -53,6 +53,10 @@ namespace Algorithm {
 		Ctoolhu::Time::Timer<timer_resolution> _timer;
 	};
 
+	struct AlgorithmBaseConfig {
+		bool keepFeasible;
+	};
+
 } //ns Algorithm
 
 #endif //file guard

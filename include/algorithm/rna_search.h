@@ -25,14 +25,10 @@ namespace Algorithm {
 
 			ISolution *_currentSolutionPtr;
 
-		  private:
-
-			struct Config {
+			struct Config : AlgorithmBaseConfig {
 				int maxSteps;
 				int tickFrequency; //how many steps between ticks
-			};
-
-			Config _config;
+			} _config;
 		};
 
 	} //ns RNA

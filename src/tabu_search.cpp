@@ -19,6 +19,7 @@ Searcher::Searcher(const boost::property_tree::ptree &pt)
 :	
 	_tabuList(pt)
 {
+	_config.keepFeasible = pt.get("keepFeasible", false);
 	_config.maxSteps = pt.get("maxSteps", 200);
 	_config.dynamicAdaptationThreshold = pt.get("dynamicAdaptationThreshold", 10);
 }
@@ -63,7 +64,8 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 		Event::Fire(evATSS);
 
 		//check if new best solution was found, in that case store it
-		if (_currentSolutionPtr->GetFitness() < _bestSolutionPtr->GetFitness()) {
+		if (_currentSolutionPtr->GetFitness() < _bestSolutionPtr->GetFitness()
+		&& (!_config.keepFeasible || !_bestSolutionPtr->IsFeasible() || _currentSolutionPtr->IsFeasible())) {
 			noImprovements = 0;
 			improved = true;
 			_currentSolutionPtr->CopyTo(_bestSolutionPtr.get());

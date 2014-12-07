@@ -16,6 +16,7 @@ namespace Algorithm { namespace RNA {
 
 Searcher::Searcher(const boost::property_tree::ptree &pt)
 {
+	_config.keepFeasible = pt.get("keepFeasible", false);
 	_config.maxSteps = pt.get("maxSteps", 1000);
 	_config.tickFrequency = max(1, pt.get("tickFrequency", 1000));
 }
