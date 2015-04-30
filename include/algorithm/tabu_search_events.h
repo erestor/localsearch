@@ -29,6 +29,7 @@ namespace Algorithm {
 				int dynamicAdaptationThreshold;
 				ISolution *currentSolutionPtr;
 				std::string stepDescription;
+				bool keepFeasible;
 			};
 
 			struct AfterRandomStepChosen {

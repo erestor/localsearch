@@ -55,7 +55,8 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 		Events::AfterTabuSearchStep evATSS {
 			_config.dynamicAdaptationThreshold,
 			_currentSolutionPtr,
-			s.str()
+			s.str(),
+			_config.keepFeasible
 		};
 
 		_tabuList.Insert(move(nextStepPtr));
