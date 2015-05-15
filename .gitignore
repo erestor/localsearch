@@ -12,6 +12,7 @@ Build/
 Benchmark/
 ClientBin/
 Debug/
+Profiling/
 Release/
 ReleaseDebug/
 Service References/
