@@ -39,6 +39,8 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 			noImprovements = 0;
 			improved = true;			
 			Event::Fire(Algorithm::Events::BestSolutionFound { _currentSolutionPtr, ElapsedTime() });
+			if (_currentSolutionPtr->IsFeasible())
+				Event::Fire(Algorithm::Events::FeasibleSolutionFound { _currentSolutionPtr, ElapsedTime() });
 		}
 		if (steps % _config.tickFrequency == 0)
 			Event::Fire<Events::Tick>();

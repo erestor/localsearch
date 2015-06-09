@@ -72,6 +72,17 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 			_currentSolutionPtr->CopyTo(_bestSolutionPtr.get());
 			Event::Fire(Algorithm::Events::BestSolutionFound { _currentSolutionPtr, ElapsedTime() });
 		}
+
+		if (_currentSolutionPtr->IsFeasible()) {
+			if (!_feasibleSolutionPtr) {
+				_feasibleSolutionPtr = unique_ptr<ISolution>(_currentSolutionPtr->Clone());
+				Event::Fire(Algorithm::Events::FeasibleSolutionFound { _currentSolutionPtr, ElapsedTime() });
+			}
+			else if (_currentSolutionPtr->GetFitness() < _feasibleSolutionPtr->GetFitness()) {
+				_currentSolutionPtr->CopyTo(_feasibleSolutionPtr.get());
+				Event::Fire(Algorithm::Events::FeasibleSolutionFound { _currentSolutionPtr, ElapsedTime() });
+			}
+		}
 	}
 	//cycle is finished with some solution, make sure we use the best found
 	_bestSolutionPtr->CopyTo(_currentSolutionPtr);

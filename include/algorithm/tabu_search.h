@@ -56,6 +56,7 @@ namespace Algorithm {
 			bool _IsAspirationStep(const ISolutionStep *, const Fitness &currentFitness) const;
 
 			std::unique_ptr<ISolution> _bestSolutionPtr; //holds best solution found so far
+			std::unique_ptr<ISolution> _feasibleSolutionPtr; //holds best feasible solution found so far
 			TabuList _tabuList; //list of tabu steps
 		};
 

@@ -36,7 +36,6 @@ namespace Algorithm {
 			};
 
 			bool Run(solution_ptr_type) final;
-			void _FireBestSolutionFound();
 
 			Config _config;
 		};

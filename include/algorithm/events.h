@@ -28,6 +28,11 @@ namespace Algorithm {
 			std::chrono::milliseconds elapsedTime;
 		};
 
+		struct FeasibleSolutionFound {
+			ISolution *solutionPtr;
+			std::chrono::milliseconds elapsedTime;
+		};
+
 	} //ns Events
 
 } //ns Algorithm
