@@ -30,34 +30,34 @@ namespace Algorithm {
 
 			self_type operator +(const self_type &fitness) const
 			{
-				return self_type(_id + fitness._id);
+				return self_type(this->_id + fitness._id);
 			}
 
 			self_type operator +(delta_type delta) const
 			{
-				return self_type(_id + delta);
+				return self_type(this->_id + delta);
 			}
 
 			delta_type operator -(const self_type &fitness) const
 			{
-				return _id - fitness._id;
+				return this->_id - fitness._id;
 			}
 
 			void operator +=(const self_type &fitness)
 			{
-				_id += fitness._id;
+				this->_id += fitness._id;
 				_Verify();
 			}
 
 			void operator +=(int penalty)
 			{
-				_id += penalty;
+				this->_id += penalty;
 				_Verify();
 			}
 
 			void operator -=(int penalty)
 			{
-				_id -= penalty;
+				this->_id -= penalty;
 				_Verify();
 			}
 
@@ -65,7 +65,7 @@ namespace Algorithm {
 
 			void _Verify()
 			{
-				if (_id < 0)
+				if (this->_id < 0)
 					throw std::logic_error("Algorithm::Private::FitnessImpl::_Verify: Fitness can't be negative");
 			}
 		};
