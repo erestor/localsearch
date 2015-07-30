@@ -5,7 +5,7 @@
 #define _algorithm_factory_included_
 
 #include "ifactory.h"
-#include <loki/singleton.h>
+#include <loki/Singleton.h>
 #include <map>
 
 namespace Algorithm {

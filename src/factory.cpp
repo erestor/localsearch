@@ -5,6 +5,7 @@
 #include <algorithm/factory.h>
 #include <algorithm/italian_search.h>
 #include <stdexcept>
+#include <string>
 
 using namespace boost::property_tree;
 using namespace std;
@@ -32,7 +33,7 @@ bool Factory::Register(const string &name, const maker_type &maker)
 void Factory::__RegisterNative()
 {
 	ItalianSearch::Private::Register();
-	throw logic_error(__FUNCTION__ " must never be called");
+	throw logic_error(__FUNCTION__ + string(" must never be called"));
 }
 
 IFactory::ialgorithm_ptr_type Create(const ptree &definition)

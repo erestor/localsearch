@@ -104,7 +104,7 @@ Searcher::step_ptr_type Searcher::_GetNextStep(vector<step_ptr_type> &steps) con
 		default: {
 			Random::IntGenerator RandStep(0, size - 1);
 			vectorIndex = RandStep();
-			Event::Fire(Events::AfterRandomStepChosen { size, vectorIndex });
+			Event::Fire(Events::AfterRandomStepChosen { static_cast<int>(size), vectorIndex });
 		}
 	}
 	return move(steps[vectorIndex]);
