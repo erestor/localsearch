@@ -1,8 +1,8 @@
 //----------------------------------------------------------------------------
 // Author:		Martin Klemsa
 //----------------------------------------------------------------------------
-#ifndef _tabu_search_swap_included_
-#define _tabu_search_swap_included_
+#ifndef _algorithm_tabu_search_swap_included_
+#define _algorithm_tabu_search_swap_included_
 
 #include "tabu_search_step.h"
 #include <utility>

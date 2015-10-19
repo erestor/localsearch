@@ -43,4 +43,4 @@ namespace Algorithm {
 
 } //ns Algorithm
 
-#endif
+#endif //file guard
