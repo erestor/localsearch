@@ -60,9 +60,6 @@
     <ClInclude Include="include\algorithm\tabu_search_step.h">
       <Filter>include\algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\tabu_search_swap.hpp">
-      <Filter>include\algorithm</Filter>
-    </ClInclude>
     <ClInclude Include="src\tabu_list.h">
       <Filter>src\tabu</Filter>
     </ClInclude>

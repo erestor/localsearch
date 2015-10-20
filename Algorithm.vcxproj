@@ -187,7 +187,6 @@
     <ClInclude Include="include\algorithm\tabu_search.h" />
     <ClInclude Include="include\algorithm\tabu_search_events.h" />
     <ClInclude Include="include\algorithm\tabu_search_step.h" />
-    <ClInclude Include="include\algorithm\tabu_search_swap.hpp" />
     <ClInclude Include="src\null_algorithm.hpp" />
     <ClInclude Include="src\tabu_element.h" />
     <ClInclude Include="src\tabu_list.h" />

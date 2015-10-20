@@ -37,7 +37,7 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 		noImprovements++;
 		auto possibleSteps = GetBestSteps();
 
-		//update the tabu list now so that new entries added when executing the move/swap stay intact for next step
+		//update the tabu list now so that new entries added when executing the step stay intact for next step
 		//also to possibly allow some steps for next move in case no steps have just been found
 		_tabuList.Shift();
 
