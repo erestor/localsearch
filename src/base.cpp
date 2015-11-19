@@ -3,6 +3,7 @@
 //----------------------------------------------------------------------------
 #include <algorithm/base.h>
 #include <algorithm/events.h>
+#include <algorithm/isolution.h>
 #include <ctoolhu/event/firer.hpp>
 
 using namespace std;
@@ -46,13 +47,14 @@ void AlgorithmBase::Resume()
 	_TogglePause(false);
 }
 
-bool AlgorithmBase::Start(const solution_ptr_type &startingSolutionPtr)
+bool AlgorithmBase::Start(const solution_ptr_type &solutionPtr)
 {
 	_stopRequested = false;
 	_timer.StartClock();
-	Ctoolhu::Event::Fire(Events::Started { startingSolutionPtr.get(), Name() });
-	auto result = Run(startingSolutionPtr);
-	Ctoolhu::Event::Fire(Events::Finished { startingSolutionPtr.get(), Name() });
+	solutionPtr->GetFitness(); //to make sure it's initialized
+	Ctoolhu::Event::Fire(Events::Started { solutionPtr.get(), Name() });
+	auto result = Run(solutionPtr);
+	Ctoolhu::Event::Fire(Events::Finished { solutionPtr.get(), Name() });
 	return result;
 }
 

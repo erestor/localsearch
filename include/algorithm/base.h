@@ -26,7 +26,7 @@ namespace Algorithm {
 		virtual bool Run(solution_ptr_type startingSolutionPtr) = 0;
 
 		void SetParent(const IAlgorithm *parent) final; //for nested algorithms
-		bool Start(const solution_ptr_type &) override;
+		bool Start(const solution_ptr_type &) final;
 		void Stop() override;		//thread-safe
 		void Pause() override;		//thread-safe
 		void Resume() override;		//thread-safe

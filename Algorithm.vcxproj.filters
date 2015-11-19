@@ -78,6 +78,9 @@
     <ClInclude Include="include\algorithm\rna_search_events.h">
       <Filter>include\algorithm</Filter>
     </ClInclude>
+    <ClInclude Include="include\algorithm\tabu_search_stat_keeper.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\base.cpp">
@@ -102,6 +105,9 @@
       <Filter>src\tabu</Filter>
     </ClCompile>
     <ClCompile Include="src\tabu_element.cpp">
+      <Filter>src\tabu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tabu_search_stat_keeper.cpp">
       <Filter>src\tabu</Filter>
     </ClCompile>
   </ItemGroup>

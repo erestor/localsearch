@@ -14,18 +14,14 @@ namespace Algorithm {
 
 		namespace Events {
 
-			struct Started {
-				ISolution *currentSolutionPtr;
-			};
-
 			struct Finished {
 				ISolution *currentSolutionPtr;
 			};
 
-			struct BeforeTabuSearchStep {};
+			struct BeforeStep {};
 
 			//executes after a single tabu search step is performed
-			struct AfterTabuSearchStep {
+			struct AfterStep {
 				int dynamicAdaptationThreshold;
 				ISolution *currentSolutionPtr;
 				std::string stepDescription;

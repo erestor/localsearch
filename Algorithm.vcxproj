@@ -186,6 +186,7 @@
     <ClInclude Include="include\algorithm\rna_search_events.h" />
     <ClInclude Include="include\algorithm\tabu_search.h" />
     <ClInclude Include="include\algorithm\tabu_search_events.h" />
+    <ClInclude Include="include\algorithm\tabu_search_stat_keeper.h" />
     <ClInclude Include="include\algorithm\tabu_search_step.h" />
     <ClInclude Include="src\null_algorithm.hpp" />
     <ClInclude Include="src\tabu_element.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="src\tabu_element.cpp" />
     <ClCompile Include="src\tabu_list.cpp" />
     <ClCompile Include="src\tabu_search.cpp" />
+    <ClCompile Include="src\tabu_search_stat_keeper.cpp" />
     <ClCompile Include="src\tabu_search_step.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

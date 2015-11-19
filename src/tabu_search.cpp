@@ -28,9 +28,7 @@ Searcher::Searcher(const boost::property_tree::ptree &pt)
 bool Searcher::Run(solution_ptr_type solutionPtr)
 {
 	_currentSolutionPtr = solutionPtr.get();
-	_currentSolutionPtr->GetFitness();
 	_bestSolutionPtr = unique_ptr<ISolution>(_currentSolutionPtr->Clone());
-	Event::Fire(Events::Started { _currentSolutionPtr });
 	bool improved = false;
 	int noImprovements = 0;
 	while (!IsStopRequested() && (int)_bestSolutionPtr->GetFitness() > 0 && (noImprovements < _config.maxSteps)) {
@@ -46,13 +44,13 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 			//no possible steps at this point - might be all tabu, let's try again
 			continue;
 		}
-		Event::Fire<Events::BeforeTabuSearchStep>();
+		Event::Fire<Events::BeforeStep>();
 		nextStepPtr->Execute(_currentSolutionPtr);
 
 		//prepare the event with step data
 		stringstream s;
 		nextStepPtr->Dump(s);
-		Events::AfterTabuSearchStep evATSS {
+		Events::AfterStep evATSS {
 			_config.dynamicAdaptationThreshold,
 			_currentSolutionPtr,
 			s.str(),
