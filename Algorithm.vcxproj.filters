@@ -30,9 +30,6 @@
     <ClInclude Include="include\algorithm\isolutionstep.h">
       <Filter>include\algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\itabusearch.h">
-      <Filter>include\algorithm</Filter>
-    </ClInclude>
     <ClInclude Include="include\algorithm\itabusearchstep.h">
       <Filter>include\algorithm</Filter>
     </ClInclude>

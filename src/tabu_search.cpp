@@ -24,6 +24,23 @@ Searcher::Searcher(const boost::property_tree::ptree &pt)
 	_config.dynamicAdaptationThreshold = pt.get("dynamicAdaptationThreshold", 10);
 }
 
+const Searcher::Config &Searcher::GetConfig() const
+{
+	return _config;
+}
+
+const Fitness::delta_type &Searcher::GetWorstDelta() const
+{
+	static Fitness::delta_type worst { numeric_limits<Fitness::delta_type>::max() };
+	return worst;
+}
+
+//assesses given step in the context of the running algorithm to see if it's a candidate for continuation
+bool Searcher::IsAcceptableStep(const IStep *stepPtr, const Fitness &currentFitness) const
+{
+	return _IsAspirationStep(stepPtr, currentFitness) || !_tabuList.IsTabu(stepPtr);
+}
+
 //execute the algorithm
 bool Searcher::Run(solution_ptr_type solutionPtr)
 {
@@ -106,18 +123,6 @@ Searcher::step_ptr_type Searcher::_GetNextStep(vector<step_ptr_type> &steps) con
 		}
 	}
 	return move(steps[vectorIndex]);
-}
-
-const Fitness::delta_type &Searcher::GetWorstDelta() const
-{
-	static Fitness::delta_type worst { numeric_limits<Fitness::delta_type>::max() };
-	return worst;
-}
-
-//assesses given step in the context of the running algorithm to see if it's a candidate for continuation
-bool Searcher::IsAcceptableStep(const IStep *stepPtr, const Fitness &currentFitness) const
-{
-	return _IsAspirationStep(stepPtr, currentFitness) || !_tabuList.IsTabu(stepPtr);
 }
 
 //aspiration steps are allowed to happen even if they are in the tabu list

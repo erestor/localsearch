@@ -5,7 +5,6 @@
 #define _algorithm_tabu_search_included_
 
 #include "base.h"
-#include "itabusearch.h"
 #include "../../src/tabu_list.h"
 #include <boost/property_tree/ptree_fwd.hpp>
 #include <memory>
@@ -19,13 +18,27 @@ namespace Algorithm {
 	namespace TabuSearch {
 
 		//tabu search algorithm
-		class Searcher : public AlgorithmBase, public ISearcher {
+		class Searcher : public AlgorithmBase {
 
 		  public:
 
 			typedef std::unique_ptr<IStep> step_ptr_type;
 
-			const Fitness::delta_type &GetWorstDelta() const final;
+			struct Config : AlgorithmBaseConfig {
+				int maxSteps;
+				int dynamicAdaptationThreshold;
+			};
+
+			const Config &GetConfig() const;
+
+			//worst value of step delta (never expected to be reached by an actual step)
+			const Fitness::delta_type &GetWorstDelta() const;
+
+			//Assesses given step in the context of the running algorithm to see if it's a candidate for continuation.
+			//Returns true if the step can be considered as the next one to take.
+			//The current fitness is passed in because the algorithm might be in the middle of tweaking the current solution,
+			//which is therefore not safe to be accessed
+			bool IsAcceptableStep(const IStep *, const Fitness &currentFitness) const;
 
 		  protected:
 
@@ -34,15 +47,8 @@ namespace Algorithm {
 			//get container with continuation steps for the tabu search
 			virtual std::vector<step_ptr_type> GetBestSteps() const = 0;
 
-			//assesses given step in the context of the running algorithm to see if it's a candidate for continuation
-			bool IsAcceptableStep(const IStep *, const Fitness &currentFitness) const override;
-
 			ISolution *_currentSolutionPtr;
-
-			struct Config : AlgorithmBaseConfig {
-				int maxSteps;
-				int dynamicAdaptationThreshold;
-			} _config;
+			Config _config;
 
 		  private:
 

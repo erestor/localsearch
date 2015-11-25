@@ -179,7 +179,6 @@
     <ClInclude Include="include\algorithm\ifactory.h" />
     <ClInclude Include="include\algorithm\isolution.h" />
     <ClInclude Include="include\algorithm\isolutionstep.h" />
-    <ClInclude Include="include\algorithm\itabusearch.h" />
     <ClInclude Include="include\algorithm\itabusearchstep.h" />
     <ClInclude Include="include\algorithm\italian_search.h" />
     <ClInclude Include="include\algorithm\rna_search.h" />
