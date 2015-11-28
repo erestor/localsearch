@@ -62,7 +62,16 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 			continue;
 		}
 		Event::Fire<Events::BeforeStep>();
+
+#ifdef _DEBUG
+		auto expectedFitness = _currentSolutionPtr->GetFitness() + nextStepPtr->Delta();
+#endif
+
 		nextStepPtr->Execute(_currentSolutionPtr);
+
+#ifdef _DEBUG
+		assert(_currentSolutionPtr->GetFitness() == expectedFitness);
+#endif
 
 		//prepare the event with step data
 		stringstream s;
