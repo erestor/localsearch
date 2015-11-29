@@ -8,6 +8,7 @@
 #include "../../src/tabu_list.h"
 #include <boost/property_tree/ptree_fwd.hpp>
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace Algorithm {
@@ -27,6 +28,7 @@ namespace Algorithm {
 			struct Config : AlgorithmBaseConfig {
 				int maxSteps;
 				int dynamicAdaptationThreshold;
+				std::string neighborhood; //enables varying neighborhoods in implementation-specific best step getters
 			};
 
 			const Config &GetConfig() const;

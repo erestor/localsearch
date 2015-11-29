@@ -20,8 +20,9 @@ Searcher::Searcher(const boost::property_tree::ptree &pt)
 	_tabuList(pt)
 {
 	_config.keepFeasible = pt.get("keepFeasible", false);
-	_config.maxSteps = pt.get("maxSteps", 200);
+	_config.maxSteps = pt.get("maxSteps", 500);
 	_config.dynamicAdaptationThreshold = pt.get("dynamicAdaptationThreshold", 10);
+	_config.neighborhood = pt.get<string>("neighborhood", "");
 }
 
 const Searcher::Config &Searcher::GetConfig() const
