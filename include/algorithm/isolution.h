@@ -16,6 +16,8 @@ namespace Algorithm {
 		virtual ISolution *Clone() const = 0;		//replaces copy constructor
 		virtual void CopyTo(ISolution *) const = 0;	//replaces assignment operator
 
+		virtual bool IsEqual(const ISolution *) const = 0;
+
 		virtual Fitness GetFitness() = 0; //returns the quality ('fitness') of this solution
 		virtual bool IsFeasible() = 0;
 		virtual void MarkDirty() = 0; //requests recalculation of fitness

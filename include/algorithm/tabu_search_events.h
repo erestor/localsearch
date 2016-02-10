@@ -33,6 +33,10 @@ namespace Algorithm {
 				int index;
 			};
 
+			struct CycleDetected {
+				int stepsSinceLastImprovement;
+			};
+
 		} //ns Events
 
 	} //ns TabuSearch

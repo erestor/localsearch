@@ -13,13 +13,15 @@ namespace Algorithm {
 
 		class StatKeeper : Ctoolhu::Event::Subscriber<
 			Events::BeforeStep,
-			Events::AfterRandomStepChosen
+			Events::AfterRandomStepChosen,
+			Events::CycleDetected
 		> {
 
 		  public:
 
 			void on(Events::BeforeStep *);
 			void on(Events::AfterRandomStepChosen *);
+			void on(Events::CycleDetected *);
 
 		  protected:
 
@@ -28,6 +30,8 @@ namespace Algorithm {
 			int stepsExecuted;
 			int multiChoiceSteps;
 			int multiChoiceStepChoices;
+			int cyclesDetected;
+			int stepsBetweenCycles;
 		};
 
 	} //ns TabuSearch

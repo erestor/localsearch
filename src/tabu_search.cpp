@@ -89,8 +89,14 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 
 		Event::Fire(evATSS);
 
+		//check for cycling
+		if (_currentSolutionPtr->GetFitness() == _bestSolutionPtr->GetFitness()) {
+			//only compare structure if the fitness is the same, comparison can be computationally expensive
+			if (_currentSolutionPtr->IsEqual(_bestSolutionPtr.get()))
+				Event::Fire(Events::CycleDetected { noImprovements });
+		}
 		//check if new best solution was found, in that case store it
-		if (_currentSolutionPtr->GetFitness() < _bestSolutionPtr->GetFitness()
+		else if (_currentSolutionPtr->GetFitness() < _bestSolutionPtr->GetFitness()
 		&& (!_config.keepFeasible || !_bestSolutionPtr->IsFeasible() || _currentSolutionPtr->IsFeasible())) {
 			noImprovements = 0;
 			improved = true;
