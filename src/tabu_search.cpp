@@ -89,15 +89,20 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 
 		Event::Fire(evATSS);
 
-		//check for cycling
 		if (_currentSolutionPtr->GetFitness() == _bestSolutionPtr->GetFitness()) {
-			//only compare structure if the fitness is the same, comparison can be computationally expensive
-			if (_currentSolutionPtr->IsEqual(_bestSolutionPtr.get()))
+			//check for cycling
+			if (_currentSolutionPtr->IsEqual(_bestSolutionPtr.get())) //only compare structure if the fitness is the same, comparison can be computationally expensive
 				Event::Fire(Events::CycleDetected { noImprovements });
+
+			if (noImprovements == _config.maxSteps && _CurrentSolutionRetainsFeasibility()) {
+				//this is the last step, accept current solution as the best to improve success chances of chained algorithm,
+				//which will continue from this solution as opposed to try with the original solution again
+				_currentSolutionPtr->CopyTo(_bestSolutionPtr.get());
+				Event::Fire(Algorithm::Events::BestSolutionFound { _currentSolutionPtr, ElapsedTime() });
+			}
 		}
 		//check if new best solution was found, in that case store it
-		else if (_currentSolutionPtr->GetFitness() < _bestSolutionPtr->GetFitness()
-		&& (!_config.keepFeasible || !_bestSolutionPtr->IsFeasible() || _currentSolutionPtr->IsFeasible())) {
+		else if (_currentSolutionPtr->GetFitness() < _bestSolutionPtr->GetFitness() && _CurrentSolutionRetainsFeasibility()) {
 			noImprovements = 0;
 			improved = true;
 			_currentSolutionPtr->CopyTo(_bestSolutionPtr.get());
@@ -145,6 +150,11 @@ Searcher::step_ptr_type Searcher::_GetNextStep(vector<step_ptr_type> &steps) con
 bool Searcher::_IsAspirationStep(const ISolutionStep *stepPtr, const Fitness &currentFitness) const
 {
 	return (currentFitness + stepPtr->Delta()) < _bestSolutionPtr->GetFitness();
+}
+
+bool Searcher::_CurrentSolutionRetainsFeasibility() const
+{
+	return !_config.keepFeasible || !_bestSolutionPtr->IsFeasible() || _currentSolutionPtr->IsFeasible();
 }
 
 } } //ns Algorithm::TabuSearch
