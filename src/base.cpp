@@ -51,6 +51,7 @@ bool AlgorithmBase::Start(const solution_ptr_type &solutionPtr)
 {
 	_stopRequested = false;
 	_timer.StartClock();
+	solutionPtr->Normalize();
 	solutionPtr->GetFitness(); //to make sure it's initialized
 	Ctoolhu::Event::Fire(Events::Started { solutionPtr.get(), Name() });
 	auto result = Run(solutionPtr);
