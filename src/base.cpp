@@ -51,8 +51,7 @@ bool AlgorithmBase::Start(const solution_ptr_type &solutionPtr)
 {
 	_stopRequested = false;
 	_timer.StartClock();
-	solutionPtr->Normalize();
-	solutionPtr->GetFitness(); //to make sure it's initialized
+	_Normalize(solutionPtr);
 	Ctoolhu::Event::Fire(Events::Started { solutionPtr.get(), Name() });
 	auto result = Run(solutionPtr);
 	Ctoolhu::Event::Fire(Events::Finished { solutionPtr.get(), Name() });
@@ -79,6 +78,18 @@ bool AlgorithmBase::IsStopRequested() const
 chrono::milliseconds AlgorithmBase::ElapsedTime() const
 {
 	return _timer.ElapsedTime();
+}
+
+void AlgorithmBase::_Normalize(const solution_ptr_type &solutionPtr) const
+{
+	bool changed = solutionPtr->Normalize();
+	solutionPtr->GetFitness(); //to make sure it's initialized
+	if (changed) {
+		//results of the normalization must always be accepted
+		Ctoolhu::Event::Fire(Algorithm::Events::BestSolutionFound { solutionPtr.get(), ElapsedTime() });
+		if (solutionPtr->IsFeasible())
+			Ctoolhu::Event::Fire(Algorithm::Events::FeasibleSolutionFound { solutionPtr.get(), ElapsedTime() });
+	}
 }
 
 } //ns Algorithm

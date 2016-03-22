@@ -41,6 +41,7 @@ namespace Algorithm {
 
 	  private:
 
+		void _Normalize(const solution_ptr_type &) const;
 		void _TogglePause(bool pause);
 
 		//algorithm stopping and pausing mechanism

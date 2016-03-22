@@ -18,7 +18,7 @@ namespace Algorithm {
 
 		virtual bool IsEqual(const ISolution *) const = 0;
 
-		virtual void Normalize() = 0; //ensure the solution is in a valid state to start an algorithm
+		virtual bool Normalize() = 0; //ensure the solution is in a valid state to start an algorithm, should return true if changes were made
 		virtual Fitness GetFitness() = 0; //returns the quality ('fitness') of this solution
 		virtual bool IsFeasible() = 0;
 		virtual void MarkDirty() = 0; //requests recalculation of fitness
