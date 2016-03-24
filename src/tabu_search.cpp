@@ -9,6 +9,7 @@
 #include <ctoolhu/event/firer.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <sstream>
+#include <stdexcept>
 
 using namespace Ctoolhu;
 using namespace std;
@@ -64,15 +65,10 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 		}
 		Event::Fire<Events::BeforeStep>();
 
-#ifdef _DEBUG
 		auto expectedFitness = _currentSolutionPtr->GetFitness() + nextStepPtr->Delta();
-#endif
-
 		nextStepPtr->Execute(_currentSolutionPtr);
-
-#ifdef _DEBUG
-		assert(_currentSolutionPtr->GetFitness() == expectedFitness);
-#endif
+		if (_currentSolutionPtr->GetFitness() != expectedFitness)
+			throw logic_error("Algorithm::TabuSearch::Searcher::Run: unexpected fitness after step execution");
 
 		//prepare the event with step data
 		stringstream s;

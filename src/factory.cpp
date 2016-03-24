@@ -25,7 +25,7 @@ bool Factory::Register(const string &name, const maker_type &maker)
 {
 	bool success = _registry.emplace(name, maker).second;
 	if (!success)
-		throw runtime_error("failed to register '" + name + "' with algorithm factory");
+		throw runtime_error("Algorithm::Factory::Register: failed to register '" + name + "' with algorithm factory");
 
 	return true;
 }
