@@ -24,19 +24,23 @@ namespace Algorithm {
 			ItalianSearch(const boost::property_tree::ptree &);
 			const std::string &Name() const final;
 
+			void EnableExtensions() final;
+			void DisableExtensions() final;
+
 		  private:
 
 			typedef std::pair<std::string, boost::property_tree::ptree> algorithm_def_t;
 
-			struct Config {
+			struct Config : AlgorithmBaseConfig {
 				int cycles;
-				algorithm_def_t initial; //name of initial algorithm run once
+				algorithm_def_t initial; //name of initial algorithm run once (usually some kind of a generation algorithm)
 				std::vector<algorithm_def_t> algorithms;
 					//chain of algorithms run in cycles until stopping condition is met
 			};
 
 			bool Run(solution_ptr_type) final;
 
+			std::vector<std::unique_ptr<IAlgorithm>> _algorithms;
 			Config _config;
 		};
 

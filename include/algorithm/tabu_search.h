@@ -31,6 +31,9 @@ namespace Algorithm {
 				std::string neighborhood; //enables varying neighborhoods in implementation-specific best step getters
 			};
 
+			void EnableExtensions() final;
+			void DisableExtensions() final;
+
 			const Config &GetConfig() const;
 
 			//worst value of step delta (never expected to be reached by an actual step)

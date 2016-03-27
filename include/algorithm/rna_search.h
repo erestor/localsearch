@@ -8,14 +8,22 @@
 #include "fitness.h"
 #include <boost/property_tree/ptree_fwd.hpp>
 
-class ISolution;
-
 namespace Algorithm {
 
 	namespace RNA {
 
 		//Random Non-Ascendent fitness improvement algorithm
 		class Searcher : public AlgorithmBase {
+
+		  public:
+
+			struct Config : AlgorithmBaseConfig {
+				int maxSteps;
+				int tickFrequency; //how many steps between ticks
+			};
+
+			void EnableExtensions() final;
+			void DisableExtensions() final;
 
 		  protected:
 
@@ -24,11 +32,7 @@ namespace Algorithm {
 			virtual Fitness::delta_type Walk() = 0;
 
 			ISolution *_currentSolutionPtr;
-
-			struct Config : AlgorithmBaseConfig {
-				int maxSteps;
-				int tickFrequency; //how many steps between ticks
-			} _config;
+			Config _config;
 		};
 
 	} //ns RNA

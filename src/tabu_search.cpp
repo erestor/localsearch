@@ -21,9 +21,20 @@ Searcher::Searcher(const boost::property_tree::ptree &pt)
 	_tabuList(pt)
 {
 	_config.keepFeasible = pt.get("keepFeasible", false);
+	_config.extended = pt.get("extended", false);
 	_config.maxSteps = pt.get("maxSteps", 500);
 	_config.dynamicAdaptationThreshold = pt.get("dynamicAdaptationThreshold", 10);
 	_config.neighborhood = pt.get<string>("neighborhood", "");
+}
+
+void Searcher::EnableExtensions()
+{
+	_config.extended = true;
+}
+
+void Searcher::DisableExtensions()
+{
+	_config.extended = false;
 }
 
 const Searcher::Config &Searcher::GetConfig() const
@@ -46,11 +57,15 @@ bool Searcher::IsAcceptableStep(const IStep *stepPtr, const Fitness &currentFitn
 //execute the algorithm
 bool Searcher::Run(solution_ptr_type solutionPtr)
 {
+	int maxSteps = _config.maxSteps;
+	if (_config.extended)
+		maxSteps *= 2;
+
 	_currentSolutionPtr = solutionPtr.get();
 	_bestSolutionPtr = unique_ptr<ISolution>(_currentSolutionPtr->Clone());
 	bool improved = false;
 	int noImprovements = 0;
-	while (!IsStopRequested() && (int)_bestSolutionPtr->GetFitness() > 0 && (noImprovements < _config.maxSteps)) {
+	while (!IsStopRequested() && (int)_bestSolutionPtr->GetFitness() > 0 && (noImprovements < maxSteps)) {
 		noImprovements++;
 		auto possibleSteps = GetBestSteps();
 
@@ -90,7 +105,7 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 			if (_currentSolutionPtr->IsEqual(_bestSolutionPtr.get())) //only compare structure if the fitness is the same, comparison can be computationally expensive
 				Event::Fire(Events::CycleDetected { noImprovements });
 
-			if (noImprovements == _config.maxSteps && _CurrentSolutionRetainsFeasibility()) {
+			if (noImprovements == maxSteps && _CurrentSolutionRetainsFeasibility()) {
 				//this is the last step, accept current solution as the best to improve success chances of chained algorithm,
 				//which will continue from this solution as opposed to try with the original solution again
 				_currentSolutionPtr->CopyTo(_bestSolutionPtr.get());

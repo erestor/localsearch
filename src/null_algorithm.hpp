@@ -16,6 +16,8 @@ namespace Algorithm {
 		void Pause() final {};
 		void Resume() final {};
 		bool IsStopRequested() const final { return true; }	
+		void EnableExtensions() final {};
+		void DisableExtensions() final {};
 		std::chrono::milliseconds ElapsedTime() const final { return std::chrono::milliseconds(0); }
 		const std::string &Name() const final { static std::string name { "Null algorithm" }; return name; }
 	};

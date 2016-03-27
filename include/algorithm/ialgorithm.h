@@ -25,6 +25,9 @@ namespace Algorithm {
 		virtual void Pause() = 0;
 		virtual void Resume() = 0;
 		virtual bool IsStopRequested() const = 0;
+
+		virtual void EnableExtensions() = 0;	//tells algorithm to use extra measures in order to find a feasible solution
+		virtual void DisableExtensions() = 0;
 	
 		virtual std::chrono::milliseconds ElapsedTime() const = 0;
 

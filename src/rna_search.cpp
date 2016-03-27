@@ -17,18 +17,33 @@ namespace Algorithm { namespace RNA {
 Searcher::Searcher(const boost::property_tree::ptree &pt)
 {
 	_config.keepFeasible = pt.get("keepFeasible", false);
+	_config.extended = pt.get("extended", false);
 	_config.maxSteps = pt.get("maxSteps", 1000);
 	_config.tickFrequency = max(1, pt.get("tickFrequency", 1000));
 }
 
+void Searcher::EnableExtensions()
+{
+	_config.extended = true;
+}
+
+void Searcher::DisableExtensions()
+{
+	_config.extended = false;
+}
+
 bool Searcher::Run(solution_ptr_type solutionPtr)
 {
+	int maxSteps = _config.maxSteps;
+	if (_config.extended)
+		maxSteps *= 2;
+
 	_currentSolutionPtr = solutionPtr.get();
 	auto startingFitness = _currentSolutionPtr->GetFitness();
 	bool improved = false;
 	int noImprovements = 0;
 	int steps = 0;
-	while (!IsStopRequested() && (int)_currentSolutionPtr->GetFitness() > 0 && (noImprovements < _config.maxSteps)) {
+	while (!IsStopRequested() && (int)_currentSolutionPtr->GetFitness() > 0 && (noImprovements < maxSteps)) {
 		noImprovements++;
 		steps++;
 		auto delta = Walk();

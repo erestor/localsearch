@@ -56,6 +56,7 @@ namespace Algorithm {
 
 	struct AlgorithmBaseConfig {
 		bool keepFeasible;
+		bool extended; //can be used to enable extra measures to maximize the searching potential, at the cost of time
 	};
 
 } //ns Algorithm

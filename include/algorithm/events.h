@@ -33,6 +33,9 @@ namespace Algorithm {
 			std::chrono::milliseconds elapsedTime;
 		};
 
+		struct ExtensionsEnabled {
+		};
+
 	} //ns Events
 
 } //ns Algorithm
