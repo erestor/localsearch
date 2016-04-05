@@ -1,11 +1,19 @@
 localsearch
 ===========
+What is it?
+- C++ platform-independent framework for implementing local search algorithms for optimization problems
 
-Local search algorithms for optimization problems:
+What does it give you?
+- Algorithm template
+- Tabu search template
+- RNA search template
+- Algorithm chaining template
 
-- Tabu search
-- RNA search
+What next?
+- Improvements are added as they come up in production
 
-This library is being developed as part of a larger timetabling/scheduling project called Skolaris and is not directly usable as a whole.
-However the generic implementation of notorious algorithms might be interesting and of use.
-There's currently no standalone documentation available. Browse the source files for that.
+Who uses it?
+- Skolaris timetable optimisation tool (http://skolaris.net)
+
+Licence
+- MIT
