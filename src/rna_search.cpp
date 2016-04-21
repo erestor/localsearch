@@ -46,7 +46,11 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 	while (!IsStopRequested() && (int)_currentSolutionPtr->GetFitness() > 0 && (noImprovements < maxSteps)) {
 		noImprovements++;
 		steps++;
+		auto currentFitness = _currentSolutionPtr->GetFitness();
 		auto delta = Walk();
+		if (_currentSolutionPtr->GetFitness() != currentFitness + delta)
+			throw logic_error("Algorithm::RNA::Searcher::Run: unexpected fitness after walk");
+
 		if (delta > 0)
 			throw logic_error("Algorithm::RNA::Searcher::Run: search step has positive delta");
 
