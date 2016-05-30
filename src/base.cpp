@@ -5,6 +5,7 @@
 #include <algorithm/events.h>
 #include <algorithm/isolution.h>
 #include <ctoolhu/event/firer.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 using namespace std;
 
@@ -12,9 +13,9 @@ namespace Algorithm {
 
 AlgorithmBase::AlgorithmBase()
 :
-	_stopRequested(false),
-	_paused(false),
-	_parent(nullptr)
+	_stopRequested{false},
+	_paused{false},
+	_parent{nullptr}
 {
 }
 
@@ -23,10 +24,9 @@ void AlgorithmBase::SetParent(const IAlgorithm *parent)
 	_parent = parent;
 }
 
-const Fitness &AlgorithmBase::GetWorstFitness() const
+Fitness AlgorithmBase::GetWorstFitness()
 {
-	static Fitness worst { numeric_limits<Fitness::id_type>::max() };
-	return worst;
+	return Fitness{numeric_limits<Fitness::id_type>::max()};
 }
 
 void AlgorithmBase::_TogglePause(bool pause)
@@ -90,6 +90,20 @@ void AlgorithmBase::_Normalize(const solution_ptr_type &solutionPtr) const
 		if (solutionPtr->IsFeasible())
 			Ctoolhu::Event::Fire(Algorithm::Events::FeasibleSolutionFound { solutionPtr.get(), ElapsedTime() });
 	}
+}
+
+void AlgorithmBaseConfig::Load(const boost::property_tree::ptree &pt)
+{
+	keepFeasible = pt.get("keepFeasible", false);
+	extended = pt.get("extended", false);
+	benchmark = pt.get("benchmark", false);
+}
+
+void AlgorithmBaseConfig::Propagate(boost::property_tree::ptree &dst)
+{
+	dst.add("keepFeasible", keepFeasible);
+	dst.add("extended", extended);
+	dst.add("benchmark", benchmark);
 }
 
 } //ns Algorithm

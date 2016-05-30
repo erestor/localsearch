@@ -32,8 +32,8 @@ namespace {
 
 ItalianSearch::ItalianSearch(const ptree &configPt)
 {
+	_config.Load(configPt);
 	_config.cycles = configPt.get("cycles", 4);
-	_config.extended = configPt.get("extended", false);
 
 	auto const &initNode = configPt.get_child("initial");
 	_config.initial = make_pair(initNode.get("name", "generation"), initNode.get_child("config"));
@@ -53,7 +53,8 @@ ItalianSearch::ItalianSearch(const ptree &configPt)
 		++i;
 	}
 
-	for (auto const &algDef : _config.algorithms) {
+	for (auto &algDef : _config.algorithms) {
+		_config.Propagate(algDef.second);
 		auto alg = SingleFactory::Instance().CreateAlgorithm(algDef.first, algDef.second);
 		alg->SetParent(this);
 		_algorithms.push_back(move(alg));

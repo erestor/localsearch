@@ -37,17 +37,17 @@ namespace Algorithm {
 			const Config &GetConfig() const;
 
 			//worst value of step delta (never expected to be reached by an actual step)
-			const Fitness::delta_type &GetWorstDelta() const;
+			static Fitness::delta_type GetWorstDelta();
 
 			//Assesses given step in the context of the running algorithm to see if it's a candidate for continuation.
 			//Returns true if the step can be considered as the next one to take.
 			//The current fitness is passed in because the algorithm might be in the middle of tweaking the current solution,
 			//which is therefore not safe to be accessed
-			bool IsAcceptableStep(const IStep *, const Fitness &currentFitness) const;
+			bool IsAcceptableStep(const IStep *, Fitness currentFitness) const;
 
 		  protected:
 
-			Searcher(const boost::property_tree::ptree &config);
+			explicit Searcher(const boost::property_tree::ptree &config);
 
 			//get container with continuation steps for the tabu search
 			virtual std::vector<step_ptr_type> GetBestSteps() const = 0;
@@ -64,7 +64,7 @@ namespace Algorithm {
 			step_ptr_type _GetNextStep(std::vector<step_ptr_type> &) const;
 
 			//aspiration steps are allowed to happen even if they are in the tabu list
-			bool _IsAspirationStep(const ISolutionStep *, const Fitness &currentFitness) const;
+			bool _IsAspirationStep(const ISolutionStep *, Fitness currentFitness) const;
 
 			bool _CurrentSolutionRetainsFeasibility() const;
 

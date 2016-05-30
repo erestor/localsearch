@@ -21,7 +21,7 @@ namespace Algorithm {
 
 		  public:
 
-			ItalianSearch(const boost::property_tree::ptree &);
+			explicit ItalianSearch(const boost::property_tree::ptree &);
 			const std::string &Name() const final;
 
 			void EnableExtensions() final;

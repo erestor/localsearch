@@ -25,12 +25,12 @@ namespace Algorithm {
 
 		  protected:
 
-			Step();
+			Step() = default;
 
 		  private:
 
-			AdaptedFitness::delta_type _adaptedDelta;
-			Fitness::delta_type _delta;
+			AdaptedFitness::delta_type _adaptedDelta{0};
+			Fitness::delta_type _delta{0};
 		};
 
 	} //ns TabuSearch

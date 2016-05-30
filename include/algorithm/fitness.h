@@ -5,7 +5,7 @@
 #define _algorithm_fitness_included_
 
 #include <ctoolhu/typesafe/id.hpp>
-#include <type_traits>
+#include <cassert>
 #include <stdexcept>
 
 namespace Algorithm {
@@ -23,50 +23,55 @@ namespace Algorithm {
 			typedef typename std::make_signed<StoredType>::type delta_type;
 
 			FitnessImpl() : base_type(0) {}
+
 			explicit FitnessImpl(StoredType id) : base_type(id)
 			{
-				_Verify();
+				_verify();
 			}
 
-			self_type operator +(const self_type &fitness) const
+			self_type operator +(self_type fitness) const
 			{
-				return self_type(this->_id + fitness._id);
+				return self_type{this->_id + fitness._id};
 			}
 
 			self_type operator +(delta_type delta) const
 			{
-				return self_type(this->_id + delta);
+				return self_type{this->_id + delta};
 			}
 
-			delta_type operator -(const self_type &fitness) const
+			delta_type operator -(self_type fitness) const
 			{
 				return this->_id - fitness._id;
 			}
 
-			void operator +=(const self_type &fitness)
+			void operator +=(self_type fitness)
 			{
 				this->_id += fitness._id;
-				_Verify();
 			}
 
 			void operator +=(int penalty)
 			{
 				this->_id += penalty;
-				_Verify();
+				_verify();
+			}
+
+			void operator -=(self_type fitness)
+			{
+				this->_id -= fitness._id;
+				_verify();
 			}
 
 			void operator -=(int penalty)
 			{
 				this->_id -= penalty;
-				_Verify();
+				_verify();
 			}
 
 		  private:
 
-			void _Verify()
+			void _verify()
 			{
-				if (this->_id < 0)
-					throw std::logic_error("Algorithm::Private::FitnessImpl::_Verify: Fitness can't be negative");
+				assert(this->_id >= 0 && "Algorithm::Private::FitnessImpl::_Verify: Fitness can't be negative");
 			}
 		};
 

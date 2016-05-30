@@ -20,8 +20,7 @@ Searcher::Searcher(const boost::property_tree::ptree &pt)
 :	
 	_tabuList(pt)
 {
-	_config.keepFeasible = pt.get("keepFeasible", false);
-	_config.extended = pt.get("extended", false);
+	_config.Load(pt);
 	_config.maxSteps = pt.get("maxSteps", 500);
 	_config.dynamicAdaptationThreshold = pt.get("dynamicAdaptationThreshold", 10);
 	_config.neighborhood = pt.get<string>("neighborhood", "");
@@ -42,14 +41,13 @@ const Searcher::Config &Searcher::GetConfig() const
 	return _config;
 }
 
-const Fitness::delta_type &Searcher::GetWorstDelta() const
+Fitness::delta_type Searcher::GetWorstDelta()
 {
-	static Fitness::delta_type worst { numeric_limits<Fitness::delta_type>::max() };
-	return worst;
+	return {numeric_limits<Fitness::delta_type>::max()};
 }
 
 //assesses given step in the context of the running algorithm to see if it's a candidate for continuation
-bool Searcher::IsAcceptableStep(const IStep *stepPtr, const Fitness &currentFitness) const
+bool Searcher::IsAcceptableStep(const IStep *stepPtr, Fitness currentFitness) const
 {
 	return _IsAspirationStep(stepPtr, currentFitness) || !_tabuList.IsTabu(stepPtr);
 }
@@ -83,7 +81,7 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 		auto expectedFitness = _currentSolutionPtr->GetFitness() + nextStepPtr->Delta();
 		nextStepPtr->Execute(_currentSolutionPtr);
 		if (_currentSolutionPtr->GetFitness() != expectedFitness)
-			throw logic_error("Algorithm::TabuSearch::Searcher::Run: unexpected fitness after step execution");
+			throw logic_error("Algorithm::TabuSearch::Searcher::Run: Unexpected fitness after step execution");
 
 		//prepare the event with step data
 		stringstream s;
@@ -158,7 +156,7 @@ Searcher::step_ptr_type Searcher::_GetNextStep(vector<step_ptr_type> &steps) con
 }
 
 //aspiration steps are allowed to happen even if they are in the tabu list
-bool Searcher::_IsAspirationStep(const ISolutionStep *stepPtr, const Fitness &currentFitness) const
+bool Searcher::_IsAspirationStep(const ISolutionStep *stepPtr, Fitness currentFitness) const
 {
 	return (currentFitness + stepPtr->Delta()) < _bestSolutionPtr->GetFitness();
 }

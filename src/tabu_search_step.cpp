@@ -5,13 +5,6 @@
 
 namespace Algorithm { namespace TabuSearch {
 
-Step::Step()
-:
-	_adaptedDelta(0),
-	_delta(0)
-{
-}
-
 AdaptedFitness::delta_type Step::AdaptedDelta() const
 {
 	return _adaptedDelta;

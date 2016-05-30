@@ -7,6 +7,7 @@
 #include "ialgorithm.h"
 #include "fitness.h"
 #include <ctoolhu/time/timer.hpp>
+#include <boost/property_tree/ptree_fwd.hpp>
 #include <condition_variable>
 #include <mutex>
 
@@ -33,7 +34,7 @@ namespace Algorithm {
 		bool IsStopRequested() const override; //thread-safe
 		timer_resolution ElapsedTime() const override;
 
-		const Fitness &GetWorstFitness() const;
+		static Fitness GetWorstFitness();
 
 	  protected:
 
@@ -55,8 +56,12 @@ namespace Algorithm {
 	};
 
 	struct AlgorithmBaseConfig {
-		bool keepFeasible;
-		bool extended; //can be used to enable extra measures to maximize the searching potential, at the cost of time
+		bool keepFeasible{false};
+		bool extended{false}; //can be used to enable extra measures to maximize the searching potential, at the cost of time
+		bool benchmark{false}; //let the algorithm know benchmark mode is required (e.g. to disable seeding random engine)
+
+		void Load(const boost::property_tree::ptree &);
+		void Propagate(boost::property_tree::ptree &dst);
 	};
 
 } //ns Algorithm

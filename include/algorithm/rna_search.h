@@ -27,7 +27,7 @@ namespace Algorithm {
 
 		  protected:
 
-			Searcher(const boost::property_tree::ptree &config);
+			explicit Searcher(const boost::property_tree::ptree &config);
 			bool Run(solution_ptr_type) override;
 			virtual Fitness::delta_type Walk() = 0;
 
