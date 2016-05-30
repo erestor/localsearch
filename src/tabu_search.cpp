@@ -43,7 +43,7 @@ const Searcher::Config &Searcher::GetConfig() const
 
 Fitness::delta_type Searcher::GetWorstDelta()
 {
-	return {numeric_limits<Fitness::delta_type>::max()};
+	return numeric_limits<Fitness::delta_type>::max();
 }
 
 //assesses given step in the context of the running algorithm to see if it's a candidate for continuation
