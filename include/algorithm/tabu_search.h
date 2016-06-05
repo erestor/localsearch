@@ -49,13 +49,15 @@ namespace Algorithm {
 
 			explicit Searcher(const boost::property_tree::ptree &config);
 
+			ISolution *GetCurrentSolution() const;
+
 			//get container with continuation steps for the tabu search
 			virtual std::vector<step_ptr_type> GetBestSteps() const = 0;
 
+		  private:
+
 			ISolution *_currentSolutionPtr;
 			Config _config;
-
-		  private:
 
 			//execute the algorithm
 			bool Run(solution_ptr_type) final;

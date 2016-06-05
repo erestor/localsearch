@@ -4,13 +4,12 @@
 #ifndef _algorithm_tabu_element_included
 #define _algorithm_tabu_element_included
 
+#include <algorithm/itabusearchstep.h>
 #include <memory>
 
 namespace Algorithm {
 
 	namespace TabuSearch {
-
-		class IStep;
 
 		//member of the tabu list
 		class TabuElement {

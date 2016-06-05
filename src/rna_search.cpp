@@ -31,6 +31,16 @@ void Searcher::DisableExtensions()
 	_config.extended = false;
 }
 
+const Searcher::Config &Searcher::GetConfig() const
+{
+	return _config;
+}
+
+ISolution *Searcher::GetCurrentSolution() const
+{
+	return _currentSolutionPtr;
+}
+
 bool Searcher::Run(solution_ptr_type solutionPtr)
 {
 	int maxSteps = _config.maxSteps;

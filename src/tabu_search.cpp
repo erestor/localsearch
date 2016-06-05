@@ -52,6 +52,11 @@ bool Searcher::IsAcceptableStep(const IStep *stepPtr, Fitness currentFitness) co
 	return _IsAspirationStep(stepPtr, currentFitness) || !_tabuList.IsTabu(stepPtr);
 }
 
+ISolution *Searcher::GetCurrentSolution() const
+{
+	return _currentSolutionPtr;
+}
+
 //execute the algorithm
 bool Searcher::Run(solution_ptr_type solutionPtr)
 {

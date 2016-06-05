@@ -25,11 +25,17 @@ namespace Algorithm {
 			void EnableExtensions() final;
 			void DisableExtensions() final;
 
+			const Config &GetConfig() const;
+
 		  protected:
 
 			explicit Searcher(const boost::property_tree::ptree &config);
+
+			ISolution *GetCurrentSolution() const;
 			bool Run(solution_ptr_type) override;
 			virtual Fitness::delta_type Walk() = 0;
+
+		  private:
 
 			ISolution *_currentSolutionPtr;
 			Config _config;
