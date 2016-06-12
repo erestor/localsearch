@@ -5,6 +5,7 @@
 #define _algorithm_tabu_element_included
 
 #include <algorithm/itabusearchstep.h>
+#include <boost/config.hpp>
 #include <memory>
 
 namespace Algorithm {
@@ -18,10 +19,10 @@ namespace Algorithm {
 
 		  public:
 
-			TabuElement(int lifetime, step_ptr_type &&);
+			TabuElement(int lifetime, step_ptr_type &&) BOOST_NOEXCEPT;
 			
-			TabuElement(TabuElement &&);
-			TabuElement &operator =(TabuElement &&);
+			TabuElement(TabuElement &&) BOOST_NOEXCEPT;
+			TabuElement &operator =(TabuElement &&) BOOST_NOEXCEPT;
 
 			TabuElement(const TabuElement &) = delete;
 			TabuElement &operator =(const TabuElement &) = delete;
