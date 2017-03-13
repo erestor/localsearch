@@ -19,9 +19,9 @@ namespace Algorithm {
 
 		  public:
 
-			void on(Events::BeforeStep *);
-			void on(Events::AfterRandomStepChosen *);
-			void on(Events::CycleDetected *);
+			void on(Events::BeforeStep *) final;
+			void on(Events::AfterRandomStepChosen *) final;
+			void on(Events::CycleDetected *) final;
 
 		  protected:
 

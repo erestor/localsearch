@@ -86,9 +86,9 @@ void AlgorithmBase::_Normalize(const solution_ptr_type &solutionPtr) const
 	solutionPtr->GetFitness(); //to make sure it's initialized
 	if (changed) {
 		//results of the normalization must always be accepted
-		Ctoolhu::Event::Fire(Algorithm::Events::BestSolutionFound { solutionPtr.get(), ElapsedTime() });
+		Ctoolhu::Event::Fire(Events::BestSolutionFound { solutionPtr.get(), ElapsedTime() });
 		if (solutionPtr->IsFeasible())
-			Ctoolhu::Event::Fire(Algorithm::Events::FeasibleSolutionFound { solutionPtr.get(), ElapsedTime() });
+			Ctoolhu::Event::Fire(Events::FeasibleSolutionFound { solutionPtr.get(), ElapsedTime() });
 	}
 }
 
@@ -99,7 +99,7 @@ void AlgorithmBaseConfig::Load(const boost::property_tree::ptree &pt)
 	benchmark = pt.get("benchmark", false);
 }
 
-void AlgorithmBaseConfig::Propagate(boost::property_tree::ptree &dst)
+void AlgorithmBaseConfig::Propagate(boost::property_tree::ptree &dst) const
 {
 	dst.add("keepFeasible", keepFeasible);
 	dst.add("extended", extended);

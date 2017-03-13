@@ -17,7 +17,8 @@ using namespace std;
 namespace Algorithm { namespace TabuSearch {
 
 Searcher::Searcher(const boost::property_tree::ptree &pt)
-:	
+:
+	_currentSolutionPtr{nullptr},
 	_tabuList(pt)
 {
 	_config.Load(pt);

@@ -15,6 +15,8 @@ using namespace std;
 namespace Algorithm { namespace RNA {
 
 Searcher::Searcher(const boost::property_tree::ptree &pt)
+:
+	_currentSolutionPtr{nullptr}
 {
 	_config.Load(pt);
 	_config.maxSteps = pt.get("maxSteps", 1000);

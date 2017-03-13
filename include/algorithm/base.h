@@ -61,7 +61,7 @@ namespace Algorithm {
 		bool benchmark{false}; //let the algorithm know benchmark mode is required (e.g. to disable seeding random engine)
 
 		void Load(const boost::property_tree::ptree &);
-		void Propagate(boost::property_tree::ptree &dst);
+		void Propagate(boost::property_tree::ptree &dst) const;
 	};
 
 } //ns Algorithm
