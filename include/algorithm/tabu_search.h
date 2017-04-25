@@ -48,6 +48,7 @@ namespace Algorithm {
 		  protected:
 
 			explicit Searcher(const boost::property_tree::ptree &config);
+			Searcher(const Searcher &) = delete;
 
 			ISolution *GetCurrentSolution() const;
 
@@ -55,9 +56,6 @@ namespace Algorithm {
 			virtual std::vector<step_ptr_type> GetBestSteps() const = 0;
 
 		  private:
-
-			ISolution *_currentSolutionPtr;
-			Config _config;
 
 			//execute the algorithm
 			bool Run(solution_ptr_type) final;
@@ -70,6 +68,8 @@ namespace Algorithm {
 
 			bool _CurrentSolutionRetainsFeasibility() const;
 
+			Config _config;
+			ISolution *_currentSolutionPtr;
 			std::unique_ptr<ISolution> _bestSolutionPtr; //holds best solution found so far
 			std::unique_ptr<ISolution> _feasibleSolutionPtr; //holds best feasible solution found so far
 			TabuList _tabuList; //list of tabu steps

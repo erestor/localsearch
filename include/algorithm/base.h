@@ -39,6 +39,7 @@ namespace Algorithm {
 	  protected:
 
 		AlgorithmBase();
+		AlgorithmBase(const AlgorithmBase &) = delete;
 
 	  private:
 
