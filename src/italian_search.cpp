@@ -33,6 +33,7 @@ namespace {
 ItalianSearch::ItalianSearch(const ptree &configPt)
 {
 	_config.Load(configPt);
+	_config.repeat = configPt.get("repeat", 1);
 	_config.cycles = configPt.get("cycles", 4);
 
 	auto const &initNode = configPt.get_child("initial");
@@ -84,40 +85,43 @@ void ItalianSearch::DisableExtensions()
 bool ItalianSearch::Run(solution_ptr_type solutionPtr)
 {
 	auto initialFitness = solutionPtr->GetFitness();
-	{
-		//run initialization algorithm
-		auto initialAlg = SingleFactory::Instance().CreateAlgorithm(_config.initial.first, _config.initial.second);
-		initialAlg->SetParent(this);
-		initialAlg->Start(solutionPtr);
-	}
-
+	auto storedSolution = solutionPtr->Clone();
 	bool extended = _config.extended;
-	if (extended)
-		EnableExtensions();
+	auto initialAlgorithm = SingleFactory::Instance().CreateAlgorithm(_config.initial.first, _config.initial.second);
+	initialAlgorithm->SetParent(this);
 
-	int idleCycles = 0;
-	while (!IsStopRequested() && (int)solutionPtr->GetFitness() > 0 && (_config.cycles < 0 || idleCycles < _config.cycles)) {
-		idleCycles++;
-		for (auto const &alg : _algorithms) {
-			if (alg->Start(solutionPtr))
-				idleCycles = 0;
-		}
-		if (!_config.extended && solutionPtr->IsFeasible()) {
-			//save time by disabling extensions once a feasible solution is found
-			extended = false;
-			DisableExtensions();
-		}
-		if (!extended && !solutionPtr->IsFeasible() && idleCycles == _config.cycles) {
-			//we're at the end and feasible solution wasn't found - re-run algorithms with extensions enabled
-			extended = true;
+	while (!IsStopRequested() && (int)solutionPtr->GetFitness() > 0 && _config.repeat-- > 0) {
+		storedSolution->CopyTo(solutionPtr.get());
+		initialAlgorithm->Start(solutionPtr);
+		if (extended)
 			EnableExtensions();
-			idleCycles = 0;
 
-			//reduce the number of cycles to save time - if a better solution isn't found with extensions then it's probably worthless to continue cycling a lot
-			if (_config.cycles > 1)
-				_config.cycles /= 2;
+		int idleCycles = 0;
+		while (!IsStopRequested() && (int)solutionPtr->GetFitness() > 0 && (_config.cycles < 0 || idleCycles < _config.cycles)) {
+			idleCycles++;
+			for (auto const &alg : _algorithms) {
+				if (alg->Start(solutionPtr))
+					idleCycles = 0;
+			}
+
+			//apply some meta-logic
+			if (!_config.extended && solutionPtr->IsFeasible()) {
+				//save time by disabling extensions once a feasible solution is found
+				extended = false;
+				DisableExtensions();
+			}
+			if (!extended && !solutionPtr->IsFeasible() && idleCycles == _config.cycles) {
+				//we're at the end and feasible solution wasn't found - re-run algorithms with extensions enabled
+				extended = true;
+				EnableExtensions();
+				idleCycles = 0;
+
+				//reduce the number of cycles to save time - if a better solution isn't found with extensions then it's probably worthless to continue cycling a lot
+				if (_config.cycles > 1)
+					_config.cycles /= 2;
+			}
 		}
-	}	
+	}
 	return solutionPtr->GetFitness() < initialFitness;
 }
 

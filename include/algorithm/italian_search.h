@@ -29,12 +29,13 @@ namespace Algorithm {
 
 		  private:
 
-			typedef std::pair<std::string, boost::property_tree::ptree> algorithm_def_t;
+			typedef std::pair<std::string, boost::property_tree::ptree> algorithm_def_type;
 
 			struct Config : AlgorithmBaseConfig {
-				int cycles;
-				algorithm_def_t initial; //name of initial algorithm run once (usually some kind of a generation algorithm)
-				std::vector<algorithm_def_t> algorithms;
+				int repeat; //indicates how many times should the algorithm be repeated from the starting point (if solution isn't found)
+				int cycles; //indicates how many times the child algorithms will be run in a loop on the same solution in case of no improvement
+				algorithm_def_type initial; //name of initial algorithm run once (usually some kind of a generation algorithm)
+				std::vector<algorithm_def_type> algorithms;
 					//chain of algorithms run in cycles until stopping condition is met
 			};
 
