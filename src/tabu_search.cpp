@@ -67,6 +67,9 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 
 	_currentSolutionPtr = solutionPtr.get();
 	_bestSolutionPtr = unique_ptr<ISolution>(_currentSolutionPtr->Clone());
+
+	Event::Fire(Events::BeforeStart{_currentSolutionPtr});
+
 	bool improved = false;
 	int noImprovements = 0;
 	while (!IsStopRequested() && (int)_bestSolutionPtr->GetFitness() > 0 && (noImprovements < maxSteps)) {
@@ -82,27 +85,26 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 			//no possible steps at this point - might be all tabu, let's try again
 			continue;
 		}
-		Event::Fire<Events::BeforeStep>();
+		Event::Fire(Events::BeforeStep{_currentSolutionPtr});
+
+		//record step data before execution
+		stringstream s;
+		nextStepPtr->Dump(s);
 
 		auto expectedFitness = _currentSolutionPtr->GetFitness() + nextStepPtr->Delta();
 		nextStepPtr->Execute(_currentSolutionPtr);
 		if (_currentSolutionPtr->GetFitness() != expectedFitness)
 			throw logic_error("Algorithm::TabuSearch::Searcher::Run: Unexpected fitness after step execution");
 
-		//prepare the event with step data
-		stringstream s;
-		nextStepPtr->Dump(s);
-		Events::AfterStep evATSS {
+		_tabuList.Insert(move(nextStepPtr));
+		//nextStepPtr is no longer available
+
+		Event::Fire(Events::AfterStep{
 			_config.dynamicAdaptationThreshold,
 			_currentSolutionPtr,
 			s.str(),
 			_config.keepFeasible
-		};
-
-		_tabuList.Insert(move(nextStepPtr));
-		//nextStepPtr is no longer available
-
-		Event::Fire(evATSS);
+		});
 
 		if (_currentSolutionPtr->GetFitness() == _bestSolutionPtr->GetFitness()) {
 			//check for cycling

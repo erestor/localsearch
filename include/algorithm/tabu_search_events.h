@@ -14,11 +14,17 @@ namespace Algorithm {
 
 		namespace Events {
 
+			struct BeforeStart {
+				ISolution *currentSolutionPtr;
+			};
+
 			struct Finished {
 				ISolution *currentSolutionPtr;
 			};
 
-			struct BeforeStep {};
+			struct BeforeStep {
+				ISolution *currentSolutionPtr;
+			};
 
 			//executes after a single tabu search step is performed
 			struct AfterStep {
