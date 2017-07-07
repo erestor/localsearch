@@ -6,21 +6,21 @@
 
 namespace Algorithm { namespace TabuSearch {
 
-TabuElement::TabuElement(int lifetime, step_ptr_type &&step) BOOST_NOEXCEPT
+TabuElement::TabuElement(int lifetime, step_ptr_type &&step) noexcept
 :
 	_lifetime(lifetime),
 	_step(move(step))
 {
 }
 
-TabuElement::TabuElement(TabuElement &&src) BOOST_NOEXCEPT
+TabuElement::TabuElement(TabuElement &&src) noexcept
 :
 	_lifetime(src._lifetime),
 	_step(move(src._step))
 {
 }
 
-TabuElement &TabuElement::operator =(TabuElement &&src) BOOST_NOEXCEPT
+TabuElement &TabuElement::operator =(TabuElement &&src) noexcept
 {
 	if (this != &src) {
 		_step = move(src._step);

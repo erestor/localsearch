@@ -19,10 +19,10 @@ namespace Algorithm {
 
 		  public:
 
-			TabuElement(int lifetime, step_ptr_type &&) BOOST_NOEXCEPT;
+			TabuElement(int lifetime, step_ptr_type &&) noexcept;
 			
-			TabuElement(TabuElement &&) BOOST_NOEXCEPT;
-			TabuElement &operator =(TabuElement &&) BOOST_NOEXCEPT;
+			TabuElement(TabuElement &&) noexcept;
+			TabuElement &operator =(TabuElement &&) noexcept;
 
 			TabuElement(const TabuElement &) = delete;
 			TabuElement &operator =(const TabuElement &) = delete;
