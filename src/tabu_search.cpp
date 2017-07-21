@@ -81,61 +81,61 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 		_tabuList.Shift();
 
 		step_ptr_type nextStepPtr = _GetNextStep(possibleSteps);
-		if (!nextStepPtr) {
-			//no possible steps at this point - might be all tabu, let's try again
-			continue;
-		}
-		Event::Fire(Events::BeforeStep{_currentSolutionPtr});
+		if (nextStepPtr) {
+			//can be null if there are no possible steps at this point - might be all tabu
+			Event::Fire(Events::BeforeStep{_currentSolutionPtr});
 
-		//record step data before execution
-		stringstream s;
-		nextStepPtr->Dump(s);
+			//record step data before execution
+			stringstream s;
+			nextStepPtr->Dump(s);
 
-		auto expectedFitness = _currentSolutionPtr->GetFitness() + nextStepPtr->Delta();
-		nextStepPtr->Execute(_currentSolutionPtr);
-		if (_currentSolutionPtr->GetFitness() != expectedFitness)
-			throw logic_error("Algorithm::TabuSearch::Searcher::Run: Unexpected fitness after step execution");
+			auto expectedFitness = _currentSolutionPtr->GetFitness() + nextStepPtr->Delta();
+			nextStepPtr->Execute(_currentSolutionPtr);
+			if (_currentSolutionPtr->GetFitness() != expectedFitness)
+				throw logic_error("Algorithm::TabuSearch::Searcher::Run: Unexpected fitness after step execution");
 
-		_tabuList.Insert(move(nextStepPtr));
-		//nextStepPtr is no longer available
+			_tabuList.Insert(move(nextStepPtr));
+			//nextStepPtr is no longer available
 
-		Event::Fire(Events::AfterStep{
-			_config.dynamicAdaptationThreshold,
-			_currentSolutionPtr,
-			s.str(),
-			_config.keepFeasible
-		});
+			Event::Fire(Events::StepExecuted {
+				_config.dynamicAdaptationThreshold,
+				_currentSolutionPtr,
+				s.str(),
+				_config.keepFeasible
+			});
 
-		if (_currentSolutionPtr->GetFitness() == _bestSolutionPtr->GetFitness()) {
-			//check for cycling
-			if (_currentSolutionPtr->IsEqual(_bestSolutionPtr.get())) //only compare structure if the fitness is the same, comparison can be computationally expensive
-				Event::Fire(Events::CycleDetected { noImprovements });
+			if (_currentSolutionPtr->GetFitness() == _bestSolutionPtr->GetFitness()) {
+				//check for cycling
+				if (_currentSolutionPtr->IsEqual(_bestSolutionPtr.get())) //only compare structure if the fitness is the same, comparison can be computationally expensive
+					Event::Fire(Events::CycleDetected { noImprovements });
 
-			if (noImprovements == maxSteps && _CurrentSolutionRetainsFeasibility()) {
-				//this is the last step, accept current solution as the best to improve success chances of chained algorithm,
-				//which will continue from this solution as opposed to try with the original solution again
+				if (noImprovements == maxSteps && _CurrentSolutionRetainsFeasibility()) {
+					//this is the last step, accept current solution as the best to improve success chances of chained algorithm,
+					//which will continue from this solution as opposed to try with the original solution again
+					_currentSolutionPtr->CopyTo(_bestSolutionPtr.get());
+					Event::Fire(Algorithm::Events::BestSolutionFound { _currentSolutionPtr, ElapsedTime() });
+				}
+			}
+			//check if new best solution was found, in that case store it
+			else if (_currentSolutionPtr->GetFitness() < _bestSolutionPtr->GetFitness() && _CurrentSolutionRetainsFeasibility()) {
+				noImprovements = 0;
+				improved = true;
 				_currentSolutionPtr->CopyTo(_bestSolutionPtr.get());
 				Event::Fire(Algorithm::Events::BestSolutionFound { _currentSolutionPtr, ElapsedTime() });
 			}
-		}
-		//check if new best solution was found, in that case store it
-		else if (_currentSolutionPtr->GetFitness() < _bestSolutionPtr->GetFitness() && _CurrentSolutionRetainsFeasibility()) {
-			noImprovements = 0;
-			improved = true;
-			_currentSolutionPtr->CopyTo(_bestSolutionPtr.get());
-			Event::Fire(Algorithm::Events::BestSolutionFound { _currentSolutionPtr, ElapsedTime() });
-		}
 
-		if (_currentSolutionPtr->IsFeasible()) {
-			if (!_feasibleSolutionPtr) {
-				_feasibleSolutionPtr = unique_ptr<ISolution>(_currentSolutionPtr->Clone());
-				Event::Fire(Algorithm::Events::FeasibleSolutionFound { _currentSolutionPtr, ElapsedTime() });
-			}
-			else if (_currentSolutionPtr->GetFitness() < _feasibleSolutionPtr->GetFitness()) {
-				_currentSolutionPtr->CopyTo(_feasibleSolutionPtr.get());
-				Event::Fire(Algorithm::Events::FeasibleSolutionFound { _currentSolutionPtr, ElapsedTime() });
+			if (_currentSolutionPtr->IsFeasible()) {
+				if (!_feasibleSolutionPtr) {
+					_feasibleSolutionPtr = unique_ptr<ISolution>(_currentSolutionPtr->Clone());
+					Event::Fire(Algorithm::Events::FeasibleSolutionFound { _currentSolutionPtr, ElapsedTime() });
+				}
+				else if (_currentSolutionPtr->GetFitness() < _feasibleSolutionPtr->GetFitness()) {
+					_currentSolutionPtr->CopyTo(_feasibleSolutionPtr.get());
+					Event::Fire(Algorithm::Events::FeasibleSolutionFound { _currentSolutionPtr, ElapsedTime() });
+				}
 			}
 		}
+		Event::Fire<Events::AfterStep>();
 	}
 	//cycle is finished with some solution, make sure we use the best found
 	_bestSolutionPtr->CopyTo(_currentSolutionPtr);

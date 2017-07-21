@@ -27,12 +27,14 @@ namespace Algorithm {
 			};
 
 			//executes after a single tabu search step is performed
-			struct AfterStep {
+			struct StepExecuted {
 				int dynamicAdaptationThreshold;
 				ISolution *currentSolutionPtr;
 				std::string stepDescription;
 				bool keepFeasible;
 			};
+
+			struct AfterStep {};
 
 			struct AfterRandomStepChosen {
 				int size;
