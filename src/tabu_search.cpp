@@ -137,8 +137,12 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 		}
 		Event::Fire<Events::AfterStep>();
 	}
-	//cycle is finished with some solution, make sure we use the best found
-	_bestSolutionPtr->CopyTo(_currentSolutionPtr);
+
+	//Cycle is finished with some solution, make sure we use one with the best fitness found, preferring current to the saved best.
+	//The reason is that next algorithm in the chain can have a chance to work on a different solution than in the previous cycle.
+	if (_currentSolutionPtr->GetFitness() > _bestSolutionPtr->GetFitness())
+		_bestSolutionPtr->CopyTo(_currentSolutionPtr);
+
 	Event::Fire(Events::Finished { _currentSolutionPtr });
 	return improved;
 }
