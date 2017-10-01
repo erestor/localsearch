@@ -27,7 +27,7 @@ namespace Algorithm {
 			TabuElement(const TabuElement &) = delete;
 			TabuElement &operator =(const TabuElement &) = delete;
 
-			int operator --(); //prefix decrement
+			int operator --() noexcept; //prefix decrement
 			const step_ptr_type &Step() const;
 
 		  private:

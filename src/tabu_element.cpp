@@ -29,7 +29,7 @@ TabuElement &TabuElement::operator =(TabuElement &&src) noexcept
 	return *this;
 }
 
-int TabuElement::operator --()
+int TabuElement::operator --() noexcept
 {
 	return --_lifetime;
 }

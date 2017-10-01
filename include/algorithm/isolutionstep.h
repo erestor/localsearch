@@ -22,7 +22,6 @@ namespace Algorithm {
 		virtual Fitness::delta_type Delta() const = 0;
 		virtual void Delta(Fitness::delta_type) = 0;
 
-		virtual bool IsValid() const = 0;
 		virtual void Execute(ISolution *) const = 0; //perform this step
 		virtual void Dump(std::ostream &) const = 0;
 
