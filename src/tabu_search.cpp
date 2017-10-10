@@ -135,7 +135,7 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 				}
 			}
 		}
-		Event::Fire<Events::AfterStep>();
+		Event::Fire(Events::AfterStep { noImprovements });
 	}
 
 	//Cycle is finished with some solution, make sure we use one with the best fitness found, preferring current to the saved best.

@@ -34,7 +34,9 @@ namespace Algorithm {
 				bool keepFeasible;
 			};
 
-			struct AfterStep {};
+			struct AfterStep {
+				int noImprovements;
+			};
 
 			struct AfterRandomStepChosen {
 				int size;
