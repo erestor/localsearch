@@ -86,11 +86,11 @@ bool ItalianSearch::Run(solution_ptr_type solutionPtr)
 {
 	auto initialFitness = solutionPtr->GetFitness();
 	unique_ptr<ISolution> storedSolutionPtr(solutionPtr->Clone());
-	bool extended = _config.extended;
 	auto initialAlgorithm = SingleFactory::Instance().CreateAlgorithm(_config.initial.first, _config.initial.second);
 	initialAlgorithm->SetParent(this);
 
 	while (!IsStopRequested() && (int)solutionPtr->GetFitness() > 0 && _config.repeat-- > 0) {
+		bool extended = _config.extended;
 		storedSolutionPtr->CopyTo(solutionPtr.get());
 		initialAlgorithm->Start(solutionPtr);
 		if (extended)
