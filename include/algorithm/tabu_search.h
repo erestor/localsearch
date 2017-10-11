@@ -23,7 +23,7 @@ namespace Algorithm {
 
 		  public:
 
-			typedef std::unique_ptr<IStep> step_ptr_type;
+			typedef std::shared_ptr<IStep> step_ptr_type;
 
 			struct Config : AlgorithmBaseConfig {
 				int maxSteps;

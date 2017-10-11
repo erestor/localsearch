@@ -15,17 +15,11 @@ namespace Algorithm {
 		//member of the tabu list
 		class TabuElement {
 
-			typedef std::unique_ptr<IStep> step_ptr_type;
-
 		  public:
 
-			TabuElement(int lifetime, step_ptr_type &&) noexcept;
-			
-			TabuElement(TabuElement &&) noexcept;
-			TabuElement &operator =(TabuElement &&) noexcept;
+			typedef std::shared_ptr<IStep> step_ptr_type;
 
-			TabuElement(const TabuElement &) = delete;
-			TabuElement &operator =(const TabuElement &) = delete;
+			TabuElement(int lifetime, const step_ptr_type &) noexcept;
 
 			int operator --() noexcept; //prefix decrement
 			const step_ptr_type &Step() const;

@@ -14,7 +14,6 @@ namespace Algorithm {
 
 	namespace TabuSearch {
 
-		class TabuElement;
 		class IStep;
 
 		//list of steps that are tabu to perform (with exception of aspiration steps)
@@ -24,7 +23,7 @@ namespace Algorithm {
 
 			explicit TabuList(const boost::property_tree::ptree &);
 
-			void Insert(std::unique_ptr<IStep> &&);
+			void Insert(const TabuElement::step_ptr_type &);
 			void Shift(); //decrease tabu counter and remove all elements that reached the end of their time
 
 			bool IsTabu(const IStep *) const; //return true if the given step is tabu according to the list
