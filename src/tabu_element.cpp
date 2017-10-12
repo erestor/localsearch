@@ -6,7 +6,7 @@
 
 namespace Algorithm { namespace TabuSearch {
 
-TabuElement::TabuElement(int lifetime, const step_ptr_type &step) noexcept
+TabuElement::TabuElement(int lifetime, const IStep::ptr_t &step) noexcept
 :
 	_lifetime{lifetime},
 	_step{step}
@@ -18,7 +18,7 @@ int TabuElement::operator --() noexcept
 	return --_lifetime;
 }
 
-const TabuElement::step_ptr_type &TabuElement::Step() const
+const IStep::ptr_t &TabuElement::Step() const
 {
 	return _step;
 }

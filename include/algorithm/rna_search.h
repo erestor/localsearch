@@ -32,7 +32,7 @@ namespace Algorithm {
 			explicit Searcher(const boost::property_tree::ptree &config);
 
 			ISolution *GetCurrentSolution() const;
-			bool Run(solution_ptr_type) override;
+			bool Run(solution_ptr_t) override;
 			virtual Fitness::delta_type Walk() = 0;
 
 		  private:

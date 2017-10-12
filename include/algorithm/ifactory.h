@@ -17,10 +17,10 @@ namespace Algorithm {
 
 	  public:
 
-		typedef std::unique_ptr<IAlgorithm> ialgorithm_ptr_type;
+		typedef std::unique_ptr<IAlgorithm> algorithm_ptr_t;
 
 		//returns new instance of the algorithm registered under the given name, configured from given proptree
-		virtual ialgorithm_ptr_type CreateAlgorithm(
+		virtual algorithm_ptr_t CreateAlgorithm(
 			const std::string &name,
 			const boost::property_tree::ptree &config) const = 0;
 

@@ -6,7 +6,6 @@
 #include <algorithm/isolution.h>
 #include <algorithm/itabusearchstep.h>
 #include <algorithm/tabu_search_events.h>
-#include <ctoolhu/event/events.h>
 #include <ctoolhu/event/firer.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <sstream>
@@ -60,7 +59,7 @@ ISolution *Searcher::GetCurrentSolution() const
 }
 
 //execute the algorithm
-bool Searcher::Run(solution_ptr_type solutionPtr)
+bool Searcher::Run(solution_ptr_t solutionPtr)
 {
 	int maxSteps = _config.maxSteps;
 	if (_config.extended)
@@ -75,22 +74,13 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 	int noImprovements = 0;
 	while (!IsStopRequested() && (int)_bestSolutionPtr->GetFitness() > 0 && (noImprovements < maxSteps)) {
 		noImprovements++;
-{
-		step_ptr_type nextStepPtr;
-		{
-			Ctoolhu::Event::Fire(Ctoolhu::Event::Message{"Calling GetBestSteps"});
-			auto possibleSteps = GetBestSteps();
+		auto possibleSteps = GetBestSteps();
 
-			//update the tabu list now so that new entries added when executing the step stay intact for next step
-			//also to possibly allow some steps for next move in case no steps have just been found
-			_tabuList.Shift();
+		//update the tabu list now so that new entries added when executing the step stay intact for next step
+		//also to possibly allow some steps for next move in case no steps have just been found
+		_tabuList.Shift();
 
-			nextStepPtr = _GetNextStep(possibleSteps);
-			Ctoolhu::Event::Fire(Ctoolhu::Event::Message{"After _GetNextStep, clearing possibleSteps"});
-			possibleSteps.clear();
-			Ctoolhu::Event::Fire(Ctoolhu::Event::Message{"After _GetNextStep, destroying possibleSteps"});
-		}
-		Ctoolhu::Event::Fire(Ctoolhu::Event::Message{"possibleSteps destroyed"});
+		auto nextStepPtr = _GetNextStep(possibleSteps);
 		if (nextStepPtr) {
 			//can be null if there are no possible steps at this point - might be all tabu
 			Event::Fire(Events::BeforeStep{_currentSolutionPtr});
@@ -99,13 +89,11 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 			stringstream s;
 			nextStepPtr->Dump(s);
 
-			Ctoolhu::Event::Fire(Ctoolhu::Event::Message{"Executing step"});
 			auto expectedFitness = _currentSolutionPtr->GetFitness() + nextStepPtr->Delta();
 			nextStepPtr->Execute(_currentSolutionPtr);
 			if (_currentSolutionPtr->GetFitness() != expectedFitness)
 				throw logic_error("Algorithm::TabuSearch::Searcher::Run: Unexpected fitness after step execution");
 
-			Ctoolhu::Event::Fire(Ctoolhu::Event::Message{"Inserting into tabu list"});
 			_tabuList.Insert(nextStepPtr);
 
 			Event::Fire(Events::StepExecuted {
@@ -146,11 +134,7 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 				}
 			}
 		}
-		Event::Fire(Ctoolhu::Event::Message { "Firing AfterStep" });
 		Event::Fire(Events::AfterStep { noImprovements });
-		Event::Fire(Ctoolhu::Event::Message { "AfterStep finished, destroying nextStepPtr" });
-}
-		Event::Fire(Ctoolhu::Event::Message { "nextStepPtr destroyed" });
 	}
 
 	//Cycle is finished with some solution, make sure we use one with the best fitness found, preferring current to the saved best.
@@ -163,7 +147,7 @@ bool Searcher::Run(solution_ptr_type solutionPtr)
 }
 
 //returns random element from the _PossibleSteps container (next step the solution should take)
-Searcher::step_ptr_type Searcher::_GetNextStep(vector<step_ptr_type> &steps) const
+IStep::ptr_t Searcher::_GetNextStep(const vector<IStep::ptr_t> &steps) const
 {
 	int vectorIndex = 0;
 	size_t size = steps.size();

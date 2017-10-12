@@ -82,7 +82,7 @@ void ItalianSearch::DisableExtensions()
 		alg->DisableExtensions();
 }
 
-bool ItalianSearch::Run(solution_ptr_type solutionPtr)
+bool ItalianSearch::Run(solution_ptr_t solutionPtr)
 {
 	auto initialFitness = solutionPtr->GetFitness();
 	unique_ptr<ISolution> storedSolutionPtr(solutionPtr->Clone());

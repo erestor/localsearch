@@ -16,11 +16,11 @@ namespace Algorithm {
 
 	  public:
 
-		typedef std::shared_ptr<ISolution> solution_ptr_type;
+		typedef std::shared_ptr<ISolution> solution_ptr_t;
 
 		virtual void SetParent(const IAlgorithm *parent) = 0; //nested algorithms support
 
-		virtual bool Start(const solution_ptr_type &solutionPtr) = 0;	
+		virtual bool Start(const solution_ptr_t &solutionPtr) = 0;
 		virtual void Stop() = 0; //signals the algorithm that the processing should stop at the nearest exit point
 		virtual void Pause() = 0;
 		virtual void Resume() = 0;

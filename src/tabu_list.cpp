@@ -24,7 +24,7 @@ void TabuList::_Configure(const boost::property_tree::ptree &pt)
 	_config.tabuShortTerm = pt.get("tabuShortTerm", 1);
 }
 
-void TabuList::Insert(const TabuElement::step_ptr_type &step)
+void TabuList::Insert(const IStep::ptr_t &step)
 {
 	_steps.emplace_back(_tabuGenerator(), step);
 }

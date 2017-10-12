@@ -11,7 +11,7 @@ namespace Algorithm {
 	  public:
 
 		void SetParent(const IAlgorithm *) final {};
-		bool Start(const solution_ptr_type &) final { return false; }; //cannot start the null algorithm
+		bool Start(const solution_ptr_t &) final { return false; }; //cannot start the null algorithm
 		void Stop() final {};
 		void Pause() final {};
 		void Resume() final {};

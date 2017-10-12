@@ -6,7 +6,6 @@
 
 #include <algorithm/itabusearchstep.h>
 #include <boost/config.hpp>
-#include <memory>
 
 namespace Algorithm {
 
@@ -17,17 +16,15 @@ namespace Algorithm {
 
 		  public:
 
-			typedef std::shared_ptr<IStep> step_ptr_type;
-
-			TabuElement(int lifetime, const step_ptr_type &) noexcept;
+			TabuElement(int lifetime, const IStep::ptr_t &) noexcept;
 
 			int operator --() noexcept; //prefix decrement
-			const step_ptr_type &Step() const;
+			const IStep::ptr_t &Step() const;
 
 		  private:
 
 			int _lifetime; //how long will the element stay in the list
-			step_ptr_type _step; //step data so that we can compare with another step to determine if it's tabu
+			IStep::ptr_t _step; //step data so that we can compare with another step to determine if it's tabu
 		};
 
 	} //ns TabuSearch

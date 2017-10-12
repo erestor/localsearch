@@ -7,7 +7,6 @@
 #include "base.h"
 #include "../../src/tabu_list.h"
 #include <boost/property_tree/ptree_fwd.hpp>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -22,8 +21,6 @@ namespace Algorithm {
 		class Searcher : public AlgorithmBase {
 
 		  public:
-
-			typedef std::shared_ptr<IStep> step_ptr_type;
 
 			struct Config : AlgorithmBaseConfig {
 				int maxSteps;
@@ -53,15 +50,15 @@ namespace Algorithm {
 			ISolution *GetCurrentSolution() const;
 
 			//get container with continuation steps for the tabu search
-			virtual std::vector<step_ptr_type> GetBestSteps() const = 0;
+			virtual std::vector<IStep::ptr_t> GetBestSteps() const = 0;
 
 		  private:
 
 			//execute the algorithm
-			bool Run(solution_ptr_type) final;
+			bool Run(solution_ptr_t) final;
 
 			//returns random element from the _PossibleSteps container (next step the solution should take)
-			step_ptr_type _GetNextStep(std::vector<step_ptr_type> &) const;
+			IStep::ptr_t _GetNextStep(const std::vector<IStep::ptr_t> &) const;
 
 			//aspiration steps are allowed to happen even if they are in the tabu list
 			bool _IsAspirationStep(const ISolutionStep *, Fitness currentFitness) const;

@@ -12,7 +12,7 @@ using namespace std;
 
 namespace Algorithm {
 
-IFactory::ialgorithm_ptr_type Factory::CreateAlgorithm(const string &name, const ptree &config) const
+IFactory::algorithm_ptr_t Factory::CreateAlgorithm(const string &name, const ptree &config) const
 {
 	auto it = _registry.find(name);
 	if (it == _registry.end())
@@ -21,7 +21,7 @@ IFactory::ialgorithm_ptr_type Factory::CreateAlgorithm(const string &name, const
 	return it->second(config);
 }
 
-bool Factory::Register(const string &name, const maker_type &maker)
+bool Factory::Register(const string &name, const maker_t &maker)
 {
 	bool success = _registry.emplace(name, maker).second;
 	if (!success)
@@ -36,7 +36,7 @@ void Factory::__RegisterNative()
 	throw logic_error(__FUNCTION__ + string(" must never be called"));
 }
 
-IFactory::ialgorithm_ptr_type Create(const ptree &definition)
+IFactory::algorithm_ptr_t Create(const ptree &definition)
 {
 	return SingleFactory::Instance().CreateAlgorithm(
 		definition.get<string>("name"),
@@ -44,7 +44,7 @@ IFactory::ialgorithm_ptr_type Create(const ptree &definition)
 	);
 }
 
-IFactory::ialgorithm_ptr_type GetNullAlgorithm()
+IFactory::algorithm_ptr_t GetNullAlgorithm()
 {
 	return make_unique<NullAlgorithm>();
 }

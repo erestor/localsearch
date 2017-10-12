@@ -7,7 +7,6 @@
 #include "tabu_element.h"
 #include <ctoolhu/random/generator.hpp>
 #include <boost/property_tree/ptree_fwd.hpp>
-#include <memory>
 #include <vector>
 
 namespace Algorithm {
@@ -23,7 +22,7 @@ namespace Algorithm {
 
 			explicit TabuList(const boost::property_tree::ptree &);
 
-			void Insert(const TabuElement::step_ptr_type &);
+			void Insert(const IStep::ptr_t &);
 			void Shift(); //decrease tabu counter and remove all elements that reached the end of their time
 
 			bool IsTabu(const IStep *) const; //return true if the given step is tabu according to the list

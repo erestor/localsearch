@@ -10,8 +10,7 @@ namespace Algorithm {
 
 	class ISolution;
 
-	//when searching for optimal solution, we take steps towards the goal - operations upon the solution
-	//this is one such step
+	//step is a general operation which modifies a solution
 	class ISolutionStep {
 
 	  public:

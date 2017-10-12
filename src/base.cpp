@@ -47,7 +47,7 @@ void AlgorithmBase::Resume()
 	_TogglePause(false);
 }
 
-bool AlgorithmBase::Start(const solution_ptr_type &solutionPtr)
+bool AlgorithmBase::Start(const solution_ptr_t &solutionPtr)
 {
 	_stopRequested = false;
 	_timer.StartClock();
@@ -80,7 +80,7 @@ chrono::milliseconds AlgorithmBase::ElapsedTime() const
 	return _timer.ElapsedTime();
 }
 
-void AlgorithmBase::_Normalize(const solution_ptr_type &solutionPtr) const
+void AlgorithmBase::_Normalize(const solution_ptr_t &solutionPtr) const
 {
 	bool changed = solutionPtr->Normalize();
 	solutionPtr->GetFitness(); //to make sure it's initialized

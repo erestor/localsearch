@@ -24,10 +24,10 @@ namespace Algorithm {
 		//algorithm body, should return true if solution was improved.
 		//takes solution ptr by value so that a shared_ptr is copied (if used),
 		//making sure the solution is alive for the whole run of the algorithm
-		virtual bool Run(solution_ptr_type startingSolutionPtr) = 0;
+		virtual bool Run(solution_ptr_t startingSolutionPtr) = 0;
 
 		void SetParent(const IAlgorithm *parent) final; //for nested algorithms
-		bool Start(const solution_ptr_type &) final;
+		bool Start(const solution_ptr_t &) final;
 		void Stop() override;		//thread-safe
 		void Pause() override;		//thread-safe
 		void Resume() override;		//thread-safe
@@ -43,7 +43,7 @@ namespace Algorithm {
 
 	  private:
 
-		void _Normalize(const solution_ptr_type &) const;
+		void _Normalize(const solution_ptr_t &) const;
 		void _TogglePause(bool pause);
 
 		//algorithm stopping and pausing mechanism

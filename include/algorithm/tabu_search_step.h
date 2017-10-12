@@ -11,8 +11,6 @@ namespace Algorithm {
 
 	namespace TabuSearch {
 
-		//when searching for optimal solution, we take steps towards the goal - atomic operations upon the solution
-		//this is one such step
 		class Step : public IStep {
 
 		  public:

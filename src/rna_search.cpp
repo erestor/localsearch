@@ -43,7 +43,7 @@ ISolution *Searcher::GetCurrentSolution() const
 	return _currentSolutionPtr;
 }
 
-bool Searcher::Run(solution_ptr_type solutionPtr)
+bool Searcher::Run(solution_ptr_t solutionPtr)
 {
 	int maxSteps = _config.maxSteps;
 	if (_config.extended)
