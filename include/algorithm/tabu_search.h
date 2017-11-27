@@ -22,6 +22,9 @@ namespace Algorithm {
 
 		  public:
 
+			explicit Searcher(const boost::property_tree::ptree &config);
+			Searcher(const Searcher &) = delete;
+
 			struct Config : AlgorithmBaseConfig {
 				int maxSteps;
 				int dynamicAdaptationThreshold;
@@ -44,13 +47,8 @@ namespace Algorithm {
 
 		  protected:
 
-			explicit Searcher(const boost::property_tree::ptree &config);
-			Searcher(const Searcher &) = delete;
-
-			ISolution *GetCurrentSolution() const;
-
 			//get container with continuation steps for the tabu search
-			virtual std::vector<IStep::ptr_t> GetBestSteps() const = 0;
+			virtual std::vector<IStep::ptr_t> GetBestSteps(ISolution *) const = 0;
 
 		  private:
 
@@ -63,10 +61,9 @@ namespace Algorithm {
 			//aspiration steps are allowed to happen even if they are in the tabu list
 			bool _IsAspirationStep(const ISolutionStep *, Fitness currentFitness) const;
 
-			bool _CurrentSolutionRetainsFeasibility() const;
+			bool _RetainsFeasibility(ISolution *) const;
 
 			Config _config;
-			ISolution *_currentSolutionPtr;
 			std::unique_ptr<ISolution> _bestSolutionPtr; //holds best solution found so far
 			std::unique_ptr<ISolution> _feasibleSolutionPtr; //holds best feasible solution found so far
 			TabuList _tabuList; //list of tabu steps

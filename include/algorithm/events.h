@@ -23,7 +23,7 @@ namespace Algorithm {
 			std::string algorithmName;
 		};
 
-		struct BestSolutionFound {
+		struct BetterSolutionFound {
 			ISolution *solutionPtr;
 			std::chrono::milliseconds elapsedTime;
 		};

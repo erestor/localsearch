@@ -21,11 +21,6 @@ namespace Algorithm {
 
 	  public:
 
-		//algorithm body, should return true if solution was improved.
-		//takes solution ptr by value so that a shared_ptr is copied (if used),
-		//making sure the solution is alive for the whole run of the algorithm
-		virtual bool Run(solution_ptr_t startingSolutionPtr) = 0;
-
 		void SetParent(const IAlgorithm *parent) final; //for nested algorithms
 		bool Start(const solution_ptr_t &) final;
 		void Stop() override;		//thread-safe
@@ -40,6 +35,11 @@ namespace Algorithm {
 
 		AlgorithmBase();
 		AlgorithmBase(const AlgorithmBase &) = delete;
+
+		//algorithm body, should return true if solution was improved.
+		//takes solution ptr by value so that a shared_ptr is copied (if used),
+		//making sure the solution is alive for the whole run of the algorithm
+		virtual bool Run(solution_ptr_t startingSolutionPtr) = 0;
 
 	  private:
 

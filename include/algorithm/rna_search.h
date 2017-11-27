@@ -17,6 +17,8 @@ namespace Algorithm {
 
 		  public:
 
+			explicit Searcher(const boost::property_tree::ptree &config);
+
 			struct Config : AlgorithmBaseConfig {
 				int maxSteps;
 				int tickFrequency; //how many steps between ticks
@@ -29,15 +31,11 @@ namespace Algorithm {
 
 		  protected:
 
-			explicit Searcher(const boost::property_tree::ptree &config);
-
-			ISolution *GetCurrentSolution() const;
 			bool Run(solution_ptr_t) override;
-			virtual Fitness::delta_type Walk() = 0;
+			virtual Fitness::delta_type Walk(ISolution *) = 0;
 
 		  private:
 
-			ISolution *_currentSolutionPtr;
 			Config _config;
 		};
 
