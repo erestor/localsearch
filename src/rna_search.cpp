@@ -60,7 +60,7 @@ bool Searcher::Run(solution_ptr_t currentSolutionPtr)
 		if (delta < 0) {
 			noImprovements = 0;
 			improved = true;			
-			Event::Fire(Algorithm::Events::BetterSolutionFound { currentSolutionPtr.get(), ElapsedTime() });
+			Event::Fire(Algorithm::Events::BestSolutionFound { currentSolutionPtr.get(), ElapsedTime() });
 			if (currentSolutionPtr->IsFeasible())
 				Event::Fire(Algorithm::Events::FeasibleSolutionFound { currentSolutionPtr.get(), ElapsedTime() });
 		}

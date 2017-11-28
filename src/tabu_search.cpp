@@ -106,7 +106,7 @@ bool Searcher::Run(solution_ptr_t solutionPtr)
 					//this is the last step, accept current solution as the best to improve success chances of chained algorithm,
 					//which will continue from this solution as opposed to try with the original solution again
 					currentSolutionPtr->CopyTo(_bestSolutionPtr.get());
-					Event::Fire(Algorithm::Events::BetterSolutionFound { currentSolutionPtr, ElapsedTime() });
+					Event::Fire(Algorithm::Events::BestSolutionFound { currentSolutionPtr, ElapsedTime() });
 				}
 			}
 			//check if new best solution was found, in that case store it
@@ -114,7 +114,7 @@ bool Searcher::Run(solution_ptr_t solutionPtr)
 				noImprovements = 0;
 				improved = true;
 				currentSolutionPtr->CopyTo(_bestSolutionPtr.get());
-				Event::Fire(Algorithm::Events::BetterSolutionFound { currentSolutionPtr, ElapsedTime() });
+				Event::Fire(Algorithm::Events::BestSolutionFound { currentSolutionPtr, ElapsedTime() });
 			}
 
 			if (currentSolutionPtr->IsFeasible()) {

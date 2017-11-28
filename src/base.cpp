@@ -87,7 +87,7 @@ void AlgorithmBase::_Normalize(const solution_ptr_t &solutionPtr) const
 	if (changed) {
 		//results of the normalization must always be treated as a better solution,
 		//no matter the actual fitness
-		Ctoolhu::Event::Fire(Events::BetterSolutionFound { solutionPtr.get(), ElapsedTime() });
+		Ctoolhu::Event::Fire(Events::BestSolutionFound { solutionPtr.get(), ElapsedTime() });
 		if (solutionPtr->IsFeasible())
 			Ctoolhu::Event::Fire(Events::FeasibleSolutionFound { solutionPtr.get(), ElapsedTime() });
 	}
