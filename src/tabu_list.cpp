@@ -45,7 +45,7 @@ bool TabuList::IsTabu(const IStep *stepPtr) const
 			return true;
 	}
 	//check normal tabu
-	return std_ext::any_of(_steps, [=](const TabuElement &elem) {
+	return std_ext::any_of(_steps, [stepPtr](auto const &elem) {
 		return elem.Step()->IsUndoOf(stepPtr);
 	});
 }
