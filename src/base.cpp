@@ -51,8 +51,8 @@ bool AlgorithmBase::Start(const solution_ptr_t &solutionPtr)
 {
 	_stopRequested = false;
 	_timer.StartClock();
-	_Normalize(solutionPtr);
 	Ctoolhu::Event::Fire(Events::Started { solutionPtr.get(), Name() });
+	_Normalize(solutionPtr);
 	auto result = Run(solutionPtr);
 	Ctoolhu::Event::Fire(Events::Finished { solutionPtr.get(), Name() });
 	return result;
