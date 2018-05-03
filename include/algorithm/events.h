@@ -14,12 +14,12 @@ namespace Algorithm {
 	namespace Events {
 
 		struct Started {
-			ISolution *currentSolutionPtr;
+			ISolution *solutionPtr;
 			std::string algorithmName;
 		};
 
 		struct Finished {
-			ISolution *currentSolutionPtr;
+			ISolution *solutionPtr;
 			std::string algorithmName;
 		};
 
