@@ -19,17 +19,17 @@ AlgorithmBase::AlgorithmBase()
 {
 }
 
-void AlgorithmBase::SetParent(const IAlgorithm *parent)
+void AlgorithmBase::setParent(const IAlgorithm *parent)
 {
 	_parent = parent;
 }
 
-Fitness AlgorithmBase::GetWorstFitness()
+Fitness AlgorithmBase::getWorstFitness()
 {
 	return Fitness{numeric_limits<Fitness::id_type>::max()};
 }
 
-void AlgorithmBase::_TogglePause(bool pause)
+void AlgorithmBase::_togglePause(bool pause)
 {
 	unique_lock lock(_pauseMutex);
     _paused = pause;
@@ -37,34 +37,34 @@ void AlgorithmBase::_TogglePause(bool pause)
     _pauseChanged.notify_all();
 }
 
-void AlgorithmBase::Pause()
+void AlgorithmBase::pause()
 {
-	_TogglePause(true);
+	_togglePause(true);
 }
 
-void AlgorithmBase::Resume()
+void AlgorithmBase::resume()
 {
-	_TogglePause(false);
+	_togglePause(false);
 }
 
-bool AlgorithmBase::Start(const solution_ptr_t &solutionPtr)
+bool AlgorithmBase::start(const solution_ptr_t &solutionPtr)
 {
 	_stopRequested = false;
 	_timer.StartClock();
-	Ctoolhu::Event::Fire(Events::Started { solutionPtr.get(), Name() });
-	_Normalize(solutionPtr);
-	auto result = Run(solutionPtr);
-	Ctoolhu::Event::Fire(Events::Finished { solutionPtr.get(), Name() });
+	Ctoolhu::Event::Fire(Events::Started { solutionPtr.get(), name() });
+	_normalize(solutionPtr);
+	auto result = run(solutionPtr);
+	Ctoolhu::Event::Fire(Events::Finished { solutionPtr.get(), name() });
 	return result;
 }
 
-void AlgorithmBase::Stop()
+void AlgorithmBase::stop()
 {
 	lock_guard _(_pauseMutex);
 	_stopRequested = true;
 }
 
-bool AlgorithmBase::IsStopRequested() const
+bool AlgorithmBase::isStopRequested() const
 {
 	unique_lock lock(_pauseMutex);
 
@@ -72,35 +72,35 @@ bool AlgorithmBase::IsStopRequested() const
 	while (_paused && !_stopRequested)
 		_pauseChanged.wait(lock);
 
-	return _stopRequested || (_parent && _parent->IsStopRequested());
+	return _stopRequested || (_parent && _parent->isStopRequested());
 }
 
-chrono::milliseconds AlgorithmBase::ElapsedTime() const
+chrono::milliseconds AlgorithmBase::elapsedTime() const
 {
 	return _timer.ElapsedTime();
 }
 
-void AlgorithmBase::_Normalize(const solution_ptr_t &solutionPtr) const
+void AlgorithmBase::_normalize(const solution_ptr_t &solutionPtr) const
 {
-	bool changed = solutionPtr->Normalize();
-	solutionPtr->GetFitness(); //to make sure it's initialized
+	bool changed = solutionPtr->normalize();
+	solutionPtr->getFitness(); //to make sure it's initialized
 	if (changed) {
 		//results of the normalization must always be treated as a better solution,
 		//no matter the actual fitness
-		Ctoolhu::Event::Fire(Events::BestSolutionFound { solutionPtr.get(), ElapsedTime() });
-		if (solutionPtr->IsFeasible())
-			Ctoolhu::Event::Fire(Events::FeasibleSolutionFound { solutionPtr.get(), ElapsedTime() });
+		Ctoolhu::Event::Fire(Events::BestSolutionFound { solutionPtr.get(), elapsedTime() });
+		if (solutionPtr->isFeasible())
+			Ctoolhu::Event::Fire(Events::FeasibleSolutionFound { solutionPtr.get(), elapsedTime() });
 	}
 }
 
-void AlgorithmBaseConfig::Load(const boost::property_tree::ptree &pt)
+void AlgorithmBaseConfig::load(const boost::property_tree::ptree &pt)
 {
 	keepFeasible = pt.get("keepFeasible", false);
 	extended = pt.get("extended", false);
 	benchmark = pt.get("benchmark", false);
 }
 
-void AlgorithmBaseConfig::Propagate(boost::property_tree::ptree &dst) const
+void AlgorithmBaseConfig::propagate(boost::property_tree::ptree &dst) const
 {
 	dst.add("keepFeasible", keepFeasible);
 	dst.add("extended", extended);

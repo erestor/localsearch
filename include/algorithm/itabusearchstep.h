@@ -20,10 +20,10 @@ namespace Algorithm {
 				//The steps are stored using shared pointers by default, which corresponds to the semantic of storing them in tabu list.
 				//We cannot possibly assume in general case that the tabu list is the exclusive storage for a step, hence the choice of shared_ptr.
 
-			virtual bool IsUndoOf(const IStep *) const = 0;
+			virtual bool isUndoOf(const IStep *) const = 0;
 				//this is for tabu list purposes, which means to ensure that a move isn't taken back for some time
 
-			virtual bool IsEqualForShortTermTabu(const IStep *) const = 0;
+			virtual bool isEqualForShortTermTabu(const IStep *) const = 0;
 				//this is for short-term tabu list purposes
 		};
 	}

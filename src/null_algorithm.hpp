@@ -10,16 +10,16 @@ namespace Algorithm {
 
 	  public:
 
-		void SetParent(const IAlgorithm *) final {};
-		bool Start(const solution_ptr_t &) final { return false; }; //cannot start the null algorithm
-		void Stop() final {};
-		void Pause() final {};
-		void Resume() final {};
-		bool IsStopRequested() const final { return true; }	
-		void EnableExtensions() final {};
-		void DisableExtensions() final {};
-		std::chrono::milliseconds ElapsedTime() const final { return std::chrono::milliseconds(0); }
-		const std::string &Name() const final { static std::string name { "Null algorithm" }; return name; }
+		void setParent(const IAlgorithm *) final {};
+		bool start(const solution_ptr_t &) final { return false; }; //cannot start the null algorithm
+		void stop() final {};
+		void pause() final {};
+		void resume() final {};
+		bool isStopRequested() const final { return true; }
+		void enableExtensions() final {};
+		void disableExtensions() final {};
+		std::chrono::milliseconds elapsedTime() const final { return std::chrono::milliseconds(0); }
+		const std::string &name() const final { static std::string name { "Null algorithm" }; return name; }
 	};
 
 } //ns Algorithm

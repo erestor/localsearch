@@ -31,37 +31,37 @@ namespace Algorithm {
 				std::string neighborhood; //enables varying neighborhoods in implementation-specific best step getters
 			};
 
-			void EnableExtensions() final;
-			void DisableExtensions() final;
+			void enableExtensions() final;
+			void disableExtensions() final;
 
-			const Config &GetConfig() const;
+			const Config &getConfig() const;
 
 			//worst value of step delta (never expected to be reached by an actual step)
-			static Fitness::delta_type GetWorstDelta();
+			static Fitness::delta_type getWorstDelta();
 
 			//Assesses given step in the context of the running algorithm to see if it's a candidate for continuation.
 			//Returns true if the step can be considered as the next one to take.
 			//The current fitness is passed in because the algorithm might be in the middle of tweaking the current solution,
 			//which is therefore not safe to be accessed
-			bool IsAcceptableStep(const IStep *, Fitness currentFitness) const;
+			bool isAcceptableStep(const IStep *, Fitness currentFitness) const;
 
 		  protected:
 
 			//get container with continuation steps for the tabu search
-			virtual std::vector<IStep::ptr_t> GetBestSteps(ISolution *) const = 0;
+			virtual std::vector<IStep::ptr_t> getBestSteps(ISolution *) const = 0;
 
 		  private:
 
 			//execute the algorithm
-			bool Run(solution_ptr_t) final;
+			bool run(solution_ptr_t) final;
 
 			//returns random element from the _PossibleSteps container (next step the solution should take)
-			IStep::ptr_t _GetNextStep(const std::vector<IStep::ptr_t> &) const;
+			IStep::ptr_t _getNextStep(const std::vector<IStep::ptr_t> &) const;
 
 			//aspiration steps are allowed to happen even if they are in the tabu list
-			bool _IsAspirationStep(const ISolutionStep *, Fitness currentFitness) const;
+			bool _isAspirationStep(const ISolutionStep *, Fitness currentFitness) const;
 
-			bool _RetainsFeasibility(ISolution *) const;
+			bool _retainsFeasibility(ISolution *) const;
 
 			Config _config;
 			std::unique_ptr<ISolution> _bestSolutionPtr; //holds best solution found so far

@@ -19,7 +19,7 @@ namespace Algorithm {
 			TabuElement(int lifetime, const IStep::ptr_t &) noexcept;
 
 			int operator --() noexcept; //prefix decrement
-			const IStep::ptr_t &Step() const;
+			const IStep::ptr_t &step() const;
 
 		  private:
 

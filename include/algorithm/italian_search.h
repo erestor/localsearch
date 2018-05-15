@@ -22,10 +22,10 @@ namespace Algorithm {
 		  public:
 
 			explicit ItalianSearch(const boost::property_tree::ptree &);
-			const std::string &Name() const final;
+			const std::string &name() const final;
 
-			void EnableExtensions() final;
-			void DisableExtensions() final;
+			void enableExtensions() final;
+			void disableExtensions() final;
 
 		  private:
 
@@ -39,7 +39,7 @@ namespace Algorithm {
 					//chain of algorithms run in cycles until stopping condition is met
 			};
 
-			bool Run(solution_ptr_t) final;
+			bool run(solution_ptr_t) final;
 
 			std::vector<std::unique_ptr<IAlgorithm>> _algorithms;
 			Config _config;
@@ -47,7 +47,7 @@ namespace Algorithm {
 
 		namespace Private {
 		
-			bool Register(); //registers this algorithm with the factory
+			bool _register(); //registers this algorithm with the factory
 
 		} //ns Private
 

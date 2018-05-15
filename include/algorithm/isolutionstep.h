@@ -15,14 +15,14 @@ namespace Algorithm {
 
 	  public:
 
-		virtual AdaptedFitness::delta_type AdaptedDelta() const = 0; //getter
-		virtual void AdaptedDelta(AdaptedFitness::delta_type) = 0; //setter
+		virtual AdaptedFitness::delta_type adaptedDelta() const = 0; //getter
+		virtual void adaptedDelta(AdaptedFitness::delta_type) = 0; //setter
 
-		virtual Fitness::delta_type Delta() const = 0;
-		virtual void Delta(Fitness::delta_type) = 0;
+		virtual Fitness::delta_type delta() const = 0;
+		virtual void delta(Fitness::delta_type) = 0;
 
 		virtual void Execute(ISolution *) const = 0; //perform this step
-		virtual void Dump(std::ostream &) const = 0;
+		virtual void dump(std::ostream &) const = 0;
 
 		virtual ~ISolutionStep() {};
 	};

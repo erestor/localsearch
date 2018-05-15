@@ -22,10 +22,10 @@ namespace Algorithm {
 
 			explicit TabuList(const boost::property_tree::ptree &);
 
-			void Insert(const IStep::ptr_t &);
-			void Shift(); //decrease tabu counter and remove all elements that reached the end of their time
+			void insert(const IStep::ptr_t &);
+			void shift(); //decrease tabu counter and remove all elements that reached the end of their time
 
-			bool IsTabu(const IStep *) const; //return true if the given step is tabu according to the list
+			bool isTabu(const IStep *) const; //return true if the given step is tabu according to the list
 
 		  private:
 
@@ -35,7 +35,7 @@ namespace Algorithm {
 				int tabuShortTerm;
 			};
 
-			void _Configure(const boost::property_tree::ptree &);
+			void _configure(const boost::property_tree::ptree &);
 
 			std::vector<TabuElement> _steps;
 			Ctoolhu::Random::SmallIntGenerator _tabuGenerator; //random tabu iterations number generator

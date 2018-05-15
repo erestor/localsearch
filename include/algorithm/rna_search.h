@@ -24,15 +24,15 @@ namespace Algorithm {
 				int tickFrequency; //how many steps between ticks
 			};
 
-			void EnableExtensions() final;
-			void DisableExtensions() final;
+			void enableExtensions() final;
+			void disableExtensions() final;
 
-			const Config &GetConfig() const;
+			const Config &getConfig() const;
 
 		  protected:
 
-			bool Run(solution_ptr_t) override;
-			virtual Fitness::delta_type Walk(ISolution *) = 0;
+			bool run(solution_ptr_t) override;
+			virtual Fitness::delta_type walk(ISolution *) = 0;
 
 		  private:
 

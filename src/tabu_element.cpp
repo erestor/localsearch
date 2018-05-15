@@ -18,7 +18,7 @@ int TabuElement::operator --() noexcept
 	return --_lifetime;
 }
 
-const IStep::ptr_t &TabuElement::Step() const
+const IStep::ptr_t &TabuElement::step() const
 {
 	return _step;
 }

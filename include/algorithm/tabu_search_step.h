@@ -15,11 +15,11 @@ namespace Algorithm {
 
 		  public:
 
-			AdaptedFitness::delta_type AdaptedDelta() const final;
-			void AdaptedDelta(AdaptedFitness::delta_type) final;
+			AdaptedFitness::delta_type adaptedDelta() const final;
+			void adaptedDelta(AdaptedFitness::delta_type) final;
 
-			Fitness::delta_type Delta() const final;
-			void Delta(Fitness::delta_type) final;
+			Fitness::delta_type delta() const final;
+			void delta(Fitness::delta_type) final;
 
 		  protected:
 

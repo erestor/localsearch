@@ -17,16 +17,16 @@ namespace Algorithm {
 	  public:
 
 		//returns new algorithm registered under the name, or NullAlgorithm instance if not found.
-		algorithm_ptr_t CreateAlgorithm(const std::string &name, const boost::property_tree::ptree &config) const final;
+		algorithm_ptr_t createAlgorithm(const std::string &name, const boost::property_tree::ptree &config) const final;
 
 		//registers algorithm constructor with the factory.
 		//throws runtime exception if registration fails.
 		//the return value is always true, used typically to initialize a const bool global variable in a no-name namespace.
-		bool Register(const std::string &name, const maker_t &);
+		bool registerAlgorithm(const std::string &name, const maker_t &);
 
 		//registers all directly usable algorithms in this library with the factory
 		//must not be called, it's here only to reference the registering functions so that they're not dropped by the linker
-		static void __RegisterNative();
+		static void __registerNative();
 
 	  private:
 
@@ -40,10 +40,10 @@ namespace Algorithm {
 
 	//creates an algorithm using a single tree with "name" and "config" nodes determining an algorithm.
 	//throws if either name or config aren't present in the definition tree.
-	IFactory::algorithm_ptr_t Create(const boost::property_tree::ptree &definition);
+	IFactory::algorithm_ptr_t create(const boost::property_tree::ptree &definition);
 
 	//returns the NullAlgorithm
-	IFactory::algorithm_ptr_t GetNullAlgorithm();
+	IFactory::algorithm_ptr_t getNullAlgorithm();
 
 } //ns Algorithm
 

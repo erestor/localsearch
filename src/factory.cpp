@@ -12,39 +12,39 @@ using namespace std;
 
 namespace Algorithm {
 
-IFactory::algorithm_ptr_t Factory::CreateAlgorithm(const string &name, const ptree &config) const
+IFactory::algorithm_ptr_t Factory::createAlgorithm(const string &name, const ptree &config) const
 {
 	auto it = _registry.find(name);
 	if (it == _registry.end())
-		return GetNullAlgorithm();
+		return getNullAlgorithm();
 
 	return it->second(config);
 }
 
-bool Factory::Register(const string &name, const maker_t &maker)
+bool Factory::registerAlgorithm(const string &name, const maker_t &maker)
 {
 	bool success = _registry.emplace(name, maker).second;
 	if (!success)
-		throw runtime_error("Algorithm::Factory::Register: failed to register '" + name + "' with algorithm factory");
+		throw runtime_error("Algorithm::Factory::registerAlgorithm: failed to register '" + name + "' with algorithm factory");
 
 	return true;
 }
 
-void Factory::__RegisterNative()
+void Factory::__registerNative()
 {
-	ItalianSearch::Private::Register();
+	ItalianSearch::Private::_register();
 	throw logic_error(__FUNCTION__ + string(" must never be called"));
 }
 
-IFactory::algorithm_ptr_t Create(const ptree &definition)
+IFactory::algorithm_ptr_t create(const ptree &definition)
 {
-	return SingleFactory::Instance().CreateAlgorithm(
+	return SingleFactory::Instance().createAlgorithm(
 		definition.get<string>("name"),
 		definition.get_child("config")
 	);
 }
 
-IFactory::algorithm_ptr_t GetNullAlgorithm()
+IFactory::algorithm_ptr_t getNullAlgorithm()
 {
 	return make_unique<NullAlgorithm>();
 }
