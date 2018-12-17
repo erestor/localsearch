@@ -6,6 +6,7 @@
 
 #include <ctoolhu/typesafe/id.hpp>
 #include <cassert>
+#include <limits>
 #include <stdexcept>
 
 namespace Algorithm {
@@ -15,36 +16,47 @@ namespace Algorithm {
 		template <class RequestingObject, typename StoredType>
 		class FitnessImpl : public Ctoolhu::TypeSafe::Id<RequestingObject, StoredType, Ctoolhu::TypeSafe::ExplicitConversion> {
 
-			typedef FitnessImpl<RequestingObject, StoredType> self_type;
-			typedef Ctoolhu::TypeSafe::Id<RequestingObject, StoredType, Ctoolhu::TypeSafe::ExplicitConversion> base_type;
+			typedef FitnessImpl<RequestingObject, StoredType> self_t;
+			typedef Ctoolhu::TypeSafe::Id<RequestingObject, StoredType, Ctoolhu::TypeSafe::ExplicitConversion> base_t;
 
 		  public:
 
 			typedef typename std::make_signed<StoredType>::type delta_type;
 
-			FitnessImpl() : base_type(0) {}
+			FitnessImpl() : base_t(0) {}
 
-			explicit FitnessImpl(StoredType id) : base_type(id)
+			explicit FitnessImpl(StoredType id) : base_t(id)
 			{
 				_verify();
 			}
 
-			self_type operator +(self_type fitness) const
+			static self_t worst()
 			{
-				return self_type{this->_id + fitness._id};
+				return self_t{std::numeric_limits<StoredType>::max()};
 			}
 
-			self_type operator +(delta_type delta) const
+			//worst value of delta (never expected to be reached by an actual step)
+			static delta_type worstDelta()
 			{
-				return self_type{this->_id + delta};
+				return std::numeric_limits<delta_type>::max();
 			}
 
-			delta_type operator -(self_type fitness) const
+			self_t operator +(self_t fitness) const
+			{
+				return self_t{this->_id + fitness._id};
+			}
+
+			self_t operator +(delta_type delta) const
+			{
+				return self_t{this->_id + delta};
+			}
+
+			delta_type operator -(self_t fitness) const
 			{
 				return this->_id - fitness._id;
 			}
 
-			void operator +=(self_type fitness)
+			void operator +=(self_t fitness)
 			{
 				this->_id += fitness._id;
 			}
@@ -55,7 +67,7 @@ namespace Algorithm {
 				_verify();
 			}
 
-			void operator -=(self_type fitness)
+			void operator -=(self_t fitness)
 			{
 				this->_id -= fitness._id;
 				_verify();

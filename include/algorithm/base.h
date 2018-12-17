@@ -22,14 +22,12 @@ namespace Algorithm {
 	  public:
 
 		void setParent(const IAlgorithm *parent) final; //for nested algorithms
-		bool start(const solution_ptr_t &) final;
+		bool start(solution_ptr_t) final;
 		void stop() override;		//thread-safe
 		void pause() override;		//thread-safe
 		void resume() override;		//thread-safe
 		bool isStopRequested() const override; //thread-safe
 		timer_resolution elapsedTime() const override;
-
-		static Fitness getWorstFitness();
 
 	  protected:
 
@@ -43,7 +41,7 @@ namespace Algorithm {
 
 	  private:
 
-		void _normalize(const solution_ptr_t &) const;
+		void _normalize(solution_ptr_t) const;
 		void _togglePause(bool pause);
 
 		//algorithm stopping and pausing mechanism

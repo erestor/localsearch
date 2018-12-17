@@ -24,11 +24,6 @@ void AlgorithmBase::setParent(const IAlgorithm *parent)
 	_parent = parent;
 }
 
-Fitness AlgorithmBase::getWorstFitness()
-{
-	return Fitness{numeric_limits<Fitness::id_type>::max()};
-}
-
 void AlgorithmBase::_togglePause(bool pause)
 {
 	unique_lock lock(_pauseMutex);
@@ -47,7 +42,7 @@ void AlgorithmBase::resume()
 	_togglePause(false);
 }
 
-bool AlgorithmBase::start(const solution_ptr_t &solutionPtr)
+bool AlgorithmBase::start(solution_ptr_t solutionPtr)
 {
 	_stopRequested = false;
 	_timer.StartClock();
@@ -80,7 +75,7 @@ chrono::milliseconds AlgorithmBase::elapsedTime() const
 	return _timer.ElapsedTime();
 }
 
-void AlgorithmBase::_normalize(const solution_ptr_t &solutionPtr) const
+void AlgorithmBase::_normalize(solution_ptr_t solutionPtr) const
 {
 	bool changed = solutionPtr->normalize();
 	solutionPtr->getFitness(); //to make sure it's initialized

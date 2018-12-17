@@ -15,6 +15,8 @@ using namespace std;
 namespace Algorithm { namespace RNA {
 
 Searcher::Searcher(const boost::property_tree::ptree &pt)
+:
+	_bestFeasibleFitness{Fitness::worst()}
 {
 	_config.load(pt);
 	_config.maxSteps = pt.get("maxSteps", 1000);
@@ -49,10 +51,11 @@ bool Searcher::run(solution_ptr_t currentSolutionPtr)
 	while (!isStopRequested() && (int)currentSolutionPtr->getFitness() > 0 && (noImprovements < maxSteps)) {
 		noImprovements++;
 		steps++;
-		auto currentFitness = currentSolutionPtr->getFitness();
+		auto origFitness = currentSolutionPtr->getFitness();
 		auto delta = walk(currentSolutionPtr.get());
-		if (currentSolutionPtr->getFitness() != currentFitness + delta)
-			throw logic_error("Algorithm::RNA::Searcher::run: unexpected fitness delta after walk. Expected " + to_string(delta) + ", got " + to_string(currentSolutionPtr->getFitness() - currentFitness));
+		auto fitness = currentSolutionPtr->getFitness();
+		if (fitness != origFitness + delta)
+			throw logic_error("Algorithm::RNA::Searcher::run: unexpected fitness delta after walk. Expected " + to_string(delta) + ", got " + to_string(fitness - origFitness));
 
 		if (delta > 0)
 			throw logic_error("Algorithm::RNA::Searcher::run: search step has positive delta");
@@ -61,8 +64,10 @@ bool Searcher::run(solution_ptr_t currentSolutionPtr)
 			noImprovements = 0;
 			improved = true;			
 			Event::Fire(Algorithm::Events::BestSolutionFound { currentSolutionPtr.get(), elapsedTime() });
-			if (currentSolutionPtr->isFeasible())
-				Event::Fire(Algorithm::Events::FeasibleSolutionFound { currentSolutionPtr.get(), elapsedTime() });
+		}
+		if (currentSolutionPtr->isFeasible() && fitness < _bestFeasibleFitness) {
+			_bestFeasibleFitness = fitness;
+			Event::Fire(Algorithm::Events::FeasibleSolutionFound { currentSolutionPtr.get(), elapsedTime() });
 		}
 		if (steps % _config.tickFrequency == 0)
 			Event::Fire<Events::Tick>();

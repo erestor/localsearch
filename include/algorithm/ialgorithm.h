@@ -20,7 +20,7 @@ namespace Algorithm {
 
 		virtual void setParent(const IAlgorithm *parent) = 0; //nested algorithms support
 
-		virtual bool start(const solution_ptr_t &solutionPtr) = 0;
+		virtual bool start(solution_ptr_t solutionPtr) = 0;
 		virtual void stop() = 0; //signals the algorithm that the processing should stop at the nearest exit point
 		virtual void pause() = 0;
 		virtual void resume() = 0;

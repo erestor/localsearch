@@ -37,6 +37,7 @@ namespace Algorithm {
 		  private:
 
 			Config _config;
+			Fitness _bestFeasibleFitness; //holds the fitness of the best feasible solution found so far
 		};
 
 	} //ns RNA

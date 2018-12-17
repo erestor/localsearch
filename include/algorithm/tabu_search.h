@@ -36,9 +36,6 @@ namespace Algorithm {
 
 			const Config &getConfig() const;
 
-			//worst value of step delta (never expected to be reached by an actual step)
-			static Fitness::delta_type getWorstDelta();
-
 			//Assesses given step in the context of the running algorithm to see if it's a candidate for continuation.
 			//Returns true if the step can be considered as the next one to take.
 			//The current fitness is passed in because the algorithm might be in the middle of tweaking the current solution,
@@ -65,7 +62,7 @@ namespace Algorithm {
 
 			Config _config;
 			std::unique_ptr<ISolution> _bestSolutionPtr; //holds best solution found so far
-			std::unique_ptr<ISolution> _feasibleSolutionPtr; //holds best feasible solution found so far
+			Fitness _bestFeasibleFitness; //holds the fitness of the best feasible solution found so far
 			TabuList _tabuList; //list of tabu steps
 		};
 
