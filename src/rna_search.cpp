@@ -15,8 +15,6 @@ using namespace std;
 namespace Algorithm { namespace RNA {
 
 Searcher::Searcher(const boost::property_tree::ptree &pt)
-:
-	_bestFeasibleFitness{Fitness::worst()}
 {
 	_config.load(pt);
 	_config.maxSteps = pt.get("maxSteps", 1000);
@@ -40,6 +38,7 @@ const Searcher::Config &Searcher::getConfig() const
 
 bool Searcher::run(solution_ptr_t currentSolutionPtr)
 {
+	Fitness bestFeasibleFitness{Fitness::worst()}; //holds the fitness of the best feasible solution found so far
 	int maxSteps = _config.maxSteps;
 	if (_config.extended)
 		maxSteps *= 2;
@@ -66,8 +65,8 @@ bool Searcher::run(solution_ptr_t currentSolutionPtr)
 			Event::Fire(Algorithm::Events::CurrentSolutionChanged { currentSolutionPtr.get(), elapsedTime() });
 			Event::Fire(Algorithm::Events::BestSolutionFound { currentSolutionPtr.get(), elapsedTime() });
 		}
-		if (currentSolutionPtr->isFeasible() && fitness < _bestFeasibleFitness) {
-			_bestFeasibleFitness = fitness;
+		if (currentSolutionPtr->isFeasible() && fitness < bestFeasibleFitness) {
+			bestFeasibleFitness = fitness;
 			Event::Fire(Algorithm::Events::CurrentSolutionChanged { currentSolutionPtr.get(), elapsedTime() });
 			Event::Fire(Algorithm::Events::FeasibleSolutionFound { currentSolutionPtr.get(), elapsedTime() });
 		}

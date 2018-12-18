@@ -62,7 +62,6 @@ namespace Algorithm {
 
 			Config _config;
 			std::unique_ptr<ISolution> _bestSolutionPtr; //holds best solution found so far
-			Fitness _bestFeasibleFitness; //holds the fitness of the best feasible solution found so far
 			TabuList _tabuList; //list of tabu steps
 		};
 

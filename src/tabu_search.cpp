@@ -18,7 +18,6 @@ namespace Algorithm { namespace TabuSearch {
 
 Searcher::Searcher(const boost::property_tree::ptree &pt)
 :
-	_bestFeasibleFitness{Fitness::worst()},
 	_tabuList(pt)
 {
 	_config.load(pt);
@@ -51,6 +50,7 @@ bool Searcher::isAcceptableStep(const IStep *stepPtr, Fitness currentFitness) co
 //execute the algorithm
 bool Searcher::run(solution_ptr_t solutionPtr)
 {
+	Fitness bestFeasibleFitness{Fitness::worst()}; //holds the fitness of the best feasible solution found so far
 	int maxSteps = _config.maxSteps;
 	if (_config.extended)
 		maxSteps *= 2;
@@ -118,8 +118,8 @@ bool Searcher::run(solution_ptr_t solutionPtr)
 				currentSolutionPtr->copyTo(_bestSolutionPtr.get());
 				Event::Fire(Algorithm::Events::BestSolutionFound { currentSolutionPtr, elapsedTime() });
 			}
-			if (currentSolutionPtr->isFeasible() && fitness < _bestFeasibleFitness) {
-				_bestFeasibleFitness = fitness;
+			if (currentSolutionPtr->isFeasible() && fitness < bestFeasibleFitness) {
+				bestFeasibleFitness = fitness;
 				Event::Fire(Algorithm::Events::FeasibleSolutionFound { currentSolutionPtr, elapsedTime() });
 			}
 		}
