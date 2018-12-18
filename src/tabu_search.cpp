@@ -94,6 +94,8 @@ bool Searcher::run(solution_ptr_t solutionPtr)
 				_config.keepFeasible
 			});
 
+			Event::Fire(Algorithm::Events::CurrentSolutionChanged { currentSolutionPtr, elapsedTime() });
+
 			bool foundBest{false};
 			if (fitness == _bestSolutionPtr->getFitness()) {
 				//check for cycling
