@@ -13,15 +13,6 @@ namespace Algorithm {
 
 	namespace Events {
 
-		namespace Private {
-
-			struct SolutionInfo {
-				ISolution *solutionPtr;
-				std::chrono::milliseconds elapsedTime;
-			};
-
-		} //ns Private
-
 		struct Started {
 			ISolution *solutionPtr;
 			std::string algorithmName;
@@ -32,9 +23,20 @@ namespace Algorithm {
 			std::string algorithmName;
 		};
 
-		struct CurrentSolutionChanged : Private::SolutionInfo {};
-		struct BestSolutionFound : Private::SolutionInfo {};
-		struct FeasibleSolutionFound : Private::SolutionInfo {};
+		struct CurrentSolutionChanged {
+			ISolution *solutionPtr;
+			std::chrono::milliseconds elapsedTime;
+		};
+
+		struct BestSolutionFound {
+			ISolution *solutionPtr;
+			std::chrono::milliseconds elapsedTime;
+		};
+
+		struct FeasibleSolutionFound {
+			ISolution *solutionPtr;
+			std::chrono::milliseconds elapsedTime;
+		};
 
 		struct ExtensionsEnabled {
 		};
