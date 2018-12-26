@@ -61,13 +61,12 @@ bool Searcher::run(solution_ptr_t currentSolutionPtr)
 
 		if (delta < 0) {
 			noImprovements = 0;
-			improved = true;			
+			improved = true;
 			Event::Fire(Algorithm::Events::CurrentSolutionChanged { currentSolutionPtr.get(), elapsedTime() });
 			Event::Fire(Algorithm::Events::BestSolutionFound { currentSolutionPtr.get(), elapsedTime() });
 		}
 		if (currentSolutionPtr->isFeasible() && fitness < bestFeasibleFitness) {
 			bestFeasibleFitness = fitness;
-			Event::Fire(Algorithm::Events::CurrentSolutionChanged { currentSolutionPtr.get(), elapsedTime() });
 			Event::Fire(Algorithm::Events::FeasibleSolutionFound { currentSolutionPtr.get(), elapsedTime() });
 		}
 		if (steps % _config.tickFrequency == 0)
