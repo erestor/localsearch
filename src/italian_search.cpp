@@ -97,7 +97,7 @@ bool ItalianSearch::run(solution_ptr_t solutionPtr)
 			enableExtensions();
 
 		int idleCycles = 0;
-		while (!isStopRequested() && (int)solutionPtr->getFitness() > 0 && (_config.cycles < 0 || idleCycles < _config.cycles)) {
+		while (!isStopRequested() && (int)solutionPtr->getFitness() > 0) {
 			idleCycles++;
 			for (auto const &alg : _algorithms) {
 				if (alg->start(solutionPtr))
@@ -120,6 +120,9 @@ bool ItalianSearch::run(solution_ptr_t solutionPtr)
 				if (_config.cycles > 1)
 					_config.cycles /= 2;
 			}
+
+			if (_config.cycles >= 0 && _config.cycles <= idleCycles)
+				break;
 		}
 	}
 	return solutionPtr->getFitness() < initialFitness;
