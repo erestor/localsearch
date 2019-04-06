@@ -28,6 +28,7 @@ namespace Algorithm {
 			struct Config : AlgorithmBaseConfig {
 				int maxSteps;
 				int dynamicAdaptationThreshold;
+				int interleave; //influences the lessons evaluated each step
 				std::string neighborhood; //enables varying neighborhoods in implementation-specific best step getters
 			};
 

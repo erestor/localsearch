@@ -23,6 +23,7 @@ Searcher::Searcher(const boost::property_tree::ptree &pt)
 	_config.load(pt);
 	_config.maxSteps = pt.get("maxSteps", 500);
 	_config.dynamicAdaptationThreshold = pt.get("dynamicAdaptationThreshold", 10);
+	_config.interleave = pt.get("interleave", 1);
 	_config.neighborhood = pt.get<string>("neighborhood", "");
 }
 
