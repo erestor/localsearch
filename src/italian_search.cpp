@@ -36,8 +36,10 @@ ItalianSearch::ItalianSearch(const ptree &configPt)
 	_config.repeat = configPt.get("repeat", 1);
 	_config.cycles = configPt.get("cycles", 4);
 
-	auto const &initNode = configPt.get_child("initial");
-	_config.initial = make_pair(initNode.get("name", "generation"), initNode.get_child("config"));
+	if (configPt.count("initial")) {
+		auto const &initNode = configPt.get_child("initial");
+		_config.initial = make_pair(initNode.get("name", "generation"), initNode.get_child("config"));
+	}
 
 	vector<string> defaults {
 		"room_rna",
@@ -86,13 +88,19 @@ bool ItalianSearch::run(solution_ptr_t solutionPtr)
 {
 	auto initialFitness = solutionPtr->getFitness();
 	unique_ptr<ISolution> storedSolutionPtr(solutionPtr->clone());
-	auto initialAlgorithm = SingleFactory::Instance().createAlgorithm(_config.initial.first, _config.initial.second);
-	initialAlgorithm->setParent(this);
+
+	IFactory::algorithm_ptr_t initialAlgorithm;
+	if (!_config.initial.first.empty()) {
+		initialAlgorithm = SingleFactory::Instance().createAlgorithm(_config.initial.first, _config.initial.second);
+		initialAlgorithm->setParent(this);
+	}
 
 	while (!isStopRequested() && (int)solutionPtr->getFitness() > 0 && _config.repeat-- > 0) {
-		bool extended = _config.extended;
 		storedSolutionPtr->copyTo(solutionPtr.get());
-		initialAlgorithm->start(solutionPtr);
+		if (initialAlgorithm)
+			initialAlgorithm->start(solutionPtr);
+
+		bool extended = _config.extended;
 		if (extended)
 			enableExtensions();
 
