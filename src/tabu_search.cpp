@@ -51,13 +51,13 @@ bool Searcher::isAcceptableStep(const IStep *stepPtr, Fitness currentFitness) co
 //execute the algorithm
 bool Searcher::run(solution_ptr_t solutionPtr)
 {
-	Fitness bestFeasibleFitness{Fitness::worst()}; //holds the fitness of the best feasible solution found so far
 	int maxSteps = _config.maxSteps;
 	if (_config.extended)
 		maxSteps *= 2;
 
 	auto currentSolutionPtr = solutionPtr.get();
 	_bestSolutionPtr = unique_ptr<ISolution>(currentSolutionPtr->clone());
+	Fitness bestFeasibleFitness{currentSolutionPtr->isFeasible() ? currentSolutionPtr->getFitness() : Fitness::worst()}; //holds the fitness of the best feasible solution found so far
 
 	Event::Fire(Events::BeforeStart{currentSolutionPtr});
 

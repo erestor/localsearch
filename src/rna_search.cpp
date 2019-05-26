@@ -38,12 +38,12 @@ const Searcher::Config &Searcher::getConfig() const
 
 bool Searcher::run(solution_ptr_t currentSolutionPtr)
 {
-	Fitness bestFeasibleFitness{Fitness::worst()}; //holds the fitness of the best feasible solution found so far
 	int maxSteps = _config.maxSteps;
 	if (_config.extended)
 		maxSteps *= 2;
 
 	auto startingFitness = currentSolutionPtr->getFitness();
+	Fitness bestFeasibleFitness{currentSolutionPtr->isFeasible() ? startingFitness : Fitness::worst()}; //holds the fitness of the best feasible solution found so far
 	bool improved = false;
 	int noImprovements = 0;
 	int steps = 0;
