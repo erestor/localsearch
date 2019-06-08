@@ -15,8 +15,6 @@ namespace Algorithm {
 
 	class AlgorithmBase : public IAlgorithm {
 
-		typedef std::lock_guard<std::mutex> lock_guard;
-		typedef std::unique_lock<std::mutex> unique_lock;
 		typedef std::chrono::milliseconds timer_resolution;
 
 	  public:
