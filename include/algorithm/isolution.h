@@ -24,6 +24,7 @@ namespace Algorithm {
 		virtual void markDirty() = 0; //requests recalculation of fitness
 
 		virtual void load(const boost::property_tree::ptree &) = 0;
+		virtual void save(boost::property_tree::ptree &) = 0;
 		virtual void save(boost::property_tree::ptree &) const = 0;
 
 		virtual ~ISolution() {};
