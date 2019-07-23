@@ -29,6 +29,8 @@ namespace Algorithm {
 				int maxSteps;
 				int dynamicAdaptationThreshold;
 				int interleave; //influences the lessons evaluated each step
+				float fitnessNeutralPreDiscardRatio; //probability of dicarding a fitness-neutral step before evaluation
+				float fitnessNeutralPostDiscardRatio; //probability of dicarding a non-bettering fitness-neutral step after evaluation
 				std::string neighborhood; //enables varying neighborhoods in implementation-specific best step getters
 			};
 
