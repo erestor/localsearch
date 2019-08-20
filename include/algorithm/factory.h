@@ -5,6 +5,7 @@
 #define _algorithm_factory_included_
 
 #include "ifactory.h"
+#include <ctoolhu/singleton/holder.hpp>
 #include <loki/Singleton.h>
 #include <map>
 
@@ -36,7 +37,7 @@ namespace Algorithm {
 		std::map<std::string, maker_t> _registry;
 	};
 
-	typedef Loki::SingletonHolder<Factory> SingleFactory;
+	typedef Ctoolhu::Singleton::Holder<Factory> SingleFactory;
 
 	//creates an algorithm using a single tree with "name" and "config" nodes determining an algorithm.
 	//throws if either name or config aren't present in the definition tree.
