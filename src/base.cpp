@@ -48,7 +48,7 @@ bool AlgorithmBase::start(solution_ptr_t solutionPtr)
 	_timer.StartClock();
 	Ctoolhu::Event::Fire(Events::Started { solutionPtr.get(), name() });
 	_normalize(solutionPtr);
-	auto result = run(solutionPtr);
+	bool result = run(solutionPtr);
 	Ctoolhu::Event::Fire(Events::Finished { solutionPtr.get(), name() });
 	return result;
 }

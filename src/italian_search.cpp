@@ -86,10 +86,10 @@ void ItalianSearch::disableExtensions()
 
 bool ItalianSearch::run(solution_ptr_t solutionPtr)
 {
-	auto initialFitness = solutionPtr->getFitness();
+	const Fitness starting{solutionPtr->getFitness()};
 	unique_ptr<ISolution> storedSolutionPtr(solutionPtr->clone());
 
-	IFactory::algorithm_ptr_t initialAlgorithm;
+	IFactory::algorithm_ptr_t initialAlgorithm{nullptr};
 	if (!_config.initial.first.empty()) {
 		initialAlgorithm = SingleFactory::Instance().createAlgorithm(_config.initial.first, _config.initial.second);
 		initialAlgorithm->setParent(this);
@@ -100,11 +100,11 @@ bool ItalianSearch::run(solution_ptr_t solutionPtr)
 		if (initialAlgorithm)
 			initialAlgorithm->start(solutionPtr);
 
-		bool extended = _config.extended;
+		bool extended{_config.extended};
 		if (extended)
 			enableExtensions();
 
-		int idleCycles = 0;
+		int idleCycles{0};
 		while (!isStopRequested() && (int)solutionPtr->getFitness() > 0) {
 			idleCycles++;
 			for (auto const &alg : _algorithms) {
@@ -133,7 +133,7 @@ bool ItalianSearch::run(solution_ptr_t solutionPtr)
 				break;
 		}
 	}
-	return solutionPtr->getFitness() < initialFitness;
+	return solutionPtr->getFitness() < starting;
 }
 
 } } //ns Algorithm::ItalianSearch

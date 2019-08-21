@@ -42,19 +42,19 @@ bool Searcher::run(solution_ptr_t currentSolutionPtr)
 	if (_config.extended)
 		maxSteps *= 2;
 
-	auto startingFitness = currentSolutionPtr->getFitness();
-	Fitness bestFeasibleFitness{currentSolutionPtr->isFeasible() ? startingFitness : Fitness::worst()}; //holds the fitness of the best feasible solution found so far
+	const Fitness starting{currentSolutionPtr->getFitness()};
+	Fitness bestFeasible{currentSolutionPtr->isFeasible() ? starting : Fitness::worst()}; //holds the fitness of the best feasible solution found so far
 	bool improved = false;
 	int noImprovements = 0;
 	int steps = 0;
 	while (!isStopRequested() && (int)currentSolutionPtr->getFitness() > 0 && (noImprovements < maxSteps)) {
 		noImprovements++;
 		steps++;
-		auto origFitness = currentSolutionPtr->getFitness();
-		auto delta = walk(currentSolutionPtr.get());
-		auto fitness = currentSolutionPtr->getFitness();
-		if (fitness != origFitness + delta)
-			throw logic_error("Algorithm::RNA::Searcher::run: unexpected fitness delta after walk. Expected " + to_string(delta) + ", got " + to_string(fitness - origFitness));
+		const Fitness original{currentSolutionPtr->getFitness()};
+		auto const delta = walk(currentSolutionPtr.get());
+		const Fitness actual{currentSolutionPtr->getFitness()};
+		if (actual != original + delta)
+			throw logic_error("Algorithm::RNA::Searcher::run: unexpected fitness delta after walk. Expected " + to_string(delta) + ", got " + to_string(actual - original));
 
 		if (delta > 0)
 			throw logic_error("Algorithm::RNA::Searcher::run: search step has positive delta");
@@ -65,8 +65,8 @@ bool Searcher::run(solution_ptr_t currentSolutionPtr)
 			Event::Fire(Algorithm::Events::CurrentSolutionChanged { currentSolutionPtr.get(), elapsedTime() });
 			Event::Fire(Algorithm::Events::BestSolutionFound { currentSolutionPtr.get(), elapsedTime() });
 		}
-		if (currentSolutionPtr->isFeasible() && fitness < bestFeasibleFitness) {
-			bestFeasibleFitness = fitness;
+		if (currentSolutionPtr->isFeasible() && actual < bestFeasible) {
+			bestFeasible = actual;
 			Event::Fire(Algorithm::Events::FeasibleSolutionFound { currentSolutionPtr.get(), elapsedTime() });
 		}
 		if (steps % _config.tickFrequency == 0)
@@ -74,7 +74,7 @@ bool Searcher::run(solution_ptr_t currentSolutionPtr)
 	}
 	
 	//never worse than original
-	if (currentSolutionPtr->getFitness() > startingFitness)
+	if (currentSolutionPtr->getFitness() > starting)
 		throw logic_error("Algorithm::RNA::Searcher::run: search worsened the solution");
 
 	return improved;
