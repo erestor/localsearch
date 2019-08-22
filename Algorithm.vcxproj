@@ -199,13 +199,13 @@
     <ClInclude Include="include\algorithm\isolutionstep.h" />
     <ClInclude Include="include\algorithm\itabusearchstep.h" />
     <ClInclude Include="include\algorithm\italian_search.h" />
+    <ClInclude Include="include\algorithm\null_algorithm.h" />
     <ClInclude Include="include\algorithm\rna_search.h" />
     <ClInclude Include="include\algorithm\rna_search_events.h" />
     <ClInclude Include="include\algorithm\tabu_search.h" />
     <ClInclude Include="include\algorithm\tabu_search_events.h" />
     <ClInclude Include="include\algorithm\tabu_search_stat_keeper.h" />
     <ClInclude Include="include\algorithm\tabu_search_step.h" />
-    <ClInclude Include="src\null_algorithm.hpp" />
     <ClInclude Include="src\tabu_element.h" />
     <ClInclude Include="src\tabu_list.h" />
   </ItemGroup>
@@ -213,6 +213,7 @@
     <ClCompile Include="src\base.cpp" />
     <ClCompile Include="src\factory.cpp" />
     <ClCompile Include="src\italian_search.cpp" />
+    <ClCompile Include="src\null_algorithm.cpp" />
     <ClCompile Include="src\rna_search.cpp" />
     <ClCompile Include="src\tabu_element.cpp" />
     <ClCompile Include="src\tabu_list.cpp" />

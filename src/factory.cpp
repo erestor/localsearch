@@ -1,9 +1,9 @@
 //----------------------------------------------------------------------------
 // Author:		Martin Klemsa
 //----------------------------------------------------------------------------
-#include "null_algorithm.hpp"
 #include <algorithm/factory.h>
 #include <algorithm/italian_search.h>
+#include <algorithm/null_algorithm.h>
 #include <stdexcept>
 #include <string>
 

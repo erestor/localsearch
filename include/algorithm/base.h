@@ -24,13 +24,14 @@ namespace Algorithm {
 
 	  public:
 
-		void setParent(const IAlgorithm *parent) final; //for nested algorithms
 		bool start(solution_ptr_t) final;
-		void stop() override;		//thread-safe
-		void pause() override;		//thread-safe
-		void resume() override;		//thread-safe
-		bool isStopRequested() const override; //thread-safe
-		timer_resolution elapsedTime() const override;
+		void pauseAsync() override;			//thread-safe
+		void resumeAsync() override;		//thread-safe
+		void stopAsync() override;			//thread-safe
+		bool isStopRequested() const final; //thread-safe
+
+		void setParent(const IAlgorithm *parent) final; //for nested algorithms
+		timer_resolution elapsedTime() const final;
 
 	  protected:
 
@@ -39,7 +40,8 @@ namespace Algorithm {
 
 		//algorithm body, should return true if solution was improved.
 		//takes solution ptr by value so that a shared_ptr is copied (if used),
-		//making sure the solution is alive for the whole run of the algorithm
+		//making sure the solution is alive for the whole run of the algorithm.
+		//The implementation should be in 'run' (instead of in 'start')
 		virtual bool run(solution_ptr_t startingSolutionPtr) = 0;
 
 	  private:

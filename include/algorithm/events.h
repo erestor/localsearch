@@ -9,6 +9,7 @@
 
 namespace Algorithm {
 
+	class IAlgorithm;
 	class ISolution;
 
 	namespace Events {
@@ -21,6 +22,7 @@ namespace Algorithm {
 		struct Finished {
 			ISolution *solutionPtr;
 			std::string algorithmName;
+			IAlgorithm *publisher;
 		};
 
 		struct CurrentSolutionChanged {

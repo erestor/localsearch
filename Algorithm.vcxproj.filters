@@ -63,9 +63,6 @@
     <ClInclude Include="src\tabu_element.h">
       <Filter>src\tabu</Filter>
     </ClInclude>
-    <ClInclude Include="src\null_algorithm.hpp">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="include\algorithm\italian_search.h">
       <Filter>include\algorithm</Filter>
     </ClInclude>
@@ -76,6 +73,9 @@
       <Filter>include\algorithm</Filter>
     </ClInclude>
     <ClInclude Include="include\algorithm\tabu_search_stat_keeper.h">
+      <Filter>include\algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="include\algorithm\null_algorithm.h">
       <Filter>include\algorithm</Filter>
     </ClInclude>
   </ItemGroup>
@@ -106,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="src\tabu_search_stat_keeper.cpp">
       <Filter>src\tabu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\null_algorithm.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -18,20 +18,29 @@ namespace Algorithm {
 
 		typedef std::shared_ptr<ISolution> solution_ptr_t;
 
-		virtual void setParent(const IAlgorithm *parent) = 0; //nested algorithms support
+		//returns the name of the algorithm
+		virtual const std::string &name() const = 0;
 
+		virtual void setParent(const IAlgorithm *parent) = 0; //nesting support
+
+		//starts the algorithm synchronously
 		virtual bool start(solution_ptr_t solutionPtr) = 0;
-		virtual void stop() = 0; //signals the algorithm that the processing should stop at the nearest exit point
-		virtual void pause() = 0;
-		virtual void resume() = 0;
+
+		virtual void pauseAsync() = 0; //requests pause
+		virtual void resumeAsync() = 0; //requests resume
+
+		//requests that the processing should stop at the nearest convenient exit point.
+		//I.e. may not stop it immediately!
+		virtual void stopAsync() = 0;
+
+		//returns true if stop was requested (probably by calling stopAsync).
+		//This is necessary in the interface so that algorithms can be nested (stop request from parent must be accessible)
 		virtual bool isStopRequested() const = 0;
 
-		virtual void enableExtensions() = 0;	//tells algorithm to use extra measures in order to find a feasible solution
-		virtual void disableExtensions() = 0;
-	
 		virtual std::chrono::milliseconds elapsedTime() const = 0;
 
-		virtual const std::string &name() const = 0; //should return the name of the algorithm
+		virtual void enableExtensions() = 0; //tells algorithm to possibly use extra measures in order to find a feasible solution
+		virtual void disableExtensions() = 0;
 
 		virtual ~IAlgorithm() {};
 	};

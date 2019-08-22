@@ -19,29 +19,6 @@ AlgorithmBase::AlgorithmBase()
 {
 }
 
-void AlgorithmBase::setParent(const IAlgorithm *parent)
-{
-	_parent = parent;
-}
-
-void AlgorithmBase::_togglePause(bool pause)
-{
-	unique_lock lock(_pauseMutex);
-    _paused = pause;
-	lock.unlock(); //manual unlocking is done before notifying... (from C++ reference)
-    _pauseChanged.notify_all();
-}
-
-void AlgorithmBase::pause()
-{
-	_togglePause(true);
-}
-
-void AlgorithmBase::resume()
-{
-	_togglePause(false);
-}
-
 bool AlgorithmBase::start(solution_ptr_t solutionPtr)
 {
 	_stopRequested = false;
@@ -49,11 +26,21 @@ bool AlgorithmBase::start(solution_ptr_t solutionPtr)
 	Ctoolhu::Event::Fire(Events::Started { solutionPtr.get(), name() });
 	_normalize(solutionPtr);
 	bool result = run(solutionPtr);
-	Ctoolhu::Event::Fire(Events::Finished { solutionPtr.get(), name() });
+	Ctoolhu::Event::Fire(Events::Finished { solutionPtr.get(), name(), this });
 	return result;
 }
 
-void AlgorithmBase::stop()
+void AlgorithmBase::pauseAsync()
+{
+	_togglePause(true);
+}
+
+void AlgorithmBase::resumeAsync()
+{
+	_togglePause(false);
+}
+
+void AlgorithmBase::stopAsync()
 {
 	lock_guard _(_pauseMutex);
 	_stopRequested = true;
@@ -75,17 +62,9 @@ chrono::milliseconds AlgorithmBase::elapsedTime() const
 	return _timer.ElapsedTime();
 }
 
-void AlgorithmBase::_normalize(solution_ptr_t solutionPtr) const
+void AlgorithmBase::setParent(const IAlgorithm *parent)
 {
-	bool changed = solutionPtr->normalize();
-	solutionPtr->getFitness(); //to make sure it's initialized
-	if (changed) {
-		//results of the normalization must always be treated as a better solution,
-		//no matter the actual fitness
-		Ctoolhu::Event::Fire(Events::BestSolutionFound { solutionPtr.get(), elapsedTime() });
-		if (solutionPtr->isFeasible())
-			Ctoolhu::Event::Fire(Events::FeasibleSolutionFound { solutionPtr.get(), elapsedTime() });
-	}
+	_parent = parent;
 }
 
 void AlgorithmBaseConfig::load(const boost::property_tree::ptree &pt)
@@ -100,6 +79,27 @@ void AlgorithmBaseConfig::propagate(boost::property_tree::ptree &dst) const
 	dst.add("keepFeasible", keepFeasible);
 	dst.add("extended", extended);
 	dst.add("benchmark", benchmark);
+}
+
+void AlgorithmBase::_togglePause(bool pause)
+{
+	unique_lock lock(_pauseMutex);
+    _paused = pause;
+	lock.unlock(); //manual unlocking is done before notifying... (from C++ reference)
+    _pauseChanged.notify_all();
+}
+
+void AlgorithmBase::_normalize(solution_ptr_t solutionPtr) const
+{
+	bool changed = solutionPtr->normalize();
+	solutionPtr->getFitness(); //to make sure it's initialized
+	if (changed) {
+		//results of the normalization must always be treated as a better solution,
+		//no matter the actual fitness
+		Ctoolhu::Event::Fire(Events::BestSolutionFound { solutionPtr.get(), elapsedTime() });
+		if (solutionPtr->isFeasible())
+			Ctoolhu::Event::Fire(Events::FeasibleSolutionFound { solutionPtr.get(), elapsedTime() });
+	}
 }
 
 } //ns Algorithm
