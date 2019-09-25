@@ -29,7 +29,7 @@ namespace Algorithm {
 
 		  private:
 
-			typedef std::pair<std::string, boost::property_tree::ptree> algorithm_def_t;
+			using algorithm_def_t = std::pair<std::string, boost::property_tree::ptree>;
 
 			struct Config : AlgorithmBaseConfig {
 				int repeat; //indicates how many times should the algorithm be repeated from the starting point (if solution isn't found)

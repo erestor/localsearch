@@ -27,7 +27,7 @@ namespace Algorithm {
 		virtual void save(boost::property_tree::ptree &) = 0;
 		virtual void save(boost::property_tree::ptree &) const = 0;
 
-		virtual ~ISolution() {};
+		virtual ~ISolution() = default;
 		ISolution &operator =(const ISolution &) = delete; //prevent non-polymorphic copying
 	};
 

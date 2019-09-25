@@ -16,7 +16,7 @@ namespace Algorithm {
 
 		  public:
 
-			typedef std::shared_ptr<IStep> ptr_t;
+			using ptr_t = std::shared_ptr<IStep>;
 				//The steps are stored using shared pointers by default, which corresponds to the semantic of storing them in tabu list.
 				//We cannot possibly assume in general case that the tabu list is the exclusive storage for a step, hence the choice of shared_ptr.
 

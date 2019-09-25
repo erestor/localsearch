@@ -5,22 +5,22 @@
 
 namespace Algorithm { namespace TabuSearch {
 
-AdaptedFitness::delta_type Step::adaptedDelta() const
+AdaptedFitness::delta_t Step::adaptedDelta() const
 {
 	return _adaptedDelta;
 }
 
-void Step::adaptedDelta(AdaptedFitness::delta_type in)
+void Step::adaptedDelta(AdaptedFitness::delta_t in)
 {
 	_adaptedDelta = in;
 }
 
-Fitness::delta_type Step::delta() const
+Fitness::delta_t Step::delta() const
 {
 	return _delta;
 }
 
-void Step::delta(Fitness::delta_type in)
+void Step::delta(Fitness::delta_t in)
 {
 	_delta = in;
 }

@@ -16,12 +16,12 @@ namespace Algorithm {
 		template <class RequestingObject, typename StoredType>
 		class FitnessImpl : public Ctoolhu::TypeSafe::Id<RequestingObject, StoredType, Ctoolhu::TypeSafe::ExplicitConversion> {
 
-			typedef FitnessImpl<RequestingObject, StoredType> self_t;
-			typedef Ctoolhu::TypeSafe::Id<RequestingObject, StoredType, Ctoolhu::TypeSafe::ExplicitConversion> base_t;
+			using self_t = FitnessImpl<RequestingObject, StoredType>;
+			using base_t = Ctoolhu::TypeSafe::Id<RequestingObject, StoredType, Ctoolhu::TypeSafe::ExplicitConversion>;
 
 		  public:
 
-			typedef typename std::make_signed<StoredType>::type delta_type;
+			using delta_t = typename std::make_signed<StoredType>::type;
 
 			FitnessImpl() : base_t(0) {}
 
@@ -36,9 +36,9 @@ namespace Algorithm {
 			}
 
 			//worst value of delta (never expected to be reached by an actual step)
-			static delta_type worstDelta()
+			static delta_t worstDelta()
 			{
-				return std::numeric_limits<delta_type>::max();
+				return std::numeric_limits<delta_t>::max();
 			}
 
 			self_t operator +(self_t fitness) const
@@ -46,12 +46,12 @@ namespace Algorithm {
 				return self_t{this->_id + fitness._id};
 			}
 
-			self_t operator +(delta_type delta) const
+			self_t operator +(delta_t delta) const
 			{
 				return self_t{this->_id + delta};
 			}
 
-			delta_type operator -(self_t fitness) const
+			delta_t operator -(self_t fitness) const
 			{
 				return this->_id - fitness._id;
 			}
@@ -92,8 +92,8 @@ namespace Algorithm {
 
 	} //ns Private
 
-	typedef Private::FitnessImpl<Private::FitnessDummy, int> Fitness;
-	typedef Private::FitnessImpl<Private::AdaptedFitnessDummy, int> AdaptedFitness;
+	using Fitness = Private::FitnessImpl<Private::FitnessDummy, int>;
+	using AdaptedFitness = Private::FitnessImpl<Private::AdaptedFitnessDummy, int>;
 
 } //ns Algorithm
 

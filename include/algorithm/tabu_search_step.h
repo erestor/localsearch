@@ -15,11 +15,11 @@ namespace Algorithm {
 
 		  public:
 
-			AdaptedFitness::delta_type adaptedDelta() const final;
-			void adaptedDelta(AdaptedFitness::delta_type) final;
+			AdaptedFitness::delta_t adaptedDelta() const final;
+			void adaptedDelta(AdaptedFitness::delta_t) final;
 
-			Fitness::delta_type delta() const final;
-			void delta(Fitness::delta_type) final;
+			Fitness::delta_t delta() const final;
+			void delta(Fitness::delta_t) final;
 
 		  protected:
 
@@ -27,8 +27,8 @@ namespace Algorithm {
 
 		  private:
 
-			AdaptedFitness::delta_type _adaptedDelta{0};
-			Fitness::delta_type _delta{0};
+			AdaptedFitness::delta_t _adaptedDelta{0};
+			Fitness::delta_t _delta{0};
 		};
 
 	} //ns TabuSearch

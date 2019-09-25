@@ -42,13 +42,13 @@ void AlgorithmBase::resumeAsync()
 
 void AlgorithmBase::stopAsync()
 {
-	lock_guard _(_pauseMutex);
+	lock_guard<mutex> _(_pauseMutex);
 	_stopRequested = true;
 }
 
 bool AlgorithmBase::isStopRequested() const
 {
-	unique_lock lock(_pauseMutex);
+	unique_lock<mutex> lock(_pauseMutex);
 
 	//if paused, don't allow continuation until resumed
 	while (_paused && !_stopRequested)
@@ -83,7 +83,7 @@ void AlgorithmBaseConfig::propagate(boost::property_tree::ptree &dst) const
 
 void AlgorithmBase::_togglePause(bool pause)
 {
-	unique_lock lock(_pauseMutex);
+	unique_lock<mutex> lock(_pauseMutex);
     _paused = pause;
 	lock.unlock(); //manual unlocking is done before notifying... (from C++ reference)
     _pauseChanged.notify_all();

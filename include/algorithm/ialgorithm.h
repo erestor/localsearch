@@ -16,7 +16,7 @@ namespace Algorithm {
 
 	  public:
 
-		typedef std::shared_ptr<ISolution> solution_ptr_t;
+		using solution_ptr_t = std::shared_ptr<ISolution>;
 
 		//returns the name of the algorithm
 		virtual const std::string &name() const = 0;
@@ -42,7 +42,7 @@ namespace Algorithm {
 		virtual void enableExtensions() = 0; //tells algorithm to possibly use extra measures in order to find a feasible solution
 		virtual void disableExtensions() = 0;
 
-		virtual ~IAlgorithm() {};
+		virtual ~IAlgorithm() = default;
 	};
 
 } //ns Algorithm

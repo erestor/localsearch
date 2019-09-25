@@ -13,7 +13,7 @@ namespace Algorithm {
 
 	class Factory : public IFactory {
 
-		typedef std::function<algorithm_ptr_t(const boost::property_tree::ptree &)> maker_t;
+		using maker_t = std::function<algorithm_ptr_t(const boost::property_tree::ptree &)>;
 
 	  public:
 
@@ -37,7 +37,7 @@ namespace Algorithm {
 		std::map<std::string, maker_t> _registry;
 	};
 
-	typedef Ctoolhu::Singleton::Holder<Factory> SingleFactory;
+	using SingleFactory = Ctoolhu::Singleton::Holder<Factory>;
 
 	//creates an algorithm using a single tree with "name" and "config" nodes determining an algorithm.
 	//throws if either name or config aren't present in the definition tree.

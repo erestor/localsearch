@@ -32,7 +32,7 @@ namespace Algorithm {
 		  protected:
 
 			bool run(solution_ptr_t) override;
-			virtual Fitness::delta_type walk(ISolution *) = 0;
+			virtual Fitness::delta_t walk(ISolution *) = 0;
 
 		  private:
 
