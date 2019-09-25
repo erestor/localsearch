@@ -23,7 +23,8 @@ namespace Algorithm {
 		//registers algorithm constructor with the factory.
 		//throws runtime exception if registration fails.
 		//the return value is always true, used typically to initialize a const bool global variable in a no-name namespace.
-		bool registerAlgorithm(const std::string &name, const maker_t &);
+		//See italian_search.cpp for registration pattern.
+		bool registerAlgorithm(const std::string &name, const maker_t &) noexcept(false);
 
 		//registers all directly usable algorithms in this library with the factory
 		//must not be called, it's here only to reference the registering functions so that they're not dropped by the linker

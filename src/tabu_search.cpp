@@ -51,7 +51,7 @@ bool Searcher::isAcceptableStep(const IStep *stepPtr, Fitness currentFitness) co
 }
 
 //execute the algorithm
-bool Searcher::run(solution_ptr_t solutionPtr)
+bool Searcher::run(solution_ptr_t solutionPtr) noexcept(false)
 {
 	int maxSteps{_config.maxSteps};
 	if (_config.extended)

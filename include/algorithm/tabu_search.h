@@ -53,7 +53,7 @@ namespace Algorithm {
 		  private:
 
 			//execute the algorithm
-			bool run(solution_ptr_t) final;
+			bool run(solution_ptr_t) noexcept(false) final;
 
 			//returns random element from the _PossibleSteps container (next step the solution should take)
 			IStep::ptr_t _getNextStep(const std::vector<IStep::ptr_t> &) const;

@@ -4,6 +4,7 @@
 #include <algorithm/factory.h>
 #include <algorithm/italian_search.h>
 #include <algorithm/null_algorithm.h>
+#include <cassert>
 #include <stdexcept>
 #include <string>
 
@@ -21,19 +22,19 @@ IFactory::algorithm_ptr_t Factory::createAlgorithm(const string &name, const ptr
 	return it->second(config);
 }
 
-bool Factory::registerAlgorithm(const string &name, const maker_t &maker)
+bool Factory::registerAlgorithm(const string &name, const maker_t &maker) noexcept(false)
 {
 	bool success = _registry.emplace(name, maker).second;
 	if (!success)
 		throw runtime_error("Algorithm::Factory::registerAlgorithm: failed to register '" + name + "' with algorithm factory");
 
-	return true;
+	return true; //see comment in header
 }
 
 void Factory::__registerNative()
 {
 	ItalianSearch::Private::_register();
-	throw logic_error(__FUNCTION__ + string(" must never be called"));
+	assert(false && "This function should never be called");
 }
 
 IFactory::algorithm_ptr_t create(const ptree &definition)

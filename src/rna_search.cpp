@@ -36,7 +36,7 @@ const Searcher::Config &Searcher::getConfig() const
 	return _config;
 }
 
-bool Searcher::run(solution_ptr_t currentSolutionPtr)
+bool Searcher::run(solution_ptr_t currentSolutionPtr) noexcept(false)
 {
 	int maxSteps = _config.maxSteps;
 	if (_config.extended)
@@ -72,10 +72,9 @@ bool Searcher::run(solution_ptr_t currentSolutionPtr)
 		if (steps % _config.tickFrequency == 0)
 			Event::Fire<Events::Tick>();
 	}
-	
-	//never worse than original
-	if (currentSolutionPtr->getFitness() > starting)
-		throw logic_error("Algorithm::RNA::Searcher::run: search worsened the solution");
+
+	//check postcondition
+	assert(currentSolutionPtr->getFitness() <= starting && "RNA search should not worsen the solution");
 
 	return improved;
 }
