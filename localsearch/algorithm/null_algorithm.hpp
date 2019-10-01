@@ -4,19 +4,21 @@
 #ifndef _algorithm_null_algorithm_included_
 #define _algorithm_null_algorithm_included_
 
-#include <algorithm/ialgorithm.h>
+#include "../interface/ialgorithm_exec.h"
 #include <chrono>
+#include <string>
 
 namespace Algorithm {
 
-	class NullAlgorithm : public IAlgorithm {
+	template <class Solution>
+	class NullAlgorithm : public IAlgorithmExec<Solution> {
 
 	  public:
 
 		const std::string &name() const final { return _name; }
-		void setParent(const IAlgorithm *) final {};
+		void setParent(IAlgorithm *) final {};
 
-		bool start(solution_ptr_t) final { return false; }; //cannot start the null algorithm
+		bool start(Solution &) final { return false; }; //cannot start the null algorithm
 		void pauseAsync() final {};
 		void resumeAsync() final {};
 		void stopAsync() final {};
@@ -31,6 +33,9 @@ namespace Algorithm {
 
 		static const std::string _name;
 	};
+
+	template <class Solution>
+	const std::string NullAlgorithm<Solution>::_name{"Null algorithm"};
 
 } //ns Algorithm
 

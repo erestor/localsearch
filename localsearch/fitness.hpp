@@ -16,7 +16,6 @@ namespace Algorithm {
 		template <class RequestingObject, typename StoredType>
 		class FitnessImpl : public Ctoolhu::TypeSafe::Id<RequestingObject, StoredType, Ctoolhu::TypeSafe::ExplicitConversion> {
 
-			using self_t = FitnessImpl<RequestingObject, StoredType>;
 			using base_t = Ctoolhu::TypeSafe::Id<RequestingObject, StoredType, Ctoolhu::TypeSafe::ExplicitConversion>;
 
 		  public:
@@ -30,9 +29,9 @@ namespace Algorithm {
 				_verify();
 			}
 
-			static self_t worst()
+			static FitnessImpl worst()
 			{
-				return self_t{std::numeric_limits<StoredType>::max()};
+				return FitnessImpl{std::numeric_limits<StoredType>::max()};
 			}
 
 			//worst value of delta (never expected to be reached by an actual step)
@@ -41,22 +40,22 @@ namespace Algorithm {
 				return std::numeric_limits<delta_t>::max();
 			}
 
-			self_t operator +(self_t fitness) const
+			FitnessImpl operator +(FitnessImpl fitness) const
 			{
-				return self_t{this->_id + fitness._id};
+				return FitnessImpl{this->_id + fitness._id};
 			}
 
-			self_t operator +(delta_t delta) const
+			FitnessImpl operator +(delta_t delta) const
 			{
-				return self_t{this->_id + delta};
+				return FitnessImpl{this->_id + delta};
 			}
 
-			delta_t operator -(self_t fitness) const
+			delta_t operator -(FitnessImpl fitness) const
 			{
 				return this->_id - fitness._id;
 			}
 
-			void operator +=(self_t fitness)
+			void operator +=(FitnessImpl fitness)
 			{
 				this->_id += fitness._id;
 			}
@@ -67,7 +66,7 @@ namespace Algorithm {
 				_verify();
 			}
 
-			void operator -=(self_t fitness)
+			void operator -=(FitnessImpl fitness)
 			{
 				this->_id -= fitness._id;
 				_verify();

@@ -1,114 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{6172779d-a16c-43ed-8d09-ca6bbfab40c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include">
+    <Filter Include="localsearch">
       <UniqueIdentifier>{5fb0270a-2682-4019-a4ef-1b64ff5e9d0f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\algorithm">
+    <Filter Include="localsearch\algorithm">
       <UniqueIdentifier>{c381d10b-7592-4dbc-b182-858806c009cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\italian">
-      <UniqueIdentifier>{a3de4065-7348-4423-8baf-b9c1cb30e430}</UniqueIdentifier>
+    <Filter Include="localsearch\interface">
+      <UniqueIdentifier>{99edf9f4-4891-43bb-b3cf-a6cadd5b9dac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\tabu">
-      <UniqueIdentifier>{1bb1af87-fcbc-4334-b405-ae88cd9ad080}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\rna">
-      <UniqueIdentifier>{aa1ee406-4665-4bd8-b86f-61f91fc0e75f}</UniqueIdentifier>
+    <Filter Include="localsearch\events">
+      <UniqueIdentifier>{a6b6445b-0a46-47f6-bca4-d05650e37247}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\algorithm\ialgorithm.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\algorithm\base.hpp">
+      <Filter>localsearch\algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\isolution.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\algorithm\chained_search.hpp">
+      <Filter>localsearch\algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\isolutionstep.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\algorithm\config.hpp">
+      <Filter>localsearch\algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\itabusearchstep.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\algorithm\null_algorithm.hpp">
+      <Filter>localsearch\algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\fitness.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\algorithm\rna_search.hpp">
+      <Filter>localsearch\algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\events.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\algorithm\tabu_element.hpp">
+      <Filter>localsearch\algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\tabu_search_events.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\algorithm\tabu_list.hpp">
+      <Filter>localsearch\algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\ifactory.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\algorithm\tabu_search.hpp">
+      <Filter>localsearch\algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\base.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\interface\ialgorithm.h">
+      <Filter>localsearch\interface</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\factory.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\interface\ialgorithm_exec.h">
+      <Filter>localsearch\interface</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\tabu_search.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\interface\isolution.h">
+      <Filter>localsearch\interface</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\tabu_search_step.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\interface\istore.h">
+      <Filter>localsearch\interface</Filter>
     </ClInclude>
-    <ClInclude Include="src\tabu_list.h">
-      <Filter>src\tabu</Filter>
+    <ClInclude Include="localsearch\events\events.h">
+      <Filter>localsearch\events</Filter>
     </ClInclude>
-    <ClInclude Include="src\tabu_element.h">
-      <Filter>src\tabu</Filter>
+    <ClInclude Include="localsearch\events\rna_search_events.h">
+      <Filter>localsearch\events</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\italian_search.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\events\tabu_search_events.h">
+      <Filter>localsearch\events</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\rna_search.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\interface\istep.h">
+      <Filter>localsearch\interface</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\rna_search_events.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\fitness.hpp">
+      <Filter>localsearch</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\tabu_search_stat_keeper.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\factory.hpp">
+      <Filter>localsearch</Filter>
     </ClInclude>
-    <ClInclude Include="include\algorithm\null_algorithm.h">
-      <Filter>include\algorithm</Filter>
+    <ClInclude Include="localsearch\store.hpp">
+      <Filter>localsearch</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\base.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\factory.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\rna_search.cpp">
-      <Filter>src\rna</Filter>
-    </ClCompile>
-    <ClCompile Include="src\italian_search.cpp">
-      <Filter>src\italian</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tabu_list.cpp">
-      <Filter>src\tabu</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tabu_search.cpp">
-      <Filter>src\tabu</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tabu_search_step.cpp">
-      <Filter>src\tabu</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tabu_element.cpp">
-      <Filter>src\tabu</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tabu_search_stat_keeper.cpp">
-      <Filter>src\tabu</Filter>
-    </ClCompile>
-    <ClCompile Include="src\null_algorithm.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

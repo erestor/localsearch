@@ -43,6 +43,9 @@ namespace Algorithm {
 		struct ExtensionsEnabled {
 		};
 
+		struct ExtensionsDisabled {
+		};
+
 	} //ns Events
 
 } //ns Algorithm
