@@ -22,57 +22,62 @@ namespace Algorithm {
 
 			using delta_t = typename std::make_signed<StoredType>::type;
 
-			FitnessImpl() : base_t(0) {}
+			FitnessImpl() noexcept : base_t(0) {}
 
-			explicit FitnessImpl(StoredType id) : base_t(id)
+			explicit FitnessImpl(StoredType id) noexcept : base_t(id)
 			{
 				_verify();
 			}
 
-			static FitnessImpl worst()
+			static FitnessImpl worst() noexcept
 			{
 				return FitnessImpl{std::numeric_limits<StoredType>::max()};
 			}
 
 			//worst value of delta (never expected to be reached by an actual step)
-			static delta_t worstDelta()
+			static delta_t worstDelta() noexcept
 			{
 				return std::numeric_limits<delta_t>::max();
 			}
 
-			FitnessImpl operator +(FitnessImpl fitness) const
+			bool isZero() const noexcept
+			{
+				return this->_id == 0;
+			}
+
+			FitnessImpl operator +(FitnessImpl fitness) const noexcept
 			{
 				return FitnessImpl{this->_id + fitness._id};
 			}
 
-			FitnessImpl operator +(delta_t delta) const
+			FitnessImpl operator +(delta_t delta) const noexcept
 			{
 				return FitnessImpl{this->_id + delta};
 			}
 
-			delta_t operator -(FitnessImpl fitness) const
+			delta_t operator -(FitnessImpl fitness) const noexcept
 			{
 				return this->_id - fitness._id;
 			}
 
-			void operator +=(FitnessImpl fitness)
+			void operator +=(FitnessImpl fitness) noexcept
 			{
 				this->_id += fitness._id;
 			}
 
-			void operator +=(int penalty)
+			void operator +=(int penalty) noexcept
 			{
 				this->_id += penalty;
 				_verify();
 			}
 
-			void operator -=(FitnessImpl fitness)
+			void operator -=(FitnessImpl fitness) noexcept
 			{
 				this->_id -= fitness._id;
 				_verify();
 			}
 
-			void operator -=(int penalty)
+			void operator -=(int penalty) noexcept
 			{
 				this->_id -= penalty;
 				_verify();

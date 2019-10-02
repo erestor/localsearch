@@ -33,7 +33,7 @@ namespace Algorithm {
 
 				if (pt.count("initial")) {
 					auto const &initNode = pt.get_child("initial");
-					_config.initial = make_pair(initNode.get("name", "generation"), initNode.get_child("config"));
+					_config.initial = std::make_pair(initNode.get("name", "generation"), initNode.get_child("config"));
 				}
 
 				unsigned int i = 0;
@@ -83,13 +83,13 @@ namespace Algorithm {
 			bool run(Solution &solution) final
 			{
 				const Fitness starting{solution.getFitness()};
-				auto storedSolutionPtr = make_unique<Solution>(solution);
+				auto storedSolutionPtr = std::make_unique<Solution>(solution);
 
 				algorithm_ptr_t initialAlgorithm;
 				if (!_config.initial.first.empty())
 					initialAlgorithm = SingleFactory<Solution>::Instance().createAlgorithm(_config.initial.first, _config.initial.second, this);
 
-				while (!isStopRequested() && (int)solution.getFitness() > 0 && _config.repeat-- > 0) {
+				while (!this->isStopRequested() && !solution.getFitness().isZero() && _config.repeat-- > 0) {
 					solution = *storedSolutionPtr;
 					if (initialAlgorithm)
 						initialAlgorithm->start(solution);
@@ -99,7 +99,7 @@ namespace Algorithm {
 						enableExtensions();
 
 					int idleCycles{0};
-					while (!isStopRequested() && (int)solution.getFitness() > 0) {
+					while (!this->isStopRequested() && !solution.getFitness().isZero()) {
 						idleCycles++;
 						for (auto const &alg : _algorithms) {
 							if (alg->start(solution))

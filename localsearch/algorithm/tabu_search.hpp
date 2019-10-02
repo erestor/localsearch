@@ -14,9 +14,9 @@
 #include <ctoolhu/event/firer.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <string>
-#include <vector>
 #include <sstream>
 #include <stdexcept>
+#include <vector>
 
 namespace Algorithm {
 
@@ -39,7 +39,7 @@ namespace Algorithm {
 				_config.interleave = pt.get("interleave", 1);
 				_config.fitnessNeutralPreDiscardRatio = pt.get("fitnessNeutralPreDiscardRatio", 0.0f);
 				_config.fitnessNeutralPostDiscardRatio = pt.get("fitnessNeutralPostDiscardRatio", 0.9f);
-				_config.neighborhood = pt.get<string>("neighborhood", "");
+				_config.neighborhood = pt.get<std::string>("neighborhood", "");
 			}
 			Searcher(const Searcher &) = delete;
 
@@ -94,7 +94,7 @@ namespace Algorithm {
 
 				bool improved{false};
 				int noImprovements{0};
-				while (!isStopRequested() && (int)_bestSolutionPtr->getFitness() > 0 && (noImprovements < maxSteps)) {
+				while (!this->isStopRequested() && !_bestSolutionPtr->getFitness().isZero() && (noImprovements < maxSteps)) {
 					noImprovements++;
 					auto possibleSteps = getBestSteps(solution);
 
@@ -126,7 +126,7 @@ namespace Algorithm {
 							_config.keepFeasible
 						});
 
-						Ctoolhu::Event::Fire(Algorithm::Events::CurrentSolutionChanged { &solution, elapsedTime() });
+						Ctoolhu::Event::Fire(Algorithm::Events::CurrentSolutionChanged { &solution, this->elapsedTime() });
 
 						bool foundBest{false};
 						if (actual == _bestSolutionPtr->getFitness()) {
@@ -148,11 +148,11 @@ namespace Algorithm {
 						}
 						if (foundBest) {
 							*_bestSolutionPtr = solution;
-							Ctoolhu::Event::Fire(Algorithm::Events::BestSolutionFound { &solution, elapsedTime() });
+							Ctoolhu::Event::Fire(Algorithm::Events::BestSolutionFound { &solution, this->elapsedTime() });
 						}
 						if (solution.isFeasible() && actual < bestFeasible) {
 							bestFeasible = actual;
-							Ctoolhu::Event::Fire(Algorithm::Events::FeasibleSolutionFound { &solution, elapsedTime() });
+							Ctoolhu::Event::Fire(Algorithm::Events::FeasibleSolutionFound { &solution, this->elapsedTime() });
 						}
 					}
 					Ctoolhu::Event::Fire(Events::AfterStep { noImprovements });

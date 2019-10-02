@@ -31,10 +31,10 @@ namespace Algorithm {
 		{
 			_stopRequested = false;
 			_timer.StartClock();
-			Ctoolhu::Event::Fire(Events::Started { &solution, name() });
+			Ctoolhu::Event::Fire(Events::Started { &solution, this->name() });
 			_normalize(solution);
 			const bool result{run(solution)};
-			Ctoolhu::Event::Fire(Events::Finished { &solution, name(), this });
+			Ctoolhu::Event::Fire(Events::Finished { &solution, this->name(), this });
 			return result;
 		}
 
