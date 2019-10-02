@@ -86,7 +86,7 @@ namespace Algorithm {
 		template <class Solution>
 		auto lockStore(Store<Solution> &store)
 		{
-			return Store<Solution>::locked_t(&store);
+			return typename Store<Solution>::locked_t(&store);
 		}
 
 	} //ns Storage

@@ -8,11 +8,14 @@
 #include "algorithm/null_algorithm.hpp"
 #include <ctoolhu/singleton/holder.hpp>
 #include <loki/Singleton.h>
+#include <boost/property_tree/ptree.hpp>
 #include <map>
 #include <memory>
 #include <stdexcept>
 
 namespace Algorithm {
+
+	template <class Solution> std::unique_ptr<IAlgorithmExec<Solution>> getNullAlgorithm();
 
 	namespace Private {
 
@@ -46,7 +49,7 @@ namespace Algorithm {
 			{
 				bool success = _registry.emplace(name, maker).second;
 				if (!success)
-					throw runtime_error("Algorithm::Factory::registerAlgorithm: failed to register '" + name + "' with algorithm factory");
+					throw std::runtime_error("Algorithm::Factory::registerAlgorithm: failed to register '" + name + "' with algorithm factory");
 
 				return true;
 			}
@@ -70,7 +73,7 @@ namespace Algorithm {
 	auto create(const boost::property_tree::ptree &definition, IAlgorithm *parent)
 	{
 		return SingleFactory<Solution>::Instance().createAlgorithm(
-			definition.get<string>("name"),
+			definition.get<std::string>("name"),
 			definition.get_child("config"),
 			parent
 		);
@@ -78,9 +81,9 @@ namespace Algorithm {
 
 	//returns the NullAlgorithm
 	template <class Solution>
-	auto getNullAlgorithm()
+	std::unique_ptr<IAlgorithmExec<Solution>> getNullAlgorithm()
 	{
-		return make_unique<NullAlgorithm<Solution>>();
+		return std::make_unique<NullAlgorithm<Solution>>();
 	}
 
 } //ns Algorithm
