@@ -115,7 +115,7 @@ namespace Algorithm {
 						nextStep->execute(solution);
 						const Fitness actual{solution.getFitness()};
 						if (actual != expected)
-							throw std::logic_error("Algorithm::TabuSearch::Searcher::run: Unexpected fitness after step execution");
+							throw std::logic_error("Algorithm::TabuSearch::Searcher::run: unexpected fitness after step execution");
 
 						_tabuList.insert(nextStep);
 

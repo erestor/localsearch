@@ -49,7 +49,7 @@ namespace Algorithm {
 			{
 				bool success = _registry.emplace(name, maker).second;
 				if (!success)
-					throw std::runtime_error("Algorithm::Factory::registerAlgorithm: failed to register '" + name + "' with algorithm factory");
+					throw std::runtime_error("Algorithm::Factory::registerAlgorithm: failed to register '" + name + "'");
 
 				return true;
 			}
