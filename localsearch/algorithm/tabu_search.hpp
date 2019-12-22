@@ -12,6 +12,7 @@
 #include "../interface/isolution.h"
 #include "../interface/istep.h"
 #include <ctoolhu/event/firer.hpp>
+#include <ctoolhu/random/selector.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <string>
 #include <sstream>
@@ -167,24 +168,20 @@ namespace Algorithm {
 				return improved;
 			}
 
-			//returns random element from the _PossibleSteps container (next step the solution should take)
+			//returns random element from the container (next step the solution should take)
 			std::shared_ptr<Step> _getNextStep(const std::vector<std::shared_ptr<Step>> &steps) const
 			{
-				int vectorIndex = 0;
-				size_t size = steps.size();
-				switch (size) {
+				switch (steps.size()) {
 					case 0:
 						//no valid steps found, can happen for extremely short timetables when all moves are tabu e.g.
 						return nullptr;
 					case 1:
-						break;
+						return steps[0];
 					default: {
-						Ctoolhu::Random::IntGenerator randStep(0, size - 1);
-						vectorIndex = randStep();
-						Ctoolhu::Event::Fire(Events::AfterRandomStepChosen { static_cast<int>(size), vectorIndex });
+						Ctoolhu::Event::Fire(Events::AfterRandomStepChosen { static_cast<int>(steps.size()) });
+						return Ctoolhu::Random::Select(steps);
 					}
 				}
-				return steps[vectorIndex];
 			}
 
 			//aspiration steps are allowed to happen even if they are in the tabu list
