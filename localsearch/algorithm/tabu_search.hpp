@@ -94,6 +94,7 @@ namespace Algorithm {
 				Ctoolhu::Event::Fire(Events::BeforeStart{&solution});
 
 				bool improved{false};
+				int executedSteps{0};
 				int noImprovements{0};
 				while (!this->isStopRequested() && !_bestSolutionPtr->getFitness().isZero() && (noImprovements < maxSteps)) {
 					noImprovements++;
@@ -114,6 +115,7 @@ namespace Algorithm {
 
 						const Fitness expected{solution.getFitness() + nextStep->delta()};
 						nextStep->execute(solution);
+						executedSteps++;
 						const Fitness actual{solution.getFitness()};
 						if (actual != expected)
 							throw std::logic_error("Algorithm::TabuSearch::Searcher::run: unexpected fitness after step execution");
@@ -164,7 +166,7 @@ namespace Algorithm {
 				if (solution.getFitness() > _bestSolutionPtr->getFitness())
 					solution = *_bestSolutionPtr;
 
-				Ctoolhu::Event::Fire(Events::Finished { &solution });
+				Ctoolhu::Event::Fire(Events::Finished { &solution, executedSteps, elapsedTime() });
 				return improved;
 			}
 

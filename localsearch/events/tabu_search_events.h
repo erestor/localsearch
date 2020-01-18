@@ -4,6 +4,7 @@
 #ifndef _algorithm_tabu_search_events_included_
 #define _algorithm_tabu_search_events_included_
 
+#include <chrono>
 #include <string>
 
 namespace Algorithm {
@@ -20,6 +21,8 @@ namespace Algorithm {
 
 			struct Finished {
 				ISolution *currentSolutionPtr;
+				int executedSteps;
+				std::chrono::milliseconds elapsedTime;
 			};
 
 			struct BeforeStep {

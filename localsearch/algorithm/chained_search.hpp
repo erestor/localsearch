@@ -33,7 +33,7 @@ namespace Algorithm {
 
 				if (pt.count("initial")) {
 					auto const &initNode = pt.get_child("initial");
-					_config.initial = std::make_pair(initNode.get("name", "generation"), initNode.get_child("config"));
+					_config.initial = std::pair{initNode.get("name", "generation"), initNode.get_child("config")};
 				}
 
 				unsigned int i = 0;
