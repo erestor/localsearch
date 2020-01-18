@@ -166,7 +166,7 @@ namespace Algorithm {
 				if (solution.getFitness() > _bestSolutionPtr->getFitness())
 					solution = *_bestSolutionPtr;
 
-				Ctoolhu::Event::Fire(Events::Finished { &solution, executedSteps, elapsedTime() });
+				Ctoolhu::Event::Fire(Events::Finished { &solution, executedSteps, this->elapsedTime() });
 				return improved;
 			}
 
