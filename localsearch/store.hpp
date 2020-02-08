@@ -17,7 +17,7 @@ namespace Algorithm {
 			using locked_t = Ctoolhu::Thread::LockingProxy<Store<Solution>>;
 
 			//point current solution to given solution, also init best solution
-			explicit Store(const std::shared_ptr<Solution> &solution)
+			explicit Store(std::shared_ptr<Solution> solution)
 			:	_currentSolution{solution},
 				_bestSolution{std::make_unique<Solution>(*solution)},
 				_bestOverallSolution{std::make_unique<Solution>(*solution)}
