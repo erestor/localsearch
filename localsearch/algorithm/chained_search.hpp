@@ -80,7 +80,7 @@ namespace Algorithm {
 					//chain of algorithms run in cycles until stopping condition is met
 			};
 
-			bool run(Solution &solution) final
+			bool _run(Solution &solution) final
 			{
 				const Fitness starting{solution.getFitness()};
 				auto storedSolutionPtr = std::make_unique<Solution>(solution);

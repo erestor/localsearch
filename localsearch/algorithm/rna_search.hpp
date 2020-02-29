@@ -38,10 +38,13 @@ namespace Algorithm {
 			void disableExtensions() noexcept final { _config.extended = false; }
 			const Config &getConfig() const noexcept { return _config; }
 
-		  protected:
+		  private:
 
-			bool run(Solution &currentSolution) noexcept(false) override
+			bool _run(Solution &currentSolution) noexcept(false) final
 			{
+				if (!_init(currentSolution))
+					return false;
+
 				int maxSteps = _config.maxSteps;
 				if (_config.extended)
 					maxSteps *= 2;
@@ -55,7 +58,7 @@ namespace Algorithm {
 					noImprovements++;
 					steps++;
 					const Fitness original{currentSolution.getFitness()};
-					auto const delta = walk(currentSolution);
+					auto const delta = _walk(currentSolution);
 					const Fitness actual{currentSolution.getFitness()};
 					if (actual != original + delta)
 						throw std::logic_error("Algorithm::RNA::Searcher::run: unexpected fitness delta after walk. Expected " + std::to_string(delta) + ", got " + std::to_string(actual - original));
@@ -76,16 +79,15 @@ namespace Algorithm {
 					if (steps % _config.tickFrequency == 0)
 						Ctoolhu::Event::Fire<Events::Tick>();
 				}
-
-				//check postcondition
 				assert(currentSolution.getFitness() <= starting && "RNA search should not worsen the solution");
-
 				return improved;
 			}
 
-			virtual Fitness::delta_t walk(Solution &) = 0;
+			//Prepare for walking, if necessary.
+			//Return false if algorithm cannot run.
+			virtual bool _init(Solution &) { return true; };
 
-		  private:
+			virtual Fitness::delta_t _walk(Solution &) = 0;
 
 			Config _config;
 		};

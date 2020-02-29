@@ -74,15 +74,13 @@ namespace Algorithm {
 				return _isAspirationStep(step, currentFitness) || !_tabuList.isTabu(step);
 			}
 
-		  protected:
-
-			//get container with continuation steps for the tabu search
-			virtual std::vector<std::shared_ptr<Step>> getBestSteps(Solution &) const = 0;
-
 		  private:
 
+			//get container with continuation steps for the tabu search
+			virtual std::vector<std::shared_ptr<Step>> _getBestSteps(Solution &) const = 0;
+
 			//execute the algorithm
-			bool run(Solution &solution) noexcept(false) final
+			bool _run(Solution &solution) noexcept(false) final
 			{
 				int maxSteps{_config.maxSteps};
 				if (_config.extended)
@@ -98,7 +96,7 @@ namespace Algorithm {
 				int noImprovements{0};
 				while (!this->isStopRequested() && !_bestSolutionPtr->getFitness().isZero() && (noImprovements < maxSteps)) {
 					noImprovements++;
-					auto possibleSteps = getBestSteps(solution);
+					auto possibleSteps = _getBestSteps(solution);
 
 					//update the tabu list now so that new entries added when executing the step stay intact for next step
 					//also to possibly allow some steps for next move in case no steps have just been found

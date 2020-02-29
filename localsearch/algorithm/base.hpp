@@ -33,7 +33,7 @@ namespace Algorithm {
 			_timer.StartClock();
 			Ctoolhu::Event::Fire(Events::Started { &solution, this->name() });
 			_normalize(solution);
-			const bool result{run(solution)};
+			const bool result{_run(solution)};
 			Ctoolhu::Event::Fire(Events::Finished { &solution, this->name(), this });
 			return result;
 		}
@@ -80,10 +80,10 @@ namespace Algorithm {
 
 		AlgorithmBase() = default;
 
-		//algorithm body, should return true if solution was improved.
-		virtual bool run(Solution &) = 0;
-
 	  private:
+
+		//algorithm body, should return true if solution was improved.
+		virtual bool _run(Solution &) = 0;
 
 		void _togglePause(bool pause)
 		{

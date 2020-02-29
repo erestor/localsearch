@@ -19,8 +19,6 @@ namespace Algorithm {
 
 	  public:
 
-		~IAlgorithmExec() = default;
-
 		IAlgorithmExec(const IAlgorithmExec &) = delete;
 		IAlgorithmExec(IAlgorithmExec &&) = delete;
 		IAlgorithmExec &operator =(const IAlgorithmExec &) = delete;

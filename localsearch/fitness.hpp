@@ -7,6 +7,7 @@
 #include <ctoolhu/typesafe/id.hpp>
 #include <cassert>
 #include <limits>
+#include <ostream>
 #include <stdexcept>
 
 namespace Algorithm {
@@ -81,6 +82,11 @@ namespace Algorithm {
 			{
 				this->_id -= penalty;
 				_verify();
+			}
+
+			friend std::ostream &operator<<(std::ostream &out, const FitnessImpl &fitness)
+			{
+				return out << fitness._id;
 			}
 
 		  private:
