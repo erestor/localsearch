@@ -11,48 +11,43 @@ namespace Algorithm {
 
 	class ISolution;
 
-	namespace TabuSearch {
+	namespace TabuSearch::Events {
 
-		namespace Events {
+		struct BeforeStart {
+			ISolution *currentSolutionPtr;
+		};
 
-			struct BeforeStart {
-				ISolution *currentSolutionPtr;
-			};
+		struct Finished {
+			ISolution *currentSolutionPtr;
+			int executedSteps;
+			std::chrono::milliseconds elapsedTime;
+		};
 
-			struct Finished {
-				ISolution *currentSolutionPtr;
-				int executedSteps;
-				std::chrono::milliseconds elapsedTime;
-			};
+		struct BeforeStep {
+			ISolution *currentSolutionPtr;
+		};
 
-			struct BeforeStep {
-				ISolution *currentSolutionPtr;
-			};
+		//executes after a single tabu search step is performed
+		struct StepExecuted {
+			int dynamicAdaptationThreshold;
+			ISolution *currentSolutionPtr;
+			std::string stepDescription;
+			bool keepFeasible;
+		};
 
-			//executes after a single tabu search step is performed
-			struct StepExecuted {
-				int dynamicAdaptationThreshold;
-				ISolution *currentSolutionPtr;
-				std::string stepDescription;
-				bool keepFeasible;
-			};
+		struct AfterStep {
+			int noImprovements;
+		};
 
-			struct AfterStep {
-				int noImprovements;
-			};
+		struct AfterRandomStepChosen {
+			int size;
+		};
 
-			struct AfterRandomStepChosen {
-				int size;
-				int index;
-			};
+		struct CycleDetected {
+			int stepsSinceLastImprovement;
+		};
 
-			struct CycleDetected {
-				int stepsSinceLastImprovement;
-			};
-
-		} //ns Events
-
-	} //ns TabuSearch
+	} //ns TabuSearch::Events
 
 } //ns Algorithm
 
