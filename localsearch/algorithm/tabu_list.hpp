@@ -42,6 +42,7 @@ namespace Algorithm::TabuSearch {
 			//check short-term tabu in reverse order because we're inserting at the back
 			int counter = 0;
 			for (int i = _elements.size() - 1; i >= 0 && counter < _config.tabuShortTerm; --i, ++counter) {
+				//int is the correct type, because size_t is unsigned, it would overflow when size() is zero
 				if (_elements[i].step()->isEqualForShortTermTabu(step))
 					return true;
 			}
