@@ -61,7 +61,7 @@ namespace Algorithm::TabuSearch {
 			_config.extended = false;
 		}
 
-		const Config &getConfig() const { return _config; }
+		const Config &getConfig() const noexcept { return _config; }
 
 		//Assesses given step in the context of the running algorithm to see if it's a candidate for continuation.
 		//Returns true if the step can be considered as the next one to take.
@@ -157,10 +157,12 @@ namespace Algorithm::TabuSearch {
 				Ctoolhu::Event::Fire(Events::AfterStep { noImprovements });
 			}
 
-			//Cycle is finished with some solution, make sure we use one with the best fitness found, preferring current to the saved best.
+			//Cycle is finished with some solution, make sure we use one with the best fitness found, preferring current to the saved best if equal.
 			//The reason is that next algorithm in the chain can have a chance to work on a different solution than in the previous cycle.
-			if (solution.getFitness() > _bestSolutionPtr->getFitness())
+			if (solution.getFitness() > _bestSolutionPtr->getFitness()) {
 				solution = *_bestSolutionPtr;
+				Ctoolhu::Event::Fire(Algorithm::Events::CurrentSolutionChanged { &solution, this->elapsedTime() });
+			}
 
 			Ctoolhu::Event::Fire(Events::Finished { &solution, executedSteps, this->elapsedTime() });
 			return improved;
