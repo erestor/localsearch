@@ -71,7 +71,7 @@ namespace Algorithm {
 			_parent = parent;
 		}
 
-		timer_resolution elapsedTime() const final
+		timer_resolution elapsedTime() const noexcept final
 		{
 			return _timer.ElapsedTime();
 		}
@@ -95,7 +95,7 @@ namespace Algorithm {
 
 		void _normalize(Solution &solution) const
 		{
-			bool changed = solution.normalize();
+			const bool changed = solution.normalize();
 			solution.getFitness(); //to make sure it's initialized
 			if (changed) {
 				//results of the normalization must always be treated as a better solution,

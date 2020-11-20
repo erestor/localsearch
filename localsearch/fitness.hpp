@@ -23,62 +23,62 @@ namespace Algorithm {
 
 			using delta_t = typename std::make_signed<StoredType>::type;
 
-			FitnessImpl() noexcept : base_t(0) {}
+			constexpr FitnessImpl() noexcept : base_t(0) {}
 
-			explicit FitnessImpl(StoredType id) noexcept : base_t(id)
+			explicit constexpr FitnessImpl(StoredType id) noexcept : base_t(id)
 			{
 				_verify();
 			}
 
-			static FitnessImpl worst() noexcept
+			static constexpr FitnessImpl worst() noexcept
 			{
 				return FitnessImpl{std::numeric_limits<StoredType>::max()};
 			}
 
 			//worst value of delta (never expected to be reached by an actual step)
-			static delta_t worstDelta() noexcept
+			static constexpr delta_t worstDelta() noexcept
 			{
 				return std::numeric_limits<delta_t>::max();
 			}
 
-			bool isZero() const noexcept
+			constexpr bool isZero() const noexcept
 			{
 				return this->_id == 0;
 			}
 
-			FitnessImpl operator +(FitnessImpl fitness) const noexcept
+			constexpr FitnessImpl operator +(FitnessImpl fitness) const noexcept
 			{
 				return FitnessImpl{this->_id + fitness._id};
 			}
 
-			FitnessImpl operator +(delta_t delta) const noexcept
+			constexpr FitnessImpl operator +(delta_t delta) const noexcept
 			{
 				return FitnessImpl{this->_id + delta};
 			}
 
-			delta_t operator -(FitnessImpl fitness) const noexcept
+			constexpr delta_t operator -(FitnessImpl fitness) const noexcept
 			{
 				return this->_id - fitness._id;
 			}
 
-			void operator +=(FitnessImpl fitness) noexcept
+			constexpr void operator +=(FitnessImpl fitness) noexcept
 			{
 				this->_id += fitness._id;
 			}
 
-			void operator +=(int penalty) noexcept
+			constexpr void operator +=(int penalty) noexcept
 			{
 				this->_id += penalty;
 				_verify();
 			}
 
-			void operator -=(FitnessImpl fitness) noexcept
+			constexpr void operator -=(FitnessImpl fitness) noexcept
 			{
 				this->_id -= fitness._id;
 				_verify();
 			}
 
-			void operator -=(int penalty) noexcept
+			constexpr void operator -=(int penalty) noexcept
 			{
 				this->_id -= penalty;
 				_verify();
@@ -91,7 +91,7 @@ namespace Algorithm {
 
 		  private:
 
-			void _verify()
+			constexpr void _verify() noexcept
 			{
 				assert(this->_id >= 0 && "Algorithm::Private::FitnessImpl::_Verify: Fitness can't be negative");
 			}

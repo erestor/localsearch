@@ -1,6 +1,3 @@
-//----------------------------------------------------------------------------
-// Author:		Martin Klemsa
-//----------------------------------------------------------------------------
 #ifndef _algorithm_rna_search_included_
 #define _algorithm_rna_search_included_
 
@@ -18,7 +15,7 @@ namespace Algorithm::RNA {
 	template <class Solution>
 	class Searcher : public AlgorithmBase<Solution> {
 
-		public:
+	  public:
 
 		explicit Searcher(const boost::property_tree::ptree &pt)
 		{
@@ -36,7 +33,7 @@ namespace Algorithm::RNA {
 		void disableExtensions() noexcept final { _config.extended = false; }
 		const Config &getConfig() const noexcept { return _config; }
 
-		private:
+	  private:
 
 		bool _run(Solution &currentSolution) noexcept(false) final
 		{

@@ -15,7 +15,9 @@ namespace Algorithm {
 
 		virtual ~ISolution() = default;
 		ISolution(const ISolution &) = delete; //prevent non-polymorphic copying
-		ISolution &operator =(const ISolution &) = delete; //prevent non-polymorphic copying
+		ISolution(ISolution &&) = delete;
+		ISolution &operator =(const ISolution &) = delete;
+		ISolution &operator =(ISolution &&) = delete;
 
 		virtual bool normalize() = 0; //ensure the solution is in a valid state to start an algorithm, should return true if changes were made
 		virtual Fitness getFitness() = 0; //returns the quality ('fitness') of this solution

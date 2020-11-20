@@ -31,7 +31,7 @@ namespace Algorithm {
 			//returns new algorithm registered under the name, or NullAlgorithm instance if not found.
 			algorithm_ptr_t createAlgorithm(const std::string &name, const boost::property_tree::ptree &config, IAlgorithm *parent) const
 			{
-				auto it = _registry.find(name);
+				auto const it = _registry.find(name);
 				if (it == _registry.end())
 					return getNullAlgorithm<Solution>();
 
@@ -47,7 +47,7 @@ namespace Algorithm {
 			//The return value is always true, used typically to initialize a const bool global variable in a no-name namespace (which is the registration).
 			bool registerAlgorithm(const std::string &name, const maker_t &maker) noexcept(false)
 			{
-				bool success = _registry.emplace(name, maker).second;
+				const bool success = _registry.emplace(name, maker).second;
 				if (!success)
 					throw std::runtime_error("Algorithm::Factory::registerAlgorithm: failed to register '" + name + "'");
 
