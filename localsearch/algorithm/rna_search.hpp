@@ -11,7 +11,7 @@
 
 namespace Algorithm::RNA {
 
-	//Random Non-Ascendent fitness improvement algorithm
+	//Random Non-Ascendent search algorithm
 	template <class Solution>
 	class Searcher : public AlgorithmBase<Solution> {
 
@@ -35,26 +35,23 @@ namespace Algorithm::RNA {
 
 	  private:
 
-		bool _run(Solution &currentSolution) noexcept(false) final
+		bool _run(Solution &solution) noexcept(false) final
 		{
-			if (!_init(currentSolution))
+			const Fitness startingFitness{solution.getFitness()};
+			Fitness bestFeasible{solution.isFeasible() ? startingFitness : Fitness::worst()}; //holds the fitness of the best feasible solution found so far
+			if (!_init(solution))
 				return false;
 
-			int maxSteps = _config.maxSteps;
-			if (_config.extended)
-				maxSteps *= 2;
-
-			const Fitness starting{currentSolution.getFitness()};
-			Fitness bestFeasible{currentSolution.isFeasible() ? starting : Fitness::worst()}; //holds the fitness of the best feasible solution found so far
-			bool improved = false;
-			int noImprovements = 0;
-			int steps = 0;
-			while (!this->isStopRequested() && !currentSolution.getFitness().isZero() && (noImprovements < maxSteps)) {
+			const int maxSteps{_config.maxSteps * (_config.extended ? 2 : 1)};
+			bool improved{false};
+			int executedSteps{0};
+			int noImprovements{0};
+			while (!this->isStopRequested() && !solution.getFitness().isZero() && (noImprovements < maxSteps)) {
 				noImprovements++;
-				steps++;
-				const Fitness original{currentSolution.getFitness()};
-				auto const delta = _walk(currentSolution);
-				const Fitness actual{currentSolution.getFitness()};
+				executedSteps++;
+				const Fitness original{solution.getFitness()};
+				auto const delta = _walk(solution);
+				const Fitness actual{solution.getFitness()};
 				if (actual != original + delta)
 					throw std::logic_error("Algorithm::RNA::Searcher::run: unexpected fitness delta after walk. Expected " + std::to_string(delta) + ", got " + std::to_string(actual - original));
 
@@ -64,29 +61,29 @@ namespace Algorithm::RNA {
 				if (delta < 0) {
 					noImprovements = 0;
 					improved = true;
-					Ctoolhu::Event::Fire(Algorithm::Events::CurrentSolutionChanged { &currentSolution, this->elapsedTime() });
-					Ctoolhu::Event::Fire(Algorithm::Events::BestSolutionFound { &currentSolution, this->elapsedTime() });
+					Ctoolhu::Event::Fire(Algorithm::Events::CurrentSolutionChanged { &solution, this->elapsedTime() });
+					Ctoolhu::Event::Fire(Algorithm::Events::BestSolutionFound { &solution, this->elapsedTime() });
 				}
-				if (currentSolution.isFeasible() && actual < bestFeasible) {
+				if (solution.isFeasible() && actual < bestFeasible) {
 					bestFeasible = actual;
-					Ctoolhu::Event::Fire(Algorithm::Events::FeasibleSolutionFound { &currentSolution, this->elapsedTime() });
+					Ctoolhu::Event::Fire(Algorithm::Events::FeasibleSolutionFound { &solution, this->elapsedTime() });
 				}
-				if (steps % _config.tickFrequency == 0)
+				if (executedSteps % _config.tickFrequency == 0)
 					Ctoolhu::Event::Fire<Events::Tick>();
 			}
-			assert(currentSolution.getFitness() <= starting && "RNA search should not worsen the solution");
+			assert(solution.getFitness() <= startingFitness && "RNA search should not worsen the solution");
 			return improved;
 		}
 
 		//Prepare for walking, if necessary.
 		//Return false if algorithm cannot run.
-		virtual bool _init(Solution &) { return true; };
+		virtual bool _init(Solution &) { return true; }
 
-		virtual Fitness::delta_t _walk(Solution &) = 0;
+		virtual Fitness::delta_t _walk(Solution &) const = 0;
 
 		Config _config;
 	};
 
 } //ns Algorithm::RNA
 
-#endif //_rna_included_
+#endif //file guard

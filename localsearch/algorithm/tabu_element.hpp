@@ -1,6 +1,3 @@
-//----------------------------------------------------------------------------
-// Author:		Martin Klemsa
-//----------------------------------------------------------------------------
 #ifndef _algorithm_tabu_element_included
 #define _algorithm_tabu_element_included
 
@@ -12,7 +9,7 @@ namespace Algorithm::TabuSearch {
 	template <class Step>
 	class TabuElement {
 
-		public:
+	  public:
 
 		TabuElement(int lifetime, const std::shared_ptr<Step> &step) noexcept
 		:
@@ -28,7 +25,7 @@ namespace Algorithm::TabuSearch {
 
 		const std::shared_ptr<Step> &step() const noexcept { return _step; }
 
-		private:
+	  private:
 
 		int _lifetime; //how long will the element stay in the list
 		std::shared_ptr<Step> _step; //step data so that we can compare with another step to determine if it's tabu

@@ -1,6 +1,3 @@
-//----------------------------------------------------------------------------
-// Author:		Martin Klemsa
-//----------------------------------------------------------------------------
 #ifndef _algorithm_tabu_search_included_
 #define _algorithm_tabu_search_included_
 
@@ -14,9 +11,9 @@
 #include <ctoolhu/event/firer.hpp>
 #include <ctoolhu/random/selector.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include <string>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 namespace Algorithm::TabuSearch {
@@ -24,11 +21,11 @@ namespace Algorithm::TabuSearch {
 	template <class Solution, class Step, class Enable = void>
 	class Searcher;
 
-	//tabu search algorithm
+	//Tabu search algorithm
 	template <class Solution, class Step>
 	class Searcher<Solution, Step, typename std::enable_if<std::is_base_of<IStep<Solution>, Step>::value>::type> : public AlgorithmBase<Solution> {
 
-		public:
+	  public:
 
 		explicit Searcher(const boost::property_tree::ptree &pt) : _tabuList(pt)
 		{
@@ -40,7 +37,6 @@ namespace Algorithm::TabuSearch {
 			_config.fitnessNeutralPostDiscardRatio = pt.get("fitnessNeutralPostDiscardRatio", 0.9f);
 			_config.neighborhood = pt.get<std::string>("neighborhood", "");
 		}
-		Searcher(const Searcher &) = delete;
 
 		struct Config : Algorithm::Config {
 			int maxSteps;
@@ -51,16 +47,8 @@ namespace Algorithm::TabuSearch {
 			std::string neighborhood; //enables varying neighborhoods in implementation-specific best step getters
 		};
 
-		void enableExtensions() final
-		{
-			_config.extended = true;
-		}
-
-		void disableExtensions() final
-		{
-			_config.extended = false;
-		}
-
+		void enableExtensions() noexcept final { _config.extended = true; }
+		void disableExtensions() noexcept final { _config.extended = false; }
 		const Config &getConfig() const noexcept { return _config; }
 
 		//Assesses given step in the context of the running algorithm to see if it's a candidate for continuation.
@@ -72,23 +60,26 @@ namespace Algorithm::TabuSearch {
 			return _isAspirationStep(step, currentFitness) || !_tabuList.isTabu(step);
 		}
 
-		private:
+	  protected:
 
-		//get container with continuation steps for the tabu search
-		virtual std::vector<std::shared_ptr<Step>> _getBestSteps(Solution &) const = 0;
+		void executeStep(Solution &solution, const std::shared_ptr<Step> &step)
+		{
+			step->execute(solution);
+			_tabuList.insert(step);
+		}
+
+	  private:
 
 		//execute the algorithm
 		bool _run(Solution &solution) noexcept(false) final
 		{
-			int maxSteps{_config.maxSteps};
-			if (_config.extended)
-				maxSteps *= 2;
-
+			_tabuList.clear();
 			_bestSolutionPtr = std::make_unique<Solution>(solution);
 			Fitness bestFeasible{solution.isFeasible() ? solution.getFitness() : Fitness::worst()}; //holds the fitness of the best feasible solution found so far
+			if (!_init(solution))
+				return false;
 
-			Ctoolhu::Event::Fire(Events::BeforeStart{&solution});
-
+			const int maxSteps{_config.maxSteps * (_config.extended ? 2 : 1)};
 			bool improved{false};
 			int executedSteps{0};
 			int noImprovements{0};
@@ -110,13 +101,11 @@ namespace Algorithm::TabuSearch {
 					nextStep->dump(s);
 
 					const Fitness expected{solution.getFitness() + nextStep->delta()};
-					nextStep->execute(solution);
+					executeStep(solution, nextStep);
 					executedSteps++;
 					const Fitness actual{solution.getFitness()};
 					if (actual != expected)
 						throw std::logic_error("Algorithm::TabuSearch::Searcher::run: unexpected fitness after step execution");
-
-					_tabuList.insert(nextStep);
 
 					Ctoolhu::Event::Fire(Events::StepExecuted {
 						_config.dynamicAdaptationThreshold,
@@ -194,6 +183,13 @@ namespace Algorithm::TabuSearch {
 		{
 			return !_config.keepFeasible || !_bestSolutionPtr->isFeasible() || solution.isFeasible();
 		}
+
+		//Prepare for getting best steps, if necessary.
+		//Return false if algorithm cannot run.
+		virtual bool _init(Solution &) { return true; }
+
+		//get container with continuation steps for the tabu search
+		virtual std::vector<std::shared_ptr<Step>> _getBestSteps(Solution &) const = 0;
 
 		Config _config;
 		std::unique_ptr<Solution> _bestSolutionPtr; //holds best solution found so far

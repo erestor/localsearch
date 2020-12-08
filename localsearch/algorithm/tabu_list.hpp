@@ -1,6 +1,3 @@
-//----------------------------------------------------------------------------
-// Author:		Martin Klemsa
-//----------------------------------------------------------------------------
 #ifndef _algorithm_tabu_list_included
 #define _algorithm_tabu_list_included
 
@@ -16,7 +13,7 @@ namespace Algorithm::TabuSearch {
 	template <class Step>
 	class TabuList {
 
-		public:
+	  public:
 
 		explicit TabuList(const boost::property_tree::ptree &pt)
 		:
@@ -37,6 +34,11 @@ namespace Algorithm::TabuSearch {
 			});
 		}
 
+		void clear()
+		{
+			_elements.clear();
+		}
+
 		bool isTabu(const Step &step) const //return true if the given step is tabu according to the list
 		{
 			//check short-term tabu in reverse order because we're inserting at the back
@@ -52,7 +54,7 @@ namespace Algorithm::TabuSearch {
 			});
 		}
 
-		private:
+	  private:
 
 		struct Config {
 			int tabuLower;

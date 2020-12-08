@@ -1,6 +1,3 @@
-//----------------------------------------------------------------------------
-// Author:		Martin Klemsa
-//----------------------------------------------------------------------------
 #ifndef _algorithm_chained_search_included_
 #define _algorithm_chained_search_included_
 
@@ -21,7 +18,7 @@ namespace Algorithm::ChainedSearch {
 
 		using algorithm_ptr_t = typename Private::Factory<Solution>::algorithm_ptr_t;
 
-		public:
+	  public:
 
 		explicit Searcher(const boost::property_tree::ptree &pt)
 		{
@@ -66,7 +63,7 @@ namespace Algorithm::ChainedSearch {
 			Ctoolhu::Event::Fire<Algorithm::Events::ExtensionsDisabled>();
 		}
 
-		private:
+	  private:
 
 		using algorithm_def_t = std::pair<std::string, boost::property_tree::ptree>;
 
