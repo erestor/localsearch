@@ -27,8 +27,10 @@ namespace Algorithm::Storage {
 
 		Solution *getCurrentSolution() const noexcept final { return _currentSolution.get(); }
 		Solution *getBestSolution() const noexcept final { return _bestSolution.get(); }
-		Solution *getBestOverallSolution() const noexcept final { return _bestOverallSolution.get(); }
 		Solution *getFeasibleSolution() const noexcept final { return _feasibleSolution.get(); }
+
+		//this is purely for snapshot purposes, it is not used by the algorithms
+		Solution *getBestOverallSolution() const noexcept final { return _bestOverallSolution.get(); }
 		Solution *getFeasibleOverallSolution() const noexcept final { return _feasibleOverallSolution.get(); }
 
 		//hard-copy current solution to the best solution
@@ -49,8 +51,10 @@ namespace Algorithm::Storage {
 
 			if (!_feasibleOverallSolution)
 				_feasibleOverallSolution = std::make_unique<Solution>(*_feasibleSolution);
-			else if (_feasibleSolution->getFitness() < _feasibleOverallSolution->getFitness())
+			else if (!_feasibleOverallSolution->isFeasible() || _feasibleSolution->getFitness() < _feasibleOverallSolution->getFitness()) {
+				//feasible overall might not be feasible due to constraint settings change - unlike the feasibleSolution it is never reset
 				*_feasibleOverallSolution = *_feasibleSolution;
+			}
 		}
 
 		//invalidate fitness and feasibility status of all stored solutions
@@ -64,20 +68,18 @@ namespace Algorithm::Storage {
 				if (!_feasibleSolution->isFeasible())
 					_feasibleSolution.reset();
 			}
-			if (_feasibleOverallSolution) {
+			if (_feasibleOverallSolution)
 				_feasibleOverallSolution->markDirty();
-				if (!_feasibleOverallSolution->isFeasible())
-					_feasibleOverallSolution.reset();
-			}
 		}
 
-		private:
+	  private:
 
 		const std::shared_ptr<Solution> _currentSolution;	//solution currently worked upon by the algorithm
 		const std::unique_ptr<Solution> _bestSolution;		//best solution found by the algorithm
-		const std::unique_ptr<Solution> _bestOverallSolution;//best overall solution found during the lifetime of the store (subject to reset)
 		std::unique_ptr<Solution> _feasibleSolution;		//best feasible solution found by the algorithm
-		std::unique_ptr<Solution> _feasibleOverallSolution;	//best overall feasible solution found during the lifetime of the store (subject to reset)
+
+		const std::unique_ptr<Solution> _bestOverallSolution;//best overall solution found during the lifetime of the store (can be dirty)
+		std::unique_ptr<Solution> _feasibleOverallSolution;	//best overall feasible solution found during the lifetime of the store (can be dirty)
 	};
 
 	//returns a locked store (given as parameter) that can be used thread-safely

@@ -20,8 +20,9 @@ namespace Algorithm {
 
 			virtual ISolution *getCurrentSolution() const = 0;
 			virtual ISolution *getBestSolution() const = 0;
-			virtual ISolution *getBestOverallSolution() const = 0;
 			virtual ISolution *getFeasibleSolution() const = 0;
+
+			virtual ISolution *getBestOverallSolution() const = 0;
 			virtual ISolution *getFeasibleOverallSolution() const = 0;
 
 			virtual void setBestSolution() = 0;
