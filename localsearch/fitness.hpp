@@ -46,6 +46,11 @@ namespace Algorithm {
 				return this->_id == 0;
 			}
 
+			constexpr void reset() noexcept
+			{
+				this->_id = 0;
+			}
+
 			constexpr FitnessImpl operator +(FitnessImpl fitness) const noexcept
 			{
 				return FitnessImpl{this->_id + fitness._id};
