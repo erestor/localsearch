@@ -13,7 +13,7 @@ What next?
 - Improvements are added as they come up in production
 
 Who uses it?
-- Skolaris timetable optimisation tool (http://skolaris.net)
+- <a href="https://skolaris.net">Skolaris: Online school timetable software</a>
 
 Licence
 - MIT
