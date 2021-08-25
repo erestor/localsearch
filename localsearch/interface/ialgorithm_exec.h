@@ -21,8 +21,8 @@ namespace Algorithm {
 
 		IAlgorithmExec(const IAlgorithmExec &) = delete;
 		IAlgorithmExec(IAlgorithmExec &&) = delete;
-		IAlgorithmExec &operator =(const IAlgorithmExec &) = delete;
-		IAlgorithmExec &operator =(IAlgorithmExec &&) = delete;
+		IAlgorithmExec &operator=(const IAlgorithmExec &) = delete;
+		IAlgorithmExec &operator=(IAlgorithmExec &&) = delete;
 
 		//Starts the algorithm (synchronously) and returns when it's finished.
 		//Should return true if the solution was changed.

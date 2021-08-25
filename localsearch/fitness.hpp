@@ -51,39 +51,39 @@ namespace Algorithm {
 				this->_id = 0;
 			}
 
-			constexpr FitnessImpl operator +(FitnessImpl fitness) const noexcept
+			constexpr FitnessImpl operator+(FitnessImpl fitness) const noexcept
 			{
 				return FitnessImpl{this->_id + fitness._id};
 			}
 
-			constexpr FitnessImpl operator +(delta_t delta) const noexcept
+			constexpr FitnessImpl operator+(delta_t delta) const noexcept
 			{
 				return FitnessImpl{this->_id + delta};
 			}
 
-			constexpr delta_t operator -(FitnessImpl fitness) const noexcept
+			constexpr delta_t operator-(FitnessImpl fitness) const noexcept
 			{
 				return this->_id - fitness._id;
 			}
 
-			constexpr void operator +=(FitnessImpl fitness) noexcept
+			constexpr void operator+=(FitnessImpl fitness) noexcept
 			{
 				this->_id += fitness._id;
 			}
 
-			constexpr void operator +=(int penalty) noexcept
+			constexpr void operator+=(int penalty) noexcept
 			{
 				this->_id += penalty;
 				_verify();
 			}
 
-			constexpr void operator -=(FitnessImpl fitness) noexcept
+			constexpr void operator-=(FitnessImpl fitness) noexcept
 			{
 				this->_id -= fitness._id;
 				_verify();
 			}
 
-			constexpr void operator -=(int penalty) noexcept
+			constexpr void operator-=(int penalty) noexcept
 			{
 				this->_id -= penalty;
 				_verify();

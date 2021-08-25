@@ -24,8 +24,8 @@ namespace Algorithm {
 
 		AlgorithmBase(const AlgorithmBase &) = delete;
 		AlgorithmBase(AlgorithmBase &&) = delete;
-		AlgorithmBase &operator =(const AlgorithmBase &) = delete;
-		AlgorithmBase &operator =(AlgorithmBase &&) = delete;
+		AlgorithmBase &operator=(const AlgorithmBase &) = delete;
+		AlgorithmBase &operator=(AlgorithmBase &&) = delete;
 
 		bool start(Solution &solution) final
 		{
