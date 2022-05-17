@@ -31,22 +31,12 @@ ipch/
 *.opensdf
 *.psess
 *.vsp
+.vs/
 
 # SVN, git repository #
 ##################
 .svn/
 .git/
-
-# Skolaris-generated files #
-############################
-cerr.txt
-errors.txt
-fitness.txt
-initScheduler.js
-log.txt
-ttdata.js
-Xperiments/
-#must not ignore schedules.txt as they're part of Data directories
 
 # Packages #
 ############

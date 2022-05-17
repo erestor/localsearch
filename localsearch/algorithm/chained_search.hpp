@@ -31,19 +31,17 @@ namespace Algorithm::ChainedSearch {
 				_config.initial = std::pair{initNode.get("name", "generation"), initNode.get_child("config")};
 			}
 
-			unsigned int i = 0;
 			for (auto const &node : pt.get_child("algorithms")) {
 				_config.algorithms.emplace_back(
 					node.second.get<std::string>("name"),
 					node.second.get_child("config")
 				);
-				++i;
 			}
 
 			for (auto &algDef : _config.algorithms) {
 				_config.propagate(algDef.second);
 				auto alg = SingleFactory<Solution>::Instance().createAlgorithm(algDef.first, algDef.second, this);
-				_algorithms.push_back(move(alg));
+				_algorithms.push_back(std::move(alg));
 			}
 		}
 
