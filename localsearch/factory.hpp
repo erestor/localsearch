@@ -7,7 +7,6 @@
 #include "interface/ialgorithm_exec.h"
 #include "algorithm/null_algorithm.hpp"
 #include <ctoolhu/singleton/holder.hpp>
-#include <loki/Singleton.h>
 #include <boost/property_tree/ptree.hpp>
 #include <map>
 #include <memory>
