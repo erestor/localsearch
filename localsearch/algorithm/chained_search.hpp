@@ -76,7 +76,7 @@ namespace Algorithm::ChainedSearch {
 		bool _run(Solution &solution) final
 		{
 			const Fitness starting{solution.getFitness()};
-			auto storedSolutionPtr = std::make_unique<Solution>(solution);
+			auto storedSolutionPtr = std::make_unique<Solution>(solution); //don't use the stack as we don't know the size of the solution
 
 			algorithm_ptr_t initialAlgorithm;
 			if (!_config.initial.first.empty())
