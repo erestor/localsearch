@@ -15,9 +15,9 @@ namespace Algorithm {
 	namespace Private {
 
 		template <class RequestingObject, typename StoredType>
-		class FitnessImpl : public Ctoolhu::TypeSafe::Id<RequestingObject, StoredType, Ctoolhu::TypeSafe::ExplicitConversion> {
+		class FitnessImpl : public Ctoolhu::TypeSafe::Id<RequestingObject, StoredType> {
 
-			using base_t = Ctoolhu::TypeSafe::Id<RequestingObject, StoredType, Ctoolhu::TypeSafe::ExplicitConversion>;
+			using base_t = Ctoolhu::TypeSafe::Id<RequestingObject, StoredType>;
 
 		  public:
 

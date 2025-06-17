@@ -50,13 +50,13 @@ namespace Algorithm {
 
 		void stopAsync() final
 		{
-			std::lock_guard<std::mutex> _(_pauseMutex);
+			std::lock_guard _{_pauseMutex};
 			_stopRequested = true;
 		}
 
 		bool isStopRequested() const final
 		{
-			std::unique_lock<std::mutex> lock(_pauseMutex);
+			std::unique_lock lock(_pauseMutex);
 
 			//if paused, don't allow continuation until resumed
 			while (_paused && !_stopRequested)
@@ -87,7 +87,7 @@ namespace Algorithm {
 
 		void _togglePause(bool pause)
 		{
-			std::unique_lock<std::mutex> lock(_pauseMutex);
+			std::unique_lock lock(_pauseMutex);
 			_paused = pause;
 			lock.unlock(); //manual unlocking is done before notifying... (from C++ reference)
 			_pauseChanged.notify_all();

@@ -49,7 +49,7 @@ namespace Algorithm::TabuSearch {
 					return true;
 			}
 			//check normal tabu
-			return std_ext::any_of(_elements, [&step](auto const &elem) {
+			return std::ranges::any_of(_elements, [&step](auto const &elem) {
 				return elem.step()->isUndoOf(step);
 			});
 		}
