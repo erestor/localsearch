@@ -2,7 +2,6 @@
 #define _algorithm_tabu_list_included
 
 #include "tabu_element.hpp"
-#include <ctoolhu/std_ext.hpp>
 #include <ctoolhu/random/generator.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <vector>
@@ -29,7 +28,7 @@ namespace Algorithm::TabuSearch {
 
 		void shift() //decrease tabu counter and remove all elements that reached the end of their time
 		{
-			std_ext::erase_if(_elements, [](auto &elem) {
+			std::erase_if(_elements, [](auto &elem) {
 				return --elem == 0;
 			});
 		}
