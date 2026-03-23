@@ -21,9 +21,9 @@ namespace Algorithm::TabuSearch {
 			_configure(pt);
 		}
 
-		void insert(const std::shared_ptr<Step> &step)
+		void insert(std::shared_ptr<Step> step)
 		{
-			_elements.emplace_back(_tabuGenerator(), step);
+			_elements.emplace_back(_tabuGenerator(), std::move(step));
 		}
 
 		void shift() //decrease tabu counter and remove all elements that reached the end of their time
@@ -56,15 +56,11 @@ namespace Algorithm::TabuSearch {
 	  private:
 
 		struct Config {
-			int tabuLower;
-			int tabuUpper;
 			int tabuShortTerm;
 		};
 
 		void _configure(const boost::property_tree::ptree &pt)
 		{
-			_config.tabuLower = pt.get("tabuLower", 20);
-			_config.tabuUpper = pt.get("tabuUpper", 30);
 			_config.tabuShortTerm = pt.get("tabuShortTerm", 1);
 		}
 

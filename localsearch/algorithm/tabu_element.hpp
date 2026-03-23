@@ -11,10 +11,10 @@ namespace Algorithm::TabuSearch {
 
 	  public:
 
-		TabuElement(int lifetime, const std::shared_ptr<Step> &step) noexcept
+		TabuElement(int lifetime, std::shared_ptr<Step> step) noexcept
 		:
 			_lifetime{lifetime},
-			_step{step}
+			_step{std::move(step)}
 		{
 		}
 

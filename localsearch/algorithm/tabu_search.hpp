@@ -62,10 +62,10 @@ namespace Algorithm::TabuSearch {
 
 	  protected:
 
-		void executeStep(Solution &solution, const std::shared_ptr<Step> &step)
+		void executeStep(Solution &solution, std::shared_ptr<Step> step)
 		{
 			step->execute(solution);
-			_tabuList.insert(step);
+			_tabuList.insert(std::move(step));
 		}
 
 	  private:
@@ -97,11 +97,11 @@ namespace Algorithm::TabuSearch {
 					Ctoolhu::Event::Fire(Events::BeforeStep{&solution});
 
 					//record step data before execution
-					std::stringstream s;
+					std::ostringstream s;
 					nextStep->dump(s);
 
 					const Fitness expected{solution.getFitness() + nextStep->delta()};
-					executeStep(solution, nextStep);
+					executeStep(solution, std::move(nextStep));
 					executedSteps++;
 					const Fitness actual{solution.getFitness()};
 					if (actual != expected)
