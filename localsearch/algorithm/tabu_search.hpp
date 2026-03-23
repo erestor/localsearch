@@ -13,6 +13,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <sstream>
 #include <stdexcept>
+#include <utility>
 #include <string>
 #include <vector>
 
