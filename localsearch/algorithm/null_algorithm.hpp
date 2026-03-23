@@ -16,18 +16,18 @@ namespace Algorithm {
 	  public:
 
 		const std::string &name() const noexcept final { return _name; }
-		void setParent(IAlgorithm *) noexcept final {};
+		void setParent(IAlgorithm *) noexcept final {}
 
-		bool start(Solution &) noexcept final { return false; }; //cannot start the null algorithm
-		void pauseAsync() noexcept final {};
-		void resumeAsync() noexcept final {};
-		void stopAsync() noexcept final {};
+		bool start(Solution &) noexcept final { return false; } //cannot start the null algorithm
+		void pauseAsync() noexcept final {}
+		void resumeAsync() noexcept final {}
+		void stopAsync() noexcept final {}
 		bool isStopRequested() const noexcept final { return true; }
 
 		std::chrono::milliseconds elapsedTime() const noexcept final { return std::chrono::milliseconds(0); }
 
-		void enableExtensions() final {};
-		void disableExtensions() final {};
+		void enableExtensions() noexcept final {}
+		void disableExtensions() noexcept final {}
 
 	  private:
 

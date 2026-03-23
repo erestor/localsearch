@@ -4,6 +4,7 @@
 #include "tabu_element.hpp"
 #include <ctoolhu/random/generator.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include <utility>
 #include <vector>
 
 namespace Algorithm::TabuSearch {
@@ -21,9 +22,9 @@ namespace Algorithm::TabuSearch {
 			_configure(pt);
 		}
 
-		void insert(const std::shared_ptr<Step> &step)
+		void insert(std::shared_ptr<Step> step)
 		{
-			_elements.emplace_back(_tabuGenerator(), step);
+			_elements.emplace_back(_tabuGenerator(), std::move(step));
 		}
 
 		void shift() //decrease tabu counter and remove all elements that reached the end of their time
@@ -56,15 +57,19 @@ namespace Algorithm::TabuSearch {
 	  private:
 
 		struct Config {
+#ifdef _DEBUG
 			int tabuLower;
 			int tabuUpper;
+#endif
 			int tabuShortTerm;
 		};
 
 		void _configure(const boost::property_tree::ptree &pt)
 		{
+#ifdef _DEBUG
 			_config.tabuLower = pt.get("tabuLower", 20);
 			_config.tabuUpper = pt.get("tabuUpper", 30);
+#endif
 			_config.tabuShortTerm = pt.get("tabuShortTerm", 1);
 		}
 
