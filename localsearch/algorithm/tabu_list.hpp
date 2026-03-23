@@ -56,11 +56,19 @@ namespace Algorithm::TabuSearch {
 	  private:
 
 		struct Config {
+#ifdef _DEBUG
+			int tabuLower;
+			int tabuUpper;
+#endif
 			int tabuShortTerm;
 		};
 
 		void _configure(const boost::property_tree::ptree &pt)
 		{
+#ifdef _DEBUG
+			_config.tabuLower = pt.get("tabuLower", 20);
+			_config.tabuUpper = pt.get("tabuUpper", 30);
+#endif
 			_config.tabuShortTerm = pt.get("tabuShortTerm", 1);
 		}
 
