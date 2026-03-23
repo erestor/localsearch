@@ -2,6 +2,7 @@
 #define _algorithm_tabu_element_included
 
 #include <memory>
+#include <utility>
 
 namespace Algorithm::TabuSearch {
 

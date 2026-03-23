@@ -4,6 +4,7 @@
 #include "tabu_element.hpp"
 #include <ctoolhu/random/generator.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include <utility>
 #include <vector>
 
 namespace Algorithm::TabuSearch {
