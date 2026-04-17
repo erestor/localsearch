@@ -69,6 +69,8 @@ namespace Algorithm::TabuSearch {
 			_tabuList.insert(std::move(step));
 		}
 
+		auto const &tabuList() const noexcept { return _tabuList; }
+
 	  private:
 
 		//execute the algorithm
