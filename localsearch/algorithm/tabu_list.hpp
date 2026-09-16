@@ -22,9 +22,12 @@ namespace Algorithm::TabuSearch {
 			_configure(pt);
 		}
 
-		void insert(std::shared_ptr<Step> step)
+		void insert(std::shared_ptr<Step> step, bool kicked)
 		{
-			_elements.emplace_back(_tabuGenerator(), std::move(step));
+			if (kicked)
+				_kickedElements.emplace_back(20, std::move(step));
+			else
+				_elements.emplace_back(_tabuGenerator(), std::move(step));
 		}
 
 		void shift() //decrease tabu counter and remove all elements that reached the end of their time
@@ -32,16 +35,24 @@ namespace Algorithm::TabuSearch {
 			std::erase_if(_elements, [](auto &elem) {
 				return --elem == 0;
 			});
+			std::erase_if(_kickedElements, [](auto &elem) {
+				return --elem == 0;
+			});
 		}
 
 		void clear()
 		{
 			_elements.clear();
+			_kickedElements.clear();
 		}
 
 		bool isTabu(const Step &step) const //return true if the given step is tabu according to the list
 		{
+			//check kicked tabu first
 			//check short-term tabu in reverse order because we're inserting at the back
+			if (std::ranges::any_of(_kickedElements, [&step](auto const &elem) { return elem.step()->isEqualForShortTermTabu(step); }))
+				return true;
+
 			int counter = 0;
 			for (int i = _elements.size() - 1; i >= 0 && counter < _config.tabuShortTerm; --i, ++counter) {
 				//int is the correct type, because size_t is unsigned, it would overflow when size() is zero
@@ -74,6 +85,7 @@ namespace Algorithm::TabuSearch {
 		}
 
 		std::vector<TabuElement<Step>> _elements;
+		std::vector<TabuElement<Step>> _kickedElements;
 		Ctoolhu::Random::SmallIntGenerator _tabuGenerator; //random tabu iterations number generator
 		Config _config;
 	};

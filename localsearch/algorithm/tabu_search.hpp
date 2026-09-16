@@ -63,10 +63,10 @@ namespace Algorithm::TabuSearch {
 
 	  protected:
 
-		void executeStep(Solution &solution, std::shared_ptr<Step> step)
+		void executeStep(Solution &solution, std::shared_ptr<Step> step, bool kicked = false)
 		{
 			step->execute(solution);
-			_tabuList.insert(std::move(step));
+			_tabuList.insert(std::move(step), kicked);
 		}
 
 		auto const &tabuList() const noexcept { return _tabuList; }
