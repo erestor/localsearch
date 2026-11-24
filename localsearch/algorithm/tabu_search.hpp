@@ -71,6 +71,12 @@ namespace Algorithm::TabuSearch {
 
 		auto const &tabuList() const noexcept { return _tabuList; }
 
+		//aspiration steps are allowed to happen even if they are in the tabu list
+		bool _isAspirationStep(const Step &step, Fitness currentFitness) const
+		{
+			return (currentFitness + step.delta()) < _bestSolutionPtr->getFitness();
+		}
+
 	  private:
 
 		//execute the algorithm
@@ -174,12 +180,6 @@ namespace Algorithm::TabuSearch {
 					return Ctoolhu::Random::Select(steps);
 				}
 			}
-		}
-
-		//aspiration steps are allowed to happen even if they are in the tabu list
-		bool _isAspirationStep(const Step &step, Fitness currentFitness) const
-		{
-			return (currentFitness + step.delta()) < _bestSolutionPtr->getFitness();
 		}
 
 		bool _retainsFeasibility(Solution &solution) const
