@@ -33,19 +33,11 @@ namespace Algorithm::TabuSearch {
 			_config.load(pt);
 			_config.maxSteps = pt.get("maxSteps", 500);
 			_config.dynamicAdaptationThreshold = pt.get("dynamicAdaptationThreshold", 10);
-			_config.interleave = pt.get("interleave", 1);
-			_config.fitnessNeutralPreDiscardRatio = pt.get("fitnessNeutralPreDiscardRatio", 0.0f);
-			_config.fitnessNeutralPostDiscardRatio = pt.get("fitnessNeutralPostDiscardRatio", 0.9f);
-			_config.neighborhood = pt.get<std::string>("neighborhood", "");
 		}
 
 		struct Config : Algorithm::Config {
 			int maxSteps;
 			int dynamicAdaptationThreshold; //how many steps before dynamic adaptation kicks in
-			int interleave; //influences the lessons evaluated each step
-			float fitnessNeutralPreDiscardRatio; //probability of dicarding a fitness-neutral step before evaluation
-			float fitnessNeutralPostDiscardRatio; //probability of dicarding a non-bettering fitness-neutral step after evaluation
-			std::string neighborhood; //enables varying neighborhoods in implementation-specific best step getters
 		};
 
 		void enableExtensions() noexcept final { _config.extended = true; }
@@ -54,11 +46,15 @@ namespace Algorithm::TabuSearch {
 
 		//Assesses given step in the context of the running algorithm to see if it's a candidate for continuation.
 		//Returns true if the step can be considered as the next one to take.
-		//The current fitness is passed in because the algorithm might be in the middle of tweaking the current solution,
-		//which is therefore not safe to be accessed
-		bool isAcceptableStep(const Step &step, Fitness currentFitness) const
+		bool isTabu(const Step &step) const
 		{
-			return _isAspirationStep(step, currentFitness) || !_tabuList.isTabu(step);
+			return _tabuList.isTabu(step);
+		}
+
+		//aspiration steps are those that improve the best solution
+		bool isAspiration(const Step &step, Fitness currentFitness) const
+		{
+			return (currentFitness + step.delta()) < _bestSolutionPtr->getFitness();
 		}
 
 	  protected:
@@ -70,12 +66,6 @@ namespace Algorithm::TabuSearch {
 		}
 
 		auto const &tabuList() const noexcept { return _tabuList; }
-
-		//aspiration steps are allowed to happen even if they are in the tabu list
-		bool _isAspirationStep(const Step &step, Fitness currentFitness) const
-		{
-			return (currentFitness + step.delta()) < _bestSolutionPtr->getFitness();
-		}
 
 	  private:
 
