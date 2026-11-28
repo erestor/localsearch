@@ -40,8 +40,6 @@ namespace Algorithm::TabuSearch {
 			int dynamicAdaptationThreshold; //how many steps before dynamic adaptation kicks in
 		};
 
-		void enableExtensions() noexcept final { _config.extended = true; }
-		void disableExtensions() noexcept final { _config.extended = false; }
 		const Config &getConfig() const noexcept { return _config; }
 
 		//Assesses given step in the context of the running algorithm to see if it's a candidate for continuation.
@@ -78,7 +76,7 @@ namespace Algorithm::TabuSearch {
 			if (!_init(solution))
 				return false;
 
-			const int maxSteps{_config.maxSteps * (_config.extended ? 2 : 1)};
+			const int maxSteps{_config.maxSteps};
 			bool improved{false};
 			int executedSteps{0};
 			int noImprovements{0};

@@ -26,9 +26,6 @@ namespace Algorithm {
 
 		std::chrono::milliseconds elapsedTime() const noexcept final { return std::chrono::milliseconds(0); }
 
-		void enableExtensions() noexcept final {}
-		void disableExtensions() noexcept final {}
-
 	  private:
 
 		static const std::string _name;

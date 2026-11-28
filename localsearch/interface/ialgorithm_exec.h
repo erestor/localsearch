@@ -30,9 +30,6 @@ namespace Algorithm {
 
 		virtual void setParent(IAlgorithm *) = 0; //nesting support
 
-		virtual void enableExtensions() = 0; //tells algorithm to possibly use extra measures in order to find a feasible solution
-		virtual void disableExtensions() = 0;
-
 	  protected:
 
 		IAlgorithmExec() = default;

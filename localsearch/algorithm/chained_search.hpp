@@ -45,22 +45,6 @@ namespace Algorithm::ChainedSearch {
 			}
 		}
 
-		void enableExtensions() final
-		{
-			for (auto const &alg : _algorithms)
-				alg->enableExtensions();
-
-			Ctoolhu::Event::Fire<Algorithm::Events::ExtensionsEnabled>();
-		}
-
-		void disableExtensions() final
-		{
-			for (auto const &alg : _algorithms)
-				alg->disableExtensions();
-
-			Ctoolhu::Event::Fire<Algorithm::Events::ExtensionsDisabled>();
-		}
-
 	  private:
 
 		using algorithm_def_t = std::pair<std::string, boost::property_tree::ptree>;
@@ -87,10 +71,6 @@ namespace Algorithm::ChainedSearch {
 				if (initialAlgorithm)
 					initialAlgorithm->start(solution);
 
-				bool extended{_config.extended};
-				if (extended)
-					enableExtensions();
-
 				int idleCycles{0};
 				while (!this->isStopRequested() && !solution.getFitness().isZero()) {
 					idleCycles++;
@@ -98,24 +78,6 @@ namespace Algorithm::ChainedSearch {
 						if (alg->start(solution))
 							idleCycles = 0;
 					}
-
-					//apply some meta-logic
-					if (!_config.extended && solution.isFeasible()) {
-						//save time by disabling extensions once a feasible solution is found
-						extended = false;
-						disableExtensions();
-					}
-					if (!extended && !solution.isFeasible() && idleCycles == _config.cycles) {
-						//we're at the end and feasible solution wasn't found - re-run algorithms with extensions enabled
-						extended = true;
-						enableExtensions();
-						idleCycles = 0;
-
-						//reduce the number of cycles to save time - if a better solution isn't found with extensions then it's probably worthless to continue cycling a lot
-						if (_config.cycles > 1)
-							_config.cycles /= 2;
-					}
-
 					if (_config.cycles >= 0 && _config.cycles <= idleCycles)
 						break;
 				}

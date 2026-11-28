@@ -29,8 +29,6 @@ namespace Algorithm::RNA {
 			int tickFrequency; //how many steps between ticks
 		};
 
-		void enableExtensions() noexcept final { _config.extended = true; }
-		void disableExtensions() noexcept final { _config.extended = false; }
 		const Config &getConfig() const noexcept { return _config; }
 
 	  private:
@@ -42,7 +40,7 @@ namespace Algorithm::RNA {
 			if (!_init(solution))
 				return false;
 
-			const int maxSteps{_config.maxSteps * (_config.extended ? 2 : 1)};
+			const int maxSteps{_config.maxSteps};
 			bool improved{false};
 			int executedSteps{0};
 			int noImprovements{0};
